@@ -9,6 +9,6 @@ library(prettydoc)
 knitr::include_graphics('Logo_midas.png')
 ```
 
-# MiDaS - INE
+# MiDaS - Banco Central
 
 - [Curso de R](https://midas-chile.github.io/INE/Curso R/index2.html)
