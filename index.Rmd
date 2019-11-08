@@ -1,0 +1,14 @@
+---
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+---
+
+```{r logo, echo=FALSE, out.width='50%'}
+library(prettydoc)
+knitr::include_graphics('Logo_midas.png')
+```
+
+# MiDaS - INE
+
+- [Curso de R](https://midas-chile.github.io/INE/Curso R/index2.html)
