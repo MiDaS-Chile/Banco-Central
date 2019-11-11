@@ -6,14 +6,13 @@ output:
     lib_dir: static
     self_contained: false
     reveal_plugins: ["zoom"]
-    mathjax: null
     transition: slide
     css: styles.css
     incremental: true
     center: false
     theme: simple
     fig_width: 6
-    fig_height: 3.5
+    fig_height: 3
     reveal_options:
       slideNumber: false
       controls: false
@@ -626,6 +625,1014 @@ ggplot(data = Ang) +
 
 Abra el archivo `Actividad-3.pdf` y responda las preguntas en él.
 
+# Programación en R { .center .white data-background="#75AADB" }
+
+## Desarrollo de funciones
+La declaración de una función se realiza de forma general como sigue:
+`function(<lista de argumentos>) <cuerpo de la función>`<br>
+
+- `<lista de argumentos>` es una lista de normbres de los argumentos.
+- `<cuerpo de la función>` representa el contenido del código a ejecutar cuando se llama a la función.
+
+Ejemplo:
+```{r}
+function(name) cat("Hello",name,"!")
+```
+
+---
+
+<p style='text-align: justify;'> 
+Para R, una función es un objeto específico. <br>
+Por lo tanto, crear una función corresponde a asignar el objeto "función R"
+a una variable, cuyo nombre corresponde a la función misma.<br>
+Por ejemplo, para crear la función `hello()`, se puede proceder como sigue:
+</p>
+```{r}
+hello <- function(name) cat("Hello",name,"!")
+hello
+```
+<p style='text-align: justify;'> 
+Para que esta función se ejecute, el usuario debe llamar a la función,
+seguido del argumento entre paréntesis.
+</p>
+```{r}
+hello("Peter")
+```
+---
+
+### Cuerpo de la función
+
+<p style='text-align: justify;'> 
+El cuerpo de una función puede ser una simple instrucción de R o una secuencia de
+instrucciones de R.<br><br>
+En este último caso, las instrucciones deben estar incluidas entre
+los caracteres **{** y **}** para delimitar el principio y el final del cuerpo de la
+función.<br><br>
+Se pueden escribir varias instrucciones de R en la misma línea siempre que
+están separados por el caracter **;**.<br><br>
+Cuando el cuerpo de la función incluye varias instrucciones de R escritas
+en la misma línea, no olvidar escribirlos entre los caracteres **{**
+y **}**.
+</p>
+
+---
+
+Recuerde que en una línea, cualquier código escrito después del carácter # no es
+interpretado por R y se toma como un comentario
+
+```{r}
+hello <- function(name) {
+ # Convert the name to upper case.
+ name <- toupper(name)
+ cat("Hello",name,"!")
+ }
+hello("Peter")
+```
+
+---
+
+### Argumentos
+<p style='text-align: justify;'> 
+Al declarar una función, todos los argumentos se identifican con un nombre único.<br>
+Cada argumento puede asociarse con un valor predeterminado.<br>
+Para especificar un valor predeterminado, se usa el carácter = seguido del valor predeterminado.<br>
+Cuando se llama a la función sin un argumento, se utilizará el valor predeterminado.<br>
+Ejemplo:
+</p>
+```{r}
+hello <- function(name="Peter") cat("Hello",name,"!")
+hello()
+```
+
+---
+
+Agreguemos a nuestra función `hello()` la posibilidad de elegir un idioma, y veamos algunas llamadas de esta función
+
+```{r}
+hello <- function(name="Peter",language="eng") {
+ cat(switch(language,fr="Bonjour",sp="Hola",eng="Hello"),name,"!")
+ }
+hello()
+hello(name="Ben")
+hello(language="fr")
+```
+---
+
+En el mismo contexto, una segunda funcionalidad de R es que permite llamar a una función sin escribir el nombre completo de un argumento.
+```{r}
+hello(lang="eng");hello(l="eng")
+hello(l="e")
+hello("Ben","fr")
+```
+
+---
+
+<p style='text-align: justify;'> 
+Se puede asignar una lista de argumentos complementarios con la sintaxis ...<br><br>
+Al llamar a la función, todos los argumentos "nombrados" que no están en la lista de argumentos se agrupan en la estructura ...<br><br>
+En el cuerpo de la función, el usuario puede usar la sintaxis ... como si copiara-pegara la lista de argumentos suplementarios.
+</p>
+```{r}
+test.3points <- function(a="foo",...) print(list(a=a,...))
+test.3points("bar",b="foo")
+```
+
+---
+
+La función `hello()` no devuelve ningún objeto.
+
+```{r}
+res <- hello()
+res
+```
+
+---
+
+<p style='text-align: justify;'> 
+Una regla general para devolver un objeto es usar la función `return()`.
+Esta instrucción detiene la ejecución del código del cuerpo de la función y devuelve el objeto entre paréntesis.
+</p>
+```{r}
+hello <- function(name="Peter") {
+ return(paste("Hello",name,"!",collapse=" "))}
+hello()
+message <- hello()
+message
+```
+
+---
+
+<p style='text-align: justify;'> 
+La noción de alcance de una variable es muy importante para un lenguaje que permite desarrollar funciones.<br><br>
+La idea principal es que las variables definidas dentro del cuerpo de una función tienen un alcance local durante la ejecución de la función.<br><br>
+Esto significa que una variable dentro del cuerpo de una función es físicamente diferente de otra variable con el mismo nombre, pero definida en el espacio de trabajo de su sesión R.<br><br>
+En términos generales, el alcance local significa que una variable solo existe dentro del cuerpo de la función.<br><br>
+Después de la ejecución de la función, la variable se elimina automáticamente de la memoria de la computadora.
+</p>
+
+---
+
+```{r}
+message <- "hello Pierre !"
+message # Workspace initialization.
+hello <- function(name="Peter",message="hello") {
+ print(message)
+ message <- paste(message,name,"!",collapse=" ")
+ print(message)
+ invisible(message)}
+hello()
+message # Workspace has not been modified!
+```
+
+---
+
+```{r}
+message <- hello()
+message # Workspace has been modified!
+message <- hello(message="Welcome")
+message # Workspace has been modified again!
+```
+
+
+## Debugging de funciones
+
+<p style='text-align: justify;'> 
+Una función de depuración útil en R es la función `browser()`.<br><br>
+Si inserta la instrucción `browser()` en el cuerpo de su función, el programa se detendrá en el lugar donde se insertó.<br><br>
+Al escribir la letra n (para el siguiente), se puede inspeccionar el código y el contenido de las variables secuencialmente.<br><br>
+Para salir del modo de inspección, se debe escribir Q.
+<p/>
+
+---
+
+```{r}
+x <- matrix(rnorm(12),nrow=2); 
+apply(x,1,function(y){browser();sum(y)})
+```
+
+---
+
+<p style='text-align: justify;'>
+Otra función interesante es `debug()`, que es equivalente a colocar la instruccuón `browser()` en la parte superior del cuerpo de una función.<br><br>
+Por lo tanto, `debug(var)` marca la funció `var` como depurable.<br><br>
+Cualquier llamada posterior de esta función iniciará el depurador.
+<p/>
+```{r, eval = FALSE}
+debug(var)
+var(1:3)
+```
+<p style='text-align: justify;'>
+Para deshacerse de esta marca, se usa la función `undebug()`.
+<p/>
+```{r, eval=FALSE}
+undebug(var)
+```
+
+## Administración
+
+<p style='text-align: justify;'>
+Después de haber creado los objetos R, puede obtener la lista de todos los objetos con la función `ls()` o la función `objects()`.<br><br>
+Para eliminar objetos, se usa la función `rm()`.<br><br>
+Vale la pena señalar que el comando `getwd()` devuelve el directorio de trabajo actual. El comando `setwd()` se usa para cambiar el directorio de trabajo.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Cuando se trabaja con R, se crean objetos: vectores, matrices, funciones, etc.<br><br>
+Estos objetos se guardan físicamente en un archivo en el disco duro llamado espacio de trabajo.<br><br>
+La extensión del nombre del archivo debe ser `.RData`<br><br>
+Es posible crear varios archivos .RData: uno para cada proyecto en el que está trabajando.<br><br>
+Debe crear estos archivos `.RData` en diferentes carpetas de manera apropiada.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Por ejemplo, suponga que está trabajando en dos proyectos diferentes: uno relacionado con automóviles y otro relacionado con eventos climáticos.<br><br>
+Luego, puede crear una carpeta llamada `Cars` que contenga un archivo `cars.RData`, y otra carpeta llamada `Climate` que contenga un archivo llamado `climevt.RData`; estos archivos contendrán los objetos R correspondientes a los dos estudios.<br><br>
+La función `save.image()` se usa para guardar un espacio de trabajo; puede usar la función `load()` para cargar un espacio de trabajo existente.
+<p/>
+
+---
+
+## Actividad
+
+Inicie R y escriba las siguientes instrucciones:
+
+```{r, eval = FALSE}
+Mc <- "My car"
+# Use the up arrow and change the last command to:
+Yc <- "Your car"
+# Save a file cars.Rhistory in the folder Cars.
+savehistory("/path/to/Cars/cars.Rhistory")
+q("no") # Exit R.
+# Open R again.
+# Note that the up arrow does not
+# give access to the last two commands.
+# Open the file cars.Rhistory in the folder Cars.
+loadhistory(file.choose())
+# Now, the up arrow can be used
+# to find old commands.
+q("no")
+```
+
+---
+
+<p style='text-align: justify;'>
+R incluye un mecanismo para recuperar y volver a ejecutar comandos antiguos.<br><br>
+Las flechas hacia arriba y hacia abajo del teclado se pueden usar para retroceder y avanzar en el historial de comandos.<br><br>
+Una vez que haya localizado un comando con este método, puede mover el cursor con las flechas derecha e izquierda, eliminar caracteres con la tecla `DEL` y agregar o modificar caracteres con el teclado.<br><br>
+Para guardar el historial de comandos de la sesión actual, use el comando `savehistory()`.<br><br>
+Para cargar el historial de comandos de una sesión anterior, use el comando `loadhistory()`.<br><br>
+Los comandos se guardan en un archivo que debe tener la extensión `.Rhistory` (o `.rhi` en versiones anteriores de R)
+<p/>
+
+# Programación eficiente en R{ .center .white data-background="#75AADB" }
+
+## Objetivos
+
+<p style='text-align: justify;'>
+Muchas personas que usan R no se describirían a sí mismas como "programadores".<br><br>
+En cambio, tienden a tener un conocimiento de nivel avanzado, comprender estructuras estándar de datos de R, como vectores y data frames, pero tienen poca capacitación formal en informática.<br><br> </p>
+<p align = 'justify'> Discutiremos: </p>
+
+- Técnicas de programación (panorama general).
+- Asignación de memoria y código vectorizado.
+
+## Prerrequisitos
+
+<p style='text-align: justify;'>
+Se utilizarán dos paquetes: `complier` y `memoise`.<br><br>
+Estos paquetes forman parte de las librerias base de R, por lo tanto sólo se los debe cargar
+<p/>
+```{r}
+library("compiler")
+library("memoise")
+```
+<p style='text-align: justify;'>
+También serán utilizados (en los ejercicios) los paquetes `pryr` y `microbenchmark`.
+<p/>
+
+## Consejos Generales
+
+<p style='text-align: justify;'>
+Los lenguajes de bajo nivel como C y Fortran exigen más del programador.<br><br>
+Obligan a declarar el tipo de cada variable utilizada, dan la gran responsabilidad de la administración de memoria y se tiene que compilar.<br><br>
+La ventaja de tales lenguajes, en comparación con R, es que son más rápidos de ejecutar.<br><br>
+La desventaja es que se tardan más en aprender y no se pueden ejecutar de forma interactiva.<br><br>
+La página de wikipedia sobre [optimización de compiladores](https://en.wikipedia.org/wiki/Optimizing_compiler) ofrece una buena descripción de las técnicas de optimización estándar.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Los usuarios de R no tienden a preocuparse por los tipos de datos.<br><br>
+Esto es ventajoso en términos de creación de código conciso, pero puede resultar que programas de R sean lentos.<br><br>
+Si bien las optimizaciones como paralelizar pueden duplicar la velocidad, un código deficiente puede ejecutarse fácilmente cientos de veces más lento, por lo que es importante comprender las causas del código lento.<br><br>
+En última instancia, llamar a una función de R siempre termina llamando a algún código C/Fortran subyacente.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Por ejemplo, la función base de R `runif()` contiene una sola línea que consiste en llamar a `C_ _runif()`.
+<p/>
+```{r, eval=FALSE}
+function (n, min = 0, max = 1)
+  .Call(C_runif, n, min, max)
+```
+<p style='text-align: justify;'>
+Una regla de oro en la programación de R es acceder a las rutinas subyacentes de C/Fortran lo más rápido posible; mientras menos llamadas de funciones requeridas para
+lograr esto, mejor.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Por ejemplo, supongamos que `x` es un vector estándar de longitud `n`. <br><br>
+Entonces, `x=x+1` implica la llamada de una única función `+`, mientras que el ciclo `for`: `for(i in seq_len(n)) x[i] <- x[i] + 1` tiene  <p/>
+- n llamadas a la función `+`.
+- n llamadas a la función `[]`.
+- n llamadas a la función `<-`.
+- 2 llamdas a las funciones: `for` y `seq_len`.
+
+<p style='text-align: justify;'>
+No es que el ciclo for sea lento, sino que tenemos muchas más llamadas a funciones.<br>
+Cada llamada de función individual es rápida, pero la combinación total es lenta.
+<p/>
+
+---
+
+### Actividad
+
+<p style='text-align: justify;'>
+Use el paquete `microbenchmark` para comparar la construcción vectorizada `x = x + 1` con la versión del ciclo for. Variar el tamaño del vector de entrada.
+<p/>
+
+## Asignación de memoria
+
+<p style='text-align: justify;'>
+Otra técnica general es tener cuidado con la asignación de memoria.<br><br>
+Si es posible, preasigne su vector y luego complete los valores.<br><br>
+Consideremos tres métodos para crear una secuencia de números.<br><br>
+El método 1 crea un vector vacío y aumenta gradualmente la longitud del vector.<br><br>
+El método 2 crea un objeto de la longitud final y luego cambia los valores en el objeto mediante `subscriptingr`.<br><br>
+El método 3 crea directamente el objeto final.
+<p/>
+
+---
+
+
+```{r}
+# Método 1
+method1 <- function(n){
+vec <- NULL # Or vec <- c()
+for(i in seq_len(n))
+ {vec <- c(vec, i)}
+vec}
+
+# Método 2
+method2 <- function(n)
+{vec <- numeric(n)
+for(i in seq_len(n))
+ {vec[i] <- i}
+vec}
+
+# Método 3
+method3 <- function(n) seq_len(n)
+```
+
+---
+
+Para comparar los tres métodos se utiliza la función `microbenchmark()`
+
+```{r, eval=FALSE}
+library(microbenchmark)
+n=10^5
+microbenchmark(times = 100, unit = "s", method1(n), method2(n), method3(n))
+```
+
+
+## Vectorización
+
+<p style='text-align: justify;'>
+Recuerde la regla de oro en la programación R, acceda a las rutinas subyacentes de C/Fortran lo más rápido posible.<br><br>
+Cuantas menos llamadas a funciones se requieran para lograr esto, mejor.<br><br>
+Con esto mente, muchas funciones R están vectorizadas. Las entradas y/o salidas funcionan naturalmente con vectores, reduciendo el número de llamadas a funciones requeridas.<br><br>
+Por ejemplo, el código `x <- runif(n) + 1` realiza dos operaciones vectorizadas.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+En general, es una buena idea explotar las funciones vectorizadas.<br><br>
+Considere este fragmento de código de R que calcula la suma de `log(x)`:
+<p/>
+```{r, eval=FALSE}
+log_sum <- 0
+for(i in 1:length(x)){
+log_sum <- log_sum + log(x[i])}
+```
+<p style='text-align: justify;'>
+Este código se puede vectorizar fácilmente a través de
+<p/>
+```{r, eval=FALSE}
+log_sum <- sum(log(x))
+```
+
+---
+
+Escribir código de esta manera tiene una serie de beneficios.
+
+- Es mas rapido. Cuando `n = 107`, es aproximadamente cuarenta veces más rápido.
+- Es más ordenado.
+- No contiene un error cuando `x` es de longitud `0`.
+
+
+## Actividad
+
+- Calcular el tiempo de ejecución de los dos métodos para `log_sum`.
+- ¿Qué sucede cuando la longitud de `x` es `0`?
+
+## Comunicarse con el usuario
+
+<p style='text-align: justify;'>
+Cuando creamos una función, a menudo queremos que la función proporcione comentarios eficientes sobre el estado actual. Por ejemplo, ¿faltan argumentos o ha fallado un cálculo numérico?. <p/>
+
+Existen tres técnicas principales de comunicación con el usuario:
+
+- `stop()`
+- `warning()`
+- `message()`
+
+---
+
+<p style='text-align: justify;'>
+Los errores fatales se generan llamando a `stop()`, es decir, se termina la ejecución.<br><br>
+Cuando se llama a `stop()`, no hay forma de que una función continúe.<br><br>
+Por ejemplo, cuando generamos números aleatorios usando `rnorm()`, el primer argumento es el tamaño de la muestra, `n`.<br><br>
+Si el número de observaciones para devolver es menor a 1, se genera un error.<br><br>
+Cuando necesitamos generar un error, debemos hacerlo lo más rápido posible; de lo contrario es un desperdicio de recursos.<br><br>
+Por lo tanto, las primeras líneas de una función suelen realizar la comprobación de argumentos.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Supongamos que llamamos a una función que genera un error. ¿Entonces que?<br><br>
+Un código eficiente y robusto detecta el error y lo maneja de manera adecuada.<br><br>
+Los errores pueden detectarse usando `try()` y `tryCatch()`.<br><br>
+Por ejemplo,
+<p/>
+
+```{r, eval=FALSE}
+# Suppress the error message
+good <- try(1 + 1, silent = TRUE)
+bad <- try(1 + "1", silent = TRUE)
+```
+
+---
+
+<p style='text-align: justify;'>
+Cuando inspeccionamos los objetos, la variable `good` solo contiene el número 2.<br><br>
+Sin embargo, el objeto `bad` es una cadena de caracteres de clase `try-error` y un atributo de condición que contiene el mensaje de error.<br><br>
+Podemos usar esta información en una declaración condicional estándar.
+<p/>
+```{r, eval=FALSE}
+if(class(bad) == "try-error")
+# Do something
+```
+
+---
+
+<p style='text-align: justify;'>
+Las advertencias se generan utilizando la función `warning()`.<br><br>
+Cuando se genera una advertencia, indica posibles problemas.<br><br>
+Por ejemplo, `mean(NULL)` devuelve `NA` y también genera una advertencia.<br><br>
+Cuando nos encontramos con una advertencia en nuestro código, es importante resolver el problema y no solo ignorarlo.<br><br>
+Si bien ignorar las advertencias ahorra tiempo a corto plazo, las advertencias a menudo pueden ocultar problemas más profundos que se han generado en nuestro código.<br><br>
+Las advertencias pueden ocultarse usando `suppressWarnings ()`.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Para dar una salida informativa, use la función `message ()`.<br><br>
+Por ejemplo, en el paquete `poweRlaw`, la función` message () `se usa para dar al usuario una estimación del tiempo de ejecución esperado.<br><br>
+Proporcionar una estimación aproximada de cuánto tiempo lleva la función, permite al usuario optimizar su tiempo.<br><br>
+Similar a las advertencias, los mensajes se pueden suprimir con `suppressMessages ()`.<br><br>
+Otra función utilizada para imprimir mensajes es `cat ()`.<br><br>
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+La función `invisible ()` le permite devolver una copia temporalmente invisible de un objeto.<br><br>
+Esto es particularmente útil para funciones que devuelven valores que pueden asignarse, pero que no se imprimen cuando no están asignados.<br><br>
+Por ejemplo, supongamos que tenemos una función que traza los datos y se ajusta a una línea recta.
+<p/>
+```{r, eval=FALSE}
+regression_plot <- function(x, y, ...)
+{
+# Plot and pass additional arguments to default plot method
+plot(x, y, ...)
+# Fit regression model
+model <- lm(y ˜ x)
+# Add line of best fit to the plot
+abline(model)
+invisible(model)
+}
+```
+
+---
+
+### Factores
+
+<p style='text-align: justify;'>
+Los factores son objetos tratados muy injustamente.<br><br>
+Si bien a veces son incómodos, tienen sus usos.<br><br>
+Se utiliza un factor para almacenar variables categóricas.<br><br>
+Este tipo de datos es exclusivo de R (o al menos no es común entre los lenguajes de programación).<br><br>
+La diferencia entre factores y cadenas es importante porque R trata los factores y las cadenas de manera diferente.<br><br>
+Aunque los factores se parecen a los vectores de caracteres, en realidad son enteros
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+Esto lleva a un comportamiento inicialmente sorprendente.
+<p/>
+```{r}
+x <- 4:6
+c(x)
+c(factor(x))
+```
+
+---
+
+Los factores se pueden usar para ordenar en gráficos:
+```{r}
+boxplot(count~spray, data = InsectSprays, col = "lightgray")
+```
+
+---
+
+También podemos usar factores para el orden alfanumérico:
+
+```{r}
+m <- c("January", "December", "March")
+# month.name contains the 12 months
+fac_m <- factor(m, levels = month.name)
+sort(fac_m)
+```
+
+
+## La familia `apply`
+
+Las funciones `apply` pueden ser una alternativa a la escritura de bucles.
+La idea general es aplicar (o asignar) una función a cada elemento de un objeto.
+
+
+Opción  | Efecto
+------  | -------------------
+apply   | Aplicar funciones sobre márgenes de un `array`
+by      | Aplicar una función a un `data frame` dividido por factores
+eapply  | Aplicar una función sobre valores en un entorno
+lapply  | Aplicar una función sobre valores en una lista o vector
+mapply  | Aplicar una función a múltiples listas o argumentos vectoriales
+rapply  | Aplicar de forma recursiva una función a una lista
+tapply  | Aplicar una función sobre una matriz irregular
+sapply  | Una versión fácil de usar de lapply
+
+
+---
+
+MCMC con bucles:
+
+```{r}
+gibbs.loop.1 <- function (Itr=1e5, rho=0.5)
+{
+mat <- matrix(ncol = Itr, nrow = 2)
+x0 <- 0; y0 <- 0; mat[ ,1] <- c(x0, y0)
+for (i in 2:Itr)
+{
+mat[1,i] <- rnorm(1, rho * mat[2,i-1], sqrt(1 - rho^2))
+mat[2,i] <- rnorm(1, rho * mat[1,i ], sqrt(1 - rho^2))
+}
+mat
+}
+system.time(gibbs.loop.1()->g1)
+```
+
+---
+
+MCMC con “mejores” bucles:
+
+```{r}
+gibbs.loop.2 <- function (Itr=1e5, rho=0.5)
+{
+mat <- matrix(ncol = Itr, nrow = 2)
+x0 <- 0
+y0 <- 0
+mat[ ,1] <- c(x0, y0)
+for (i in 2:Itr)
+{
+x0 <- rnorm(1, rho * y0, sqrt(1 - rho^2))
+y0 <- rnorm(1, rho * x0, sqrt(1 - rho^2))
+mat[,i] = c(x0,y0)
+}
+mat
+}
+system.time(gibbs.loop.2()->g2)
+```
+
+----
+
+MCMC sin bucles:
+
+```{r}
+gibbs.noloop <- function(Itr=1e5, rho=0.5)
+{
+gen.gibbs.iter <- function(x=0, y=0) function(t)
+{
+y <- rnorm(1,rho*x, sqrt(1-rho^2))
+x <- rnorm(1,rho*y, sqrt(1-rho^2))
+c(x,y)
+}
+sapply(integer(Itr),gen.gibbs.iter())
+}
+system.time(gibbs.noloop()->g3)
+```
+
+---
+
+<p style='text-align: justify;'>
+Un método sencillo para acelerar el código es calcular objetos una vez y reutilizar el valor cuando sea necesario.<br><br>
+Esto podría ser tan simple con el reemplazo de `sd(x)` en llamada múltiples veces con el objeto `sd_x` que se define una vez y se reutiliza.<br><br>
+Por ejemplo,
+</p>
+`apply(x, 2, function(i) mean(i) / sd(x))`
+<p style='text-align: justify;'>
+Esto es ineficiente ya que el valor de `sd(x)` es constante, no es necesario volver a calcular la desviación estándar para cada columna.<br><br>
+En su lugar, debemos evaluar una vez y almacenar el resultado.
+</p>
+```{r, eval=FALSE}
+sd_x <- sd(x)
+apply(x, 2, function(i) mean(i) / sd_x)
+```
+
+---
+
+<p style='text-align: justify;'>
+Una forma más avanzada de almacenamiento en caché es utilizar el paquete `memoise`.<br><br>
+Si una función se llama varias veces con la misma entrada, es posible acelerar las cosas manteniendo un caché de respuestas conocidas que puede recuperar.<br><br>
+El paquete `memoise` nos permite almacenar fácilmente el valor de la llamada de la función y devuelve el resultado almacenado en caché cuando se vuelve a llamar a la función con los mismos argumentos.<br><br>
+Este paquete intercambia memoria versus velocidad, ya que la función memorizada almacena todas las entradas y salidas anteriores.<br><br>
+Para almacenar en caché una función, simplemente pasamos la función a la función `memoise`.
+</p>
+
+---
+
+Por ejemplo,
+
+```{r, eval=FALSE}
+library(microbenchmark)
+# Argument indicates row to remove
+plot_mpg <- function(row_to_remove)
+{
+data(mpg, package = "ggplot2")
+mpg <- mpg[-row_to_remove, ]
+plot(mpg$cty, mpg$hwy)
+lines(lowess(mpg$cty, mpg$hwy), col = 2)
+return()
+}
+m_plot_mpg <- memoise(plot_mpg)
+microbenchmark(times = 10, unit = "ms", m_plot_mpg(10), plot_mpg(10))
+```
+
+
+## El paquete `compiler`
+
+<p style='text-align: justify;'>
+El paquete `compiler`, escrito por Luke Tierney ha sido parte de R desde la versión 2.13.0<br><br>
+El paquete `compiler` permite compilar las funciones de R, lo que da como resultado una versión de código de bytes que puede ejecutarse más rápido.
+</p>
+
+---
+
+```{r}
+library(microbenchmark)
+library("compiler")
+mean_r <- function(x)
+{
+m <- 0
+n <- length(x)
+for(i in seq_len(n))
+{
+m <- m + x[i] / n
+}
+m
+}
+cmp_mean_r <- cmpfun(mean_r)
+x <- rnorm(1000)
+microbenchmark(times = 10, unit = "ms", # milliseconds
+mean_r(x), cmp_mean_r(x), mean(x))
+```
+
+
+# Operaciones matemáticas{ .center .white data-background="#75AADB" }
+
+## Objetivos
+
+- Funciones matemáticas básicas
+- Operaciones habituales en matrices y descomposiciones
+- Integracion numerica
+- Diferenciación numérica
+- Optimización
+
+## Funciones matemáticas básicas
+
+![](Images/Table1_1.PNG)
+
+
+---
+
+![](Images/Table1_2.PNG)
+
+## Operaciones matriciales
+
+Se incluyen varias operaciones matriciales básicas en la versión base de R
+
+```{r}
+lambda <- 2 # Creating scalar
+A <- matrix(c(2,3,5,4),nrow=2,ncol=2) # Real matrix.
+A
+B <- matrix(c(1,2,2,7),nrow=2,ncol=2) # Symmetric real matrix.
+B
+```
+
+---
+
+```{r}
+C <- matrix(c(1,1i,-1i,3),ncol=2) # Hermitian complex matrix.
+C
+I2 <- diag(rep(1,2)) # Identity matrix of order 2.
+I2
+```
+
+---
+
+Sumando un escalar
+```{r}
+lambda + A
+```
+Suma
+```{r}
+A + B
+```
+
+---
+
+Resta
+```{r}
+A - B
+```
+Multiplicacón por un escalar
+```{r}
+lambda * A
+```
+
+---
+
+Transpuesta
+```{r}
+t(A)
+```
+Conjugada
+```{r}
+Conj(C)
+```
+
+---
+
+Multiplicación
+```{r}
+A*B
+```
+Producto punto
+```{r}
+A %*% B
+```
+
+---
+
+División 
+```{r}
+A/B
+```
+Matriz Inversa
+```{r}
+solve(B)
+```
+
+---
+
+División matricial
+```{r}
+A%*%solve(B)
+```
+Producto cruzado
+```{r}
+crossprod(A, B) # t(A) %*% B
+```
+
+---
+
+Producto externo ($\mathbf{x}\mathbf{y}^{\top}$)
+```{r}
+x <- seq(1,4)
+y <- seq(4,7)
+outer(x,y,FUN="*")
+```
+Producto de Kronecker ($\mathbf{A}\otimes\mathbf{B}$)
+```{r}
+kronecker(A,B)
+```
+
+---
+
+Puede ser útil obtener las partes inferior y superior de una matriz.
+Esto se puede hacer con las funciones `lower.tri()` y `upper.tri()`
+```{r}
+M <- matrix(1:16,nrow=4)
+lower.tri(M)
+upper.tri(M,diag=TRUE)
+```
+
+---
+
+```{r}
+M[lower.tri(M)] <- 0
+M
+```
+Determinante
+```{r}
+det(A)
+```
+
+---
+
+Traza de una matriz:
+```{r}
+sum(diag(A))
+```
+Número de condición (la relación entre el más grande y el más pequeño de lo
+valores singulares distintos de cero)
+```{r}
+kappa(A,exact=TRUE)
+```
+
+---
+
+Centrar y escalar
+```{r}
+scale(A)
+```
+---
+
+Centrar
+```{r}
+scale(A,scale=FALSE)
+```
+Escalar
+```{r}
+scale(A,center=FALSE)
+```
+---
+
+Valores y vectores propios
+```{r}
+eigen(A)
+```
+
+---
+
+Descomposición QR ($\mathbf{A}=\mathbf{QR}$)
+```{r}
+res <- qr(A)
+Q <- qr.Q(res)
+Q
+all.equal(I2,Q%*%t(Q))
+```
+---
+
+```{r}
+R <- qr.R(res)
+R
+all.equal(A,Q%*%R) # A = QR
+```
+
+
+## Integración y diferenciación numérica
+
+Supongamos que deseamos verificar numéricamente que 
+$\int\limits_{-\infty}^{\infty}\frac{\exp\{-x^2/2\}}{\sqrt{2\pi}}=1$
+
+```{r}
+myf <- function(x) exp(-x^2/2)/sqrt(2*pi)
+integrate(myf,lower=-Inf,upper=Inf)$value
+```
+
+---
+
+Tenga en cuenta que en R también es posible integrar funciones de varias variables $\int\limits_{0}^{1}\int\limits_{2}^{3}\cos(x+y)dydx=2\cos(3)-\cos(4)-\cos(2)$
+
+```{r}
+myf <- function(x)
+{
+ res <- vector("integer",length(x))
+ for(i in 1:length(x))
+ {
+ res[i] <- integrate(f=function(y,x)cos(x+y),
+ lower=2,upper=3, x=x[i])$value
+ }
+ return(res)
+}
+integrate(myf,lower=0,upper=1)$value
+```
+
+---
+
+R incluye dos funciones de diferenciación simbólica: `D()` y `deriv()`
+
+```{r}
+# Differentiate with respect to x
+D(expression(sin(cos(x + y^2))), "x")
+# Differentiate with respect to y
+D(expression(sin(cos(x + y^2))), "y")
+```
+
+---
+
+```{r}
+# Differentiate x^2 and get 2x
+f <- deriv(~x^2, "x", func =TRUE)
+f(3)
+```
+
+La diferenciación numérica se puede hacer en R con la función `grad()` del paquete `numDeriv`
+
+```{r}
+library(numDeriv)
+f <- function(x) x^2 # Function of one variable.
+grad(f,c(2,1,3,5)) # Computes the derivative at several (scalar) points.
+```
+
+---
+
+El paquete `numDeriv` también incluye la función `hessian()` para calcular derivadas de segundo orden, pero solo en un único punto (vectorial).
+
+```{r}
+g <- function(x) x[1]*x[2]^2 # Function of two variables.
+grad(g,c(2,1))
+hessian(g,c(2,1))
+```
+
+
+## Optimización
+
+<p style='text-align: justify;'>
+Optimizar una función significa encontrar dónde alcanza su máximo o su mínimo.<br><br>
+Hay varias funciones en R para este fin, estas estan basadas en varios algoritmos: `optimize()`, `optim()`, `nlm()`, `constrOptim()`, `nlminb()`.<br><br>
+La función `optimize()`, que solo funciona en una dimensión, es la más fácil de manipular:
+</p>
+```{r}
+optimize(f=function(x)cos(x^2),lower=0,upper=2)
+```
+
+---
+
+<p style='text-align: justify;'>
+Utilizemos la función `nlm()` para optimización multidimensional, esta calcula el mínimo de una función. Suponer que $f(x,y)=10\frac{\sin(\sqrt{(x-3)^2+(y-4)^2})}{((x-3)^2+(y-4)^2)^{\alpha}}$, con $\alpha=1$ </p>
+
+```{r}
+f <- function(z,alpha=1.1)
+ {
+ x<-z[1]
+ y<-z[2]
+ r <- sqrt((x-3)^2+(y-4)^2)
+ -10 * sin(r)/r^alpha
+ }
+res <- nlm(f,c(0,0)) # The second effective argument gives the initial values.
+```
+
+---
+
+```{r}
+res
+```
+
 # Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
 
 ## {data-background-video="video1.mp4"}
@@ -695,7 +1702,7 @@ Podemos realizar código r en cualquier oración. Para ello basta escribir
 
 Para mayor información de todo esto, ver el siguiente [link](https://bookdown.org/yihui/rmarkdown/)
 
-## Actividad IV: parte I (Basados en [DataCamp](https://www.datacamp.com/projects/139) )
+## Actividad IV: parte I
 
 Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones:
 
@@ -898,3 +1905,336 @@ tbl2_3FN %>%
     caption  = "Elaboración propia en base a datos de la ENE 2018/2019."
   )
 ```
+
+
+# Variables Aleatorias{ .center .white data-background="#75AADB" }
+
+## Objetivos
+
+En este capítulo discutiremos los siguientes temas:
+
+- Distribuciones de probabilidad.
+- Conceptos básicos de la inferencia estadística en el caso frequentista.
+- Intervalos de Confianza
+
+## Distribuciones de probabilidad
+
+<p align = "justify"> El paquete `stats` posee las funciones para calcular la densidad(`d___`), la distribución acumulada(`p___`), los cuantiles(`q___`) de algunas distribuciones de probabilidad. Además, provee funciones para simular datos aleatoris de cierta distribución de probabilidad(`r___`). Algunos ejemplos:</p>
+
+- Normal: `dnorm() , pnorm(), qnorm(), rnorm()`.
+- Poisson: `dpois(), ppois(), qpois(), rpois()`.
+- Weibull: `dweibull(), pweibull(), qweibull(), rweibull()`.
+
+## Ejemplo
+
+```{r}
+dnorm(400,mean = 500, sd = 100)
+pnorm(400,mean = 500, sd = 100)
+qnorm(0.95, mean = 500, sd = 100)
+```
+
+----
+
+```{r}
+df <- tibble("muestra" = rnorm(1000, mean = 500, sd = 100))
+hist <- ggplot(df) + geom_histogram(aes(x = muestra)) + ggtitle("Histograma")
+density <- ggplot(df) + geom_density(aes(x = muestra)) + ggtitle("Gráfico de Densidad")
+cumulative <- ggplot(df) + stat_ecdf(aes(x = muestra), geom = "step") + ggtitle("Gráfico de distribución acumulada")
+multiplot(hist,density, cumulative, cols = 3)
+```
+
+## Ley de los grandes números
+
+<p align = "justify"> Sea \(\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i\) donde los \(X_i\) son variables aleatorias independientes e idénticamente distribuidas con $E(X_i \ ) = \mu, \text{var}(X_i \ ) = \sigma^2$. La ley de los grandes números nos dice que $$\bar{X}_n \xrightarrow{P} \mu.$$ </p>
+
+## Ejemplo
+
+```{r, echo = FALSE}
+set.seed(40)
+df <- 1:3000 %>%
+  map_dbl(~ mean(rnorm(.x, mean = 500, sd = 100))) %>% 
+  tibble("n" = 1:3000)
+
+ggplot(df) +
+  geom_line(aes(x = n, y =. ), col = "gray60") +
+  geom_hline(yintercept = 500, col = "red", size = 1) + 
+  ggtitle("Promedio de variables aleatorias N(500,100) a medida que aumenta el tamaño de muestra.")
+```
+  
+## Teorema central del límite
+
+<p align = "justify">  Sean $X_1,\ldots,X_n$ variables aleatorias independientes e idénticamente distribuidas. Bajo un tamaño de muestra lo suficientemente grande se cumplirá que $$\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{D} N(0,1).$$ </p>
+
+En este [link](https://gallery.shinyapps.io/CLT_mean/) se puede encontrar un ejemplo de las aplicaciones del teorema.
+
+## Estimación Puntual
+
+<p align = "justify"> Un estimador es una variable aleatoria que permite asignar un valor a cierto parámetro de interés. </p>
+
+```{r}
+theta <- 7
+muestra <- rnorm(1000, theta)
+theta_estimado <- mean(muestra)
+theta_estimado
+```
+
+<p align = "justify"> Existen diversas formas de generar estimadores. Uno de los métodos más utilizados es el de máxima verosimilitud. Este método busca encontrar el parámetro que máximiza la distribución conjunta de los datos.</p>
+
+## Intervalos de Confianza
+
+<p align = "justify"> Las estimaciones no seran exactamente igual al valor original parámetro original. Una forma de solventar este problema es generar intervalos, a partir de la estimación, que contengan el verdadero valor del parámetro. </p>
+
+<p align = "justify"> Un intervalo de confianza contendrá un 95% de las veces el verdadero real del parámetro. En este [link](https://istats.shinyapps.io/ExploreCoverage/) se puede observar cómo se comportan los intervalos de confianza </p>
+
+# Regresión Lineal{ .center .white data-background="#75AADB" }
+
+## Objetivos
+
+En este capítulo discutiremos los siguientes temas:
+
+- Regresión lineal simple y múltiple.
+- Selección de variables.
+- Validación del modelo y análisis de sensibilidad.
+
+## Base de datos
+
+```{r}
+fichier <- "http://www.biostatisticien.eu/springeR/Weight_birth.csv"
+mydata <- read_delim(fichier, 
+    "\t", escape_double = FALSE, trim_ws = TRUE)
+head(mydata)
+```
+
+----
+
+Transformamos pounds a kilogramos
+
+```{r, fig.height = 4}
+mydata <- mydata %>% mutate(LWT = LWT*0.4535923)
+plot1 <- ggplot(mydata,aes(x = LWT, y = BWT)) + geom_point() + 
+  xlab("Peso de la Madre") + ylab("Peso del niño al nacer")
+plot1
+```
+
+## Regresión lineal simple
+
+<p align = "justify"> El modelo de regresión lineal simple busca explicar el comportamiento medio de cierta variable respuesta $y$ utilizando una variable explicativa $x$. </p>
+
+<p align = "justify"> Su formulación corresponde a $$y_i = \beta_0 + \beta_1x_i + \epsilon_i$$ donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$.</p>
+
+----
+<p align = "justify"> La función `lm()` permite ajustar el modelo: </p>
+
+```{r, fig.height= 4}
+model1 <- lm(BWT ~ LWT, data = mydata)
+model1
+```
+
+<p align = "justify"> Los paquetes `ggiraph` y `ggiraphExtra` permiten visualizar de forma sencilla e interactiva regresiones lineales utilizando `ggPredict()`. </p>
+----
+```{r, fig.height= 4}
+library(ggiraph); library(ggiraphExtra)
+ggPredict(model1,interactive = TRUE)
+```
+
+----
+
+Test sobre los parámetros:
+
+```{r}
+res <- summary(model1)
+res
+```
+
+----
+
+Elementos del resumen de un modelo:
+
+```{r}
+names(res)
+res$coefficients
+```
+
+----
+
+Tabla ANOVA:
+
+```{r}
+anova(model1)
+```
+
+----
+
+Intervalos de confianza para los coeficientes de regresión:
+
+```{r}
+confint(model1)
+```
+
+Predicción:
+
+```{r}
+lwt0 <- c(56, 40)
+predict(model1, tibble(LWT = lwt0), interval = "prediction")
+```
+
+----
+
+Agregar banda de confianza de la recta estimada:
+
+```{r}
+ggPredict(model1,interactive = TRUE, se = TRUE)
+```
+
+## Regresión lineal multiple
+
+<p align = "justify"> El modelo de regresión lineal simple busca explicar el comportamiento medio de cierta variable respuesta $y$ utilizando variables explicativas $x_1, \ldots, x_p$. </p>
+
+<p align = "justify"> Su formulación corresponde a $$y_i = \beta_0 + \beta_1x_{1i} + \cdots + \beta_px_{pi} + \epsilon_i$$ donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$.</p>
+
+----
+
+Modelaremos BWT utilizando BWT,LWT,AGE y SMOKE.
+
+```{r, fig.height=4}
+mydata1 <- mydata %>%  select(BWT,LWT,AGE,SMOKE)
+library(GGally)
+pairs <- mydata1 %>% select(-SMOKE) %>% ggpairs()
+boxplot <- mydata1 %>% ggplot() + geom_boxplot_interactive(aes(x = factor(SMOKE), y = BWT))
+multiplot(pairs,boxplot,cols = 2)
+```
+
+----
+
+Ajustando el modelo:
+
+```{r}
+model2 <- lm(BWT ~ LWT + AGE + factor(SMOKE), data = mydata1)
+model2
+```
+
+----
+
+Resumen del modelo:
+
+```{r}
+summary(model2)
+```
+
+---- 
+
+Tabla ANOVA:
+
+```{r}
+anova(model2)
+```
+
+----
+
+Intervalos de confianza para los coeficientes:
+
+```{r}
+confint(model2)
+```
+
+----
+
+Predicción:
+
+```{r}
+newdata <- tibble("AGE" = 23, "LWT" = 57, "SMOKE" = 1)
+predict(model2, newdata, interval = "pred")
+```
+
+----
+
+Test de Hipótesis para modelos anidados:
+
+```{r}
+anova(model1,model2)
+model3 <- lm(BWT ~ LWT + factor(SMOKE), data = mydata1)
+anova(model3,model2)
+```
+
+----
+
+Variables con más de 2 categorías:
+
+```{r}
+model4 <- lm(BWT ~ LWT + factor(RACE), data = mydata)
+anova(model1,model4)
+```
+
+----
+
+Interacciones:
+
+```{r}
+model5 <- lm(BWT ~ AGE + SMOKE, data = mydata1)
+summary(model5)
+model6 <- lm(BWT ~ AGE*SMOKE, data = mydata1)
+summary(model6)
+```
+
+----
+
+```{r}
+ggPredict(model5, se = TRUE, interactive = TRUE)
+```
+
+----
+
+```{r}
+ggPredict(model6, se = TRUE, interactive = TRUE)
+```
+
+## Selección de Modelos
+
+### Forward 
+
+```{r}
+add1(lm(BWT ~ 1, data = mydata), BWT ~ LWT + AGE + UI + factor(SMOKE) + 
+       HT + factor(FVT) + factor(PTL), test = "F")
+
+
+```
+
+----
+
+### Backward
+
+```{r}
+drop1(lm(BWT ~ LWT + AGE + UI + factor(SMOKE) + 
+       HT + factor(FVT) + factor(PTL), data = mydata), test = "F")
+```
+
+----
+
+### Stepwise
+
+```{r}
+step(lm(BWT ~ 1, data = mydata), BWT ~ LWT + AGE + UI + factor(SMOKE) + 
+       HT + factor(FVT) + factor(PTL), direction = "both",trace = FALSE)
+```
+
+
+## Bondad de ajuste del modelo
+
+Supongamos que el modelo seleccionado corresponde al siguiente:
+
+```{r}
+finalmodel <- lm(BWT ~ SMOKE + AGE + LWT + factor(RACE) + UI + HT + SMOKE:AGE, data = mydata)
+summary(finalmodel)
+```
+
+----
+
+```{r}
+data <- tibble("fit" = finalmodel$fitted.values, "res" = finalmodel$residuals)
+p1 <- ggplot(data) + geom_point(aes(x = fit, y = res))
+p2 <- ggplot(data, aes(sample = res)) + stat_qq() + stat_qq_line() 
+multiplot(p1,p2,cols = 2)
+```
+
+
+
