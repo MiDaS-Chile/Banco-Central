@@ -2172,6 +2172,11 @@ Interacciones:
 ```{r}
 model5 <- lm(BWT ~ AGE + SMOKE, data = mydata1)
 summary(model5)
+```
+
+----
+
+```{r}
 model6 <- lm(BWT ~ AGE*SMOKE, data = mydata1)
 summary(model6)
 ```
