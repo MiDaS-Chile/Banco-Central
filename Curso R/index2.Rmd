@@ -12,7 +12,7 @@ En este [Curso](https://midas-chile.github.io/INE/Curso%20R/Curso-INE.html#/curs
 
 # Links
 
-- [Introducción a `R`.](https://midas-chile.github.io/Banco%20Central/Curso%20R/Curso-INE.html#/introduccion-a-r)
+- [Introducción a `R`.](https://midas-chile.github.io/Banco-Central/Curso%20R/Curso-INE.html#/introduccion-a-r)
 - [Manejo de base de datos.](https://midas-chile.github.io/INE/Curso%20R/Curso-INE.html#/manejo-de-base-de-datos)
 - [Análisis exploratorio y visualización de datos.](https://midas-chile.github.io/INE/Curso%20R/Curso-INE.html#/analisis-exploratorio-y-visualizacion-de-datos)
 - [Generación de reportes automatizables.](https://midas-chile.github.io/INE/Curso%20R/Curso-INE.html#/generacion-de-reportes-automatizables)
