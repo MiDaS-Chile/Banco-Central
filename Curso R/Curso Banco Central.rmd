@@ -641,12 +641,11 @@ function(name) cat("Hello",name,"!")
 
 ---
 
-<p style='text-align: justify;'> 
-Para R, una función es un objeto específico. <br>
-Por lo tanto, crear una función corresponde a asignar el objeto "función R"
-a una variable, cuyo nombre corresponde a la función misma.<br>
-Por ejemplo, para crear la función `hello()`, se puede proceder como sigue:
-</p>
+- Para R, una función es un objeto específico.
+- Por lo tanto, crear una función corresponde a asignar el objeto "función R"
+a una variable, cuyo nombre corresponde a la función misma.
+- Por ejemplo, para crear la función `hello()`, se puede proceder como sigue:
+
 ```{r}
 hello <- function(name) cat("Hello",name,"!")
 hello
@@ -662,18 +661,16 @@ hello("Peter")
 
 ### Cuerpo de la función
 
-<p style='text-align: justify;'> 
-El cuerpo de una función puede ser una simple instrucción de R o una secuencia de
-instrucciones de R.<br><br>
-En este último caso, las instrucciones deben estar incluidas entre
+- El cuerpo de una función puede ser una simple instrucción de R o una secuencia de
+instrucciones de R.
+- En este último caso, las instrucciones deben estar incluidas entre
 los caracteres **{** y **}** para delimitar el principio y el final del cuerpo de la
-función.<br><br>
-Se pueden escribir varias instrucciones de R en la misma línea siempre que
-están separados por el caracter **;**.<br><br>
-Cuando el cuerpo de la función incluye varias instrucciones de R escritas
+función.
+- Se pueden escribir varias instrucciones de R en la misma línea siempre que
+están separados por el caracter **;**.
+- Cuando el cuerpo de la función incluye varias instrucciones de R escritas
 en la misma línea, no olvidar escribirlos entre los caracteres **{**
 y **}**.
-</p>
 
 ---
 
@@ -692,13 +689,14 @@ hello("Peter")
 ---
 
 ### Argumentos
-<p style='text-align: justify;'> 
-Al declarar una función, todos los argumentos se identifican con un nombre único.<br>
-Cada argumento puede asociarse con un valor predeterminado.<br>
-Para especificar un valor predeterminado, se usa el carácter = seguido del valor predeterminado.<br>
-Cuando se llama a la función sin un argumento, se utilizará el valor predeterminado.<br>
+
+- Al declarar una función, todos los argumentos se identifican con un nombre único.
+- Cada argumento puede asociarse con un valor predeterminado.
+- Para especificar un valor predeterminado, se usa el carácter = seguido del valor predeterminado.
+- Cuando se llama a la función sin un argumento, se utilizará el valor predeterminado.
+
 Ejemplo:
-</p>
+
 ```{r}
 hello <- function(name="Peter") cat("Hello",name,"!")
 hello()
@@ -727,11 +725,10 @@ hello("Ben","fr")
 
 ---
 
-<p style='text-align: justify;'> 
-Se puede asignar una lista de argumentos complementarios con la sintaxis ...<br><br>
-Al llamar a la función, todos los argumentos "nombrados" que no están en la lista de argumentos se agrupan en la estructura ...<br><br>
-En el cuerpo de la función, el usuario puede usar la sintaxis ... como si copiara-pegara la lista de argumentos suplementarios.
-</p>
+- Se puede asignar una lista de argumentos complementarios con la sintaxis ...
+- Al llamar a la función, todos los argumentos "nombrados" que no están en la lista de argumentos se agrupan en la estructura ...
+- En el cuerpo de la función, el usuario puede usar la sintaxis ... como si copiara-pegara la lista de argumentos suplementarios.
+
 ```{r}
 test.3points <- function(a="foo",...) print(list(a=a,...))
 test.3points("bar",b="foo")
@@ -748,10 +745,9 @@ res
 
 ---
 
-<p style='text-align: justify;'> 
-Una regla general para devolver un objeto es usar la función `return()`.
-Esta instrucción detiene la ejecución del código del cuerpo de la función y devuelve el objeto entre paréntesis.
-</p>
+- Una regla general para devolver un objeto es usar la función `return()`.
+- Esta instrucción detiene la ejecución del código del cuerpo de la función y devuelve el objeto entre paréntesis.
+
 ```{r}
 hello <- function(name="Peter") {
  return(paste("Hello",name,"!",collapse=" "))}
@@ -762,13 +758,11 @@ message
 
 ---
 
-<p style='text-align: justify;'> 
-La noción de alcance de una variable es muy importante para un lenguaje que permite desarrollar funciones.<br><br>
-La idea principal es que las variables definidas dentro del cuerpo de una función tienen un alcance local durante la ejecución de la función.<br><br>
-Esto significa que una variable dentro del cuerpo de una función es físicamente diferente de otra variable con el mismo nombre, pero definida en el espacio de trabajo de su sesión R.<br><br>
-En términos generales, el alcance local significa que una variable solo existe dentro del cuerpo de la función.<br><br>
-Después de la ejecución de la función, la variable se elimina automáticamente de la memoria de la computadora.
-</p>
+- La noción de alcance de una variable es muy importante para un lenguaje que permite desarrollar funciones.<br><br>
+- La idea principal es que las variables definidas dentro del cuerpo de una función tienen un alcance local durante la ejecución de la función.<br><br>
+- Esto significa que una variable dentro del cuerpo de una función es físicamente diferente de otra variable con el mismo nombre, pero definida en el espacio de trabajo de su sesión R.<br><br>
+- En términos generales, el alcance local significa que una variable solo existe dentro del cuerpo de la función.<br><br>
+- Después de la ejecución de la función, la variable se elimina automáticamente de la memoria de la computadora.
 
 ---
 
@@ -796,12 +790,10 @@ message # Workspace has been modified again!
 
 ## Debugging de funciones
 
-<p style='text-align: justify;'> 
-Una función de depuración útil en R es la función `browser()`.<br><br>
-Si inserta la instrucción `browser()` en el cuerpo de su función, el programa se detendrá en el lugar donde se insertó.<br><br>
-Al escribir la letra n (para el siguiente), se puede inspeccionar el código y el contenido de las variables secuencialmente.<br><br>
-Para salir del modo de inspección, se debe escribir Q.
-<p/>
+- Una función de depuración útil en R es la función `browser()`.
+- Si inserta la instrucción `browser()` en el cuerpo de su función, el programa se detendrá en el lugar donde se insertó.
+- Al escribir la letra n (para el siguiente), se puede inspeccionar el código y el contenido de las variables secuencialmente.
+- Para salir del modo de inspección, se debe escribir Q.
 
 ---
 
@@ -812,11 +804,10 @@ apply(x,1,function(y){browser();sum(y)})
 
 ---
 
-<p style='text-align: justify;'>
-Otra función interesante es `debug()`, que es equivalente a colocar la instruccuón `browser()` en la parte superior del cuerpo de una función.<br><br>
-Por lo tanto, `debug(var)` marca la funció `var` como depurable.<br><br>
-Cualquier llamada posterior de esta función iniciará el depurador.
-<p/>
+- Otra función interesante es `debug()`, que es equivalente a colocar la instruccuón `browser()` en la parte superior del cuerpo de una función.
+- Por lo tanto, `debug(var)` marca la funció `var` como depurable.
+- Cualquier llamada posterior de esta función iniciará el depurador.
+
 ```{r, eval = FALSE}
 debug(var)
 var(1:3)
@@ -830,21 +821,17 @@ undebug(var)
 
 ## Administración
 
-<p style='text-align: justify;'>
-Después de haber creado los objetos R, puede obtener la lista de todos los objetos con la función `ls()` o la función `objects()`.<br><br>
-Para eliminar objetos, se usa la función `rm()`.<br><br>
-Vale la pena señalar que el comando `getwd()` devuelve el directorio de trabajo actual. El comando `setwd()` se usa para cambiar el directorio de trabajo.
-<p/>
+- Después de haber creado los objetos R, puede obtener la lista de todos los objetos con la función `ls()` o la función `objects()`.
+- Para eliminar objetos, se usa la función `rm()`.
+- Vale la pena señalar que el comando `getwd()` devuelve el directorio de trabajo actual. El comando `setwd()` se usa para cambiar el directorio de trabajo.
 
 ---
 
-<p style='text-align: justify;'>
-Cuando se trabaja con R, se crean objetos: vectores, matrices, funciones, etc.<br><br>
-Estos objetos se guardan físicamente en un archivo en el disco duro llamado espacio de trabajo.<br><br>
-La extensión del nombre del archivo debe ser `.RData`<br><br>
-Es posible crear varios archivos .RData: uno para cada proyecto en el que está trabajando.<br><br>
-Debe crear estos archivos `.RData` en diferentes carpetas de manera apropiada.
-<p/>
+- Cuando se trabaja con R, se crean objetos: vectores, matrices, funciones, etc.<br><br>
+- Estos objetos se guardan físicamente en un archivo en el disco duro llamado espacio de trabajo.
+- La extensión del nombre del archivo debe ser `.RData`.
+- Es posible crear varios archivos .RData: uno para cada proyecto en el que está trabajando.
+- Debe crear estos archivos `.RData` en diferentes carpetas de manera apropiada.
 
 ---
 
@@ -2528,7 +2515,7 @@ aff_tob_ex <- tobit(affairs ~ yearsmarried, data = Affairs)
 coeftest(aff_tob_ex)
 ```
 
-# Series de Tiempo en R
+# Series de Tiempo en R{ .center .white data-background="#75AADB" }
 
 ## Introducción
 
@@ -2794,7 +2781,7 @@ fit01$optim.out$par # imprime los coeficientes estimados
 ### Ejemplo - Modelo de nivel/pendiente local
 
 - Continuando el ejemplo, si quisiéramos graficar $y_t$ junto a la tendencia (suavizada), el código apropiado sería
-```{r, message=FALSE}
+```{r, message=FALSE, fig.height=3}
 out01 <- KFAS::KFS(fit01$model)
 smo   <- out01$alphahat[, 1]
 ggplot(tibble(y = y), aes(x = time(y))) +
