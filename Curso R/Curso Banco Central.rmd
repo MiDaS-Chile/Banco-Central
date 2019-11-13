@@ -328,7 +328,7 @@ Permite aplicar funciones de resumen en las columnas de una BD.
 ## summarise(): *Código*
 ```{r}
 storms %>% 
-  summarise(promedio = mean(wind), desviación_standard = sd(wind))
+  summarise(promedio = mean(wind), desviacion_standard = sd(wind))
 ```
 
 ## group_by + summarise: *Resumir Columnas por Grupos*
@@ -2000,8 +2000,7 @@ En este capítulo discutiremos los siguientes temas:
 
 ```{r}
 fichier <- "http://www.biostatisticien.eu/springeR/Weight_birth.csv"
-mydata <- read_delim(fichier, 
-    "\t", escape_double = FALSE, trim_ws = TRUE)
+mydata <- read_delim(fichier, "\t", escape_double = FALSE, trim_ws = TRUE)
 head(mydata)
 ```
 
@@ -2039,7 +2038,7 @@ ggPredict(model1,interactive = TRUE)
 
 ----
 
-Test sobre los parámetros:
+### Test sobre los parámetros
 
 ```{r}
 res <- summary(model1)
@@ -2048,7 +2047,7 @@ res
 
 ----
 
-Elementos del resumen de un modelo:
+### Elementos del resumen de un modelo
 
 ```{r}
 names(res)
@@ -2057,7 +2056,7 @@ res$coefficients
 
 ----
 
-Tabla ANOVA:
+### Tabla ANOVA
 
 ```{r}
 anova(model1)
@@ -2065,13 +2064,13 @@ anova(model1)
 
 ----
 
-Intervalos de confianza para los coeficientes de regresión:
+### Intervalos de confianza para los coeficientes de regresión
 
 ```{r}
 confint(model1)
 ```
 
-Predicción:
+### Predicción:
 
 ```{r}
 lwt0 <- c(56, 40)
@@ -2080,7 +2079,7 @@ predict(model1, tibble(LWT = lwt0), interval = "prediction")
 
 ----
 
-Agregar banda de confianza de la recta estimada:
+### Agregar banda de confianza de la recta estimada
 
 ```{r}
 ggPredict(model1,interactive = TRUE, se = TRUE)
@@ -2106,7 +2105,7 @@ multiplot(pairs,boxplot,cols = 2)
 
 ----
 
-Ajustando el modelo:
+### Ajustando el modelo
 
 ```{r}
 model2 <- lm(BWT ~ LWT + AGE + factor(SMOKE), data = mydata1)
@@ -2115,7 +2114,7 @@ model2
 
 ----
 
-Resumen del modelo:
+### Resumen del modelo
 
 ```{r}
 summary(model2)
@@ -2123,7 +2122,7 @@ summary(model2)
 
 ---- 
 
-Tabla ANOVA:
+### Tabla ANOVA
 
 ```{r}
 anova(model2)
@@ -2131,7 +2130,7 @@ anova(model2)
 
 ----
 
-Intervalos de confianza para los coeficientes:
+### Intervalos de confianza para los coeficientes
 
 ```{r}
 confint(model2)
@@ -2139,7 +2138,7 @@ confint(model2)
 
 ----
 
-Predicción:
+### Predicción
 
 ```{r}
 newdata <- tibble("AGE" = 23, "LWT" = 57, "SMOKE" = 1)
@@ -2148,7 +2147,7 @@ predict(model2, newdata, interval = "pred")
 
 ----
 
-Test de Hipótesis para modelos anidados:
+### Test de Hipótesis para modelos anidados
 
 ```{r}
 anova(model1,model2)
@@ -2158,7 +2157,7 @@ anova(model3,model2)
 
 ----
 
-Variables con más de 2 categorías:
+### Variables con más de 2 categorías
 
 ```{r}
 model4 <- lm(BWT ~ LWT + factor(RACE), data = mydata)
@@ -2167,7 +2166,7 @@ anova(model1,model4)
 
 ----
 
-Interacciones:
+### Interacciones
 
 ```{r}
 model5 <- lm(BWT ~ AGE + SMOKE, data = mydata1)
@@ -2193,20 +2192,30 @@ ggPredict(model5, se = TRUE, interactive = TRUE)
 ggPredict(model6, se = TRUE, interactive = TRUE)
 ```
 
-## Selección de Modelos
+## Selección de variables
 
-### Forward 
+<p align = "justify"> Los siguientes algoritmos generan modelos de regresión en forma secuencial e incluyendo una sola variable predictora en cada paso: </p>
+
+- Método Forward
+- Método Backward
+- Método Stepwise
+
+----
+
+### Método Forward 
+
+<p align = "justify"> Se parte de un modelo sencillo y luego se agregan variables con algún critero. </p>
 
 ```{r}
 add1(lm(BWT ~ 1, data = mydata), BWT ~ LWT + AGE + UI + factor(SMOKE) + 
        HT + factor(FVT) + factor(PTL), test = "F")
-
-
 ```
 
 ----
 
-### Backward
+### Método Backward
+
+<p align = "justify"> Se parte de un modelo complejo y en cada etapa se eliminan las variables menos influyentes.</p>
 
 ```{r}
 drop1(lm(BWT ~ LWT + AGE + UI + factor(SMOKE) + 
@@ -2215,13 +2224,46 @@ drop1(lm(BWT ~ LWT + AGE + UI + factor(SMOKE) +
 
 ----
 
-### Stepwise
+### Método Stepwise
+
+<p align = "justify"> Combina los dos métodos anteriores. Comienza como el de introducción progresiva, pero en cada etapa se plantea si todaslas variables introducidas deben de permanecer en el modelo. </p>
 
 ```{r}
 step(lm(BWT ~ 1, data = mydata), BWT ~ LWT + AGE + UI + factor(SMOKE) + 
        HT + factor(FVT) + factor(PTL), direction = "both",trace = FALSE)
 ```
 
+----
+
+### Comparación de modelos
+
+<p align = "justify"> Existen diferentes medidas para comparar diferentes modelos de regresión: </p>
+
+- $R^2$ ó $R^2$ ajustado
+- AIC ó BIC
+
+----
+
+### $R^2$ ó $R^2$ ajustado
+
+Se prefieren los modelos con $R^2$ y $R^2$ ajustados más cercanos a 1.
+
+```{r}
+r2 <- c(summary(model5)$r.squared, summary(model6)$r.squared)
+r2.adj <- c(summary(model5)$adj.r.squared, summary(model6)$adj.r.squared )
+r2
+r2.adj
+```
+----
+
+### AIC ó BIC
+
+Se prefieren los modelos con menor AIC o BIC
+
+```{r}
+AIC(model5, model6)
+BIC(model5, model6)
+```
 
 ## Bondad de ajuste del modelo
 
@@ -2234,12 +2276,555 @@ summary(finalmodel)
 
 ----
 
-```{r}
+###  Anásilis de Residuos
+
+Debemos verificar que los residuos de nuestro modelo cumplen los supuestos preestablecidos. Para ello debemos verificar:
+
+- Normalidad de los residuos.
+- Homocedasticidad de la varianza de los residuos.
+- Residuos independientes.
+
+----
+
+#### Normalidad de los residuos:
+
+```{r, fig.height= 4}
 data <- tibble("fit" = finalmodel$fitted.values, "res" = finalmodel$residuals)
+p1 <- ggplot(data, aes(sample = res)) + stat_qq() + stat_qq_line() 
+p1
+```
+
+----
+
+#### Homocedasticidad de la varianza de los residuos
+
+```{r, fig.height = 4}
 p1 <- ggplot(data) + geom_point(aes(x = fit, y = res))
-p2 <- ggplot(data, aes(sample = res)) + stat_qq() + stat_qq_line() 
-multiplot(p1,p2,cols = 2)
+p1
+```
+
+----
+
+#### Independencia de los residuos
+
+```{r}
+library(lmtest)
+dwtest(BWT ~ SMOKE + AGE + LWT + factor(RACE) + UI + HT + SMOKE:AGE, data = mydata)
+```
+
+----
+
+### Identificación de outliers
+
+<p align = "justify"> Diremos que un dato es outlier si se encuentra `lejos` del resto de los datos. Una forma de encontrarlos es utilizar los residuos studentizados </p>
+
+```{r, fig.height=4, size= 1}
+library(ggrepel)
+data <- data %>% mutate("res_stud" = rstudent(finalmodel), labels = seq(1,nrow(data))) 
+ggplot(data, aes(x = fit, y = res_stud, label = labels)) + geom_point() +
+  geom_hline(yintercept = qnorm(0.025)) + geom_hline(yintercept = qnorm(0.975)) +
+  geom_text(hjust = 1.5, size = 2.5, check_overlap = TRUE) + xlab("Valores ajustados") + 
+  ylab("Residuos Studentizados")
+
+```
+
+----
+
+### Identificación de puntos palanca
+
+<p align = "justify"> Una observación es palanca si el valor del predictor esta muy alejado de la media. Suelen provocar desviaciones en la recta de regresión. Algunos test para detectarlos son: </p>
+
+- Distancia de Cook
+- DFFITS
+- DFBETAS
+
+---- 
+
+```{r}
+summary(influence.measures(finalmodel))
+```
+
+# Modelos Lineales Generalizados (GLM) { .center .white data-background="#75AADB" }
+
+## Objetivos
+
+<p align = "justify"> En esta sección discutiremos los siguientes temas: </p>
+
+- Familia exponencial
+- Definición de GLM
+- Sobre-dispersión y baja-dispersión
+- Data censurada
+
+
+## Familia exponencial 
+
+<p align = "justify"> Sea $Y \sim f(\cdot | \theta, \phi)$. La distribución $f(\cdot | \theta, \phi)$ pertenece a la familia exponencial si puede ser escrita como:</p> $f(y | \theta,\phi) = \exp\{\phi^{-1}[y\theta - \Psi(\theta)] + c(y,\phi)\}$ <p align = "justify">  donde $\theta$ es llamado el parámetro natural y $\phi$ el parámetro de escala.</p>
+
+## Ejemplos
+
+<p align = "justify">  **Bernoulli:** $Y | \pi \sim \text{Ber}(\pi), Y \in \{0,1\}$ y $\pi \in [0,1]$. Podemos escribir </p>
+
+\begin{align*} f(y | \pi) &= \pi^y(1-\pi)^{1-y} \\
+     &= \exp\{y\log\left(\frac{\pi}{1-\pi}\right) + \log(1-\pi)\}\end{align*}
+     
+---- 
+
+<p align = "justify"> De aquí, la notación en familia exponencial será </p>
+- $\theta = \log\left(\frac{\pi}{1-\pi}\right)$
+- $\phi = 1$
+- $\Psi(\theta) = \log(1 + \exp(\theta))$
+- $c(y,\phi) = 0$
+- La función de media será $\mu = \frac{\exp(\theta)}{1+\exp(\theta)}$.
+
+----
+
+<p align = "justify"> **Poisson:** $Y | \lambda \sim \text{Poisson}(\lambda), Y \in \{0,1,\ldots\}$ y $\lambda \in \mathbb{R}_+$. Podemos escribir </p>
+
+\begin{align*} f(y | \lambda) &= \frac{\exp^{\lambda}\lambda^y}{y!} \\ 
+&= \exp\{y\log\lambda - \lambda + \log y!\} \end{align*}
+
+----
+
+<p align = "justify"> De aquí, la notación en familia exponencial será </p>
+- $\theta = \log\lambda$
+- $\phi = 1$
+- $\Psi(\theta) = \exp(\theta)$
+- $c(y,\phi) = -\log y!$
+- La función de media será $\mu = \exp(\theta)$.
+
+----
+
+<p align = "justify"> **Gamma:** $Y | \alpha,\beta \sim \text{Gamma}(\alpha,\beta), Y \in \mathbb{R}, \alpha,\beta \in \mathbb{R}_+$. Podemos escribir </p>
+
+\begin{align*} f(y | \alpha,\beta) &= \frac{1}{\Gamma(\beta)}\left(\frac{\beta}{\alpha}\right)^{\beta} y^{\beta - 1}\exp\left\{-\frac{\beta y}{\alpha}\right\} \\ 
+&=  \exp\{\beta[-\frac{y}{\alpha} - \log\alpha]\\
+ & \ \ + [(\beta - 1)\log y + \beta\log\beta - \log\Gamma(\beta)\} \end{align*}
+
+----
+
+<p align = "justify"> De aquí, la notación en familia exponencial será </p>
+- $\theta = -\frac{1}{\alpha}$
+- $\phi = \frac{1}{\beta}$
+- $\Psi(\theta) = -\log(\theta)$
+- $c(y,\phi) = (\beta-1)\log y + \beta\log\beta - \log\Gamma(\beta)$
+- La función de media será $\mu = - \frac{1}{\theta}.$
+
+## Definición GLM
+
+<p align = "justify"> Los modelos lineales generalizados se definen por:</p>
+
+- La distribución de la variable respuesta
+- El predictor lineal
+- La función de enlace
+
+----
+
+<p align = "justify"> Para $i = 1,\ldots, n$ sean $\mu_i = E(Y_i)$, $\eta_i = \mathbf{x}_i'\boldsymbol\beta$ un predictor linear con $\mathbf{x}_i \in \mathbb{R}^p$. En GLM conectaremos una transformación de la media con $\eta_i$. Algunos ejemplos son: </p>
+
+- Normal: $g(\mu_i) = \mathbf{x}_i'\boldsymbol\beta$.
+- Bernoulli: $g(\mu_i) = \log\left(\frac{\mu_i}{1-\mu_i}\right) = \mathbf{x}_i'\boldsymbol\beta$
+- Poisson: $g(\mu_i) = \log(\mu_i) = \mathbf{x}_i'\boldsymbol\beta$
+- Gamma: $g(\mu_i) = \frac{1}{\mu_i} = \mathbf{x}_i'\boldsymbol\beta$
+
+## GLM en `R`
+
+<p align = "justify"> La función `glm()` permite ajustar modelos GLM. Posee una sintaxis similar a la de `lm()`, pero agregando un argumento para seleccionar la distribución de la variable respuesta junto con la función de enlace. Veamos algunos ejemplos: </p>
+
+<p align = "justify"> **Binomial con link logístico:** Variable respuesta binaria </p>
+```{r}
+library(AER)
+data("SwissLabor", package = "AER")
+head(SwissLabor)
+```
+
+----
+
+```{r}
+swiss_logit <- glm(participation ~ age, data = SwissLabor, family = binomial(link = "logit"))
+summary(swiss_logit)
+```
+
+---- 
+
+<p align = "justify"> **Binomial con link probit** </p>
+
+```{r}
+swiss_probit <- glm(participation ~ age, data = SwissLabor, family = binomial(link = "probit"))
+summary(swiss_probit)
+```
+
+----
+
+<p align = "justify"> **Poisson con link logarítmico:** Variable respuesta datos de conteo </p>
+
+```{r}
+data("RecreationDemand"); head(RecreationDemand, 3L)
+rd_pois <- glm(trips ~ ., data = RecreationDemand, family = poisson); coeftest(rd_pois)
+```
+
+----
+
+### Modelos anidados en GLM
+
+<p align = "justify"> Para la comparación de modelos anidados se utiliza la **Devianza**. Ella corresponde a una medida de cercanía entre el modelo ajustado y el modelo más sobre-ajustado posible. </p>
+```{r}
+swiss_logit2 <-  glm(participation ~ age + income, data = SwissLabor, family = binomial(link = "logit"))
+anova(swiss_logit,swiss_logit2)
+```
+
+----
+
+### Sobredispersión
+
+<p align = "justify"> En muchas ocasiones los modelos GLM ajustados inducen una varianza muchísimo menor a la observada en la muestra. Este fenómeno es denominado Sobredispersión y es frecuente en la regresión Poisson. El test para verificar Sobredispersión es: </p>
+
+```{r}
+dispersiontest(rd_pois)
+```
+
+----
+
+<p align = "justify"> Para ajustar un modeo que tenga en cuenta la sobredispersión, utilizamos las familias "quasi-..." </p>
+
+```{r}
+rd_pois2 <-  glm(trips ~ ., data = RecreationDemand, family = quasipoisson)
+coeftest(rd_pois2)
+```
+
+----
+
+### Modelo Poisson Zero-Inflado
+
+<p align = "justify"> Este tipo de modelo es acorde cuando los datos de conteo poseen una alta presencia de observaciones igual a cero. </p>
+
+```{r}
+RecreationDemand %>% group_by(trips) %>%  tally()
+```
+
+----
+
+Para ajustar este modelo utilizamos la función `zeroinfl()` del paquete `pscl`
+
+```{r}
+library(pscl)
+rd_zinb <- zeroinfl(trips~ ., data = RecreationDemand)
+summary(rd_zinb)
+```
+
+----
+
+### Modelos para datos censurados
+
+<p align = "justify"> Los modelos estadísticos que tienen en consideración variables de respuesta con censura se encuentran en la librería `survival`.</p> 
+```{r}
+data("Affairs")
+head(Affairs, 3L)
+```
+
+----
+
+```{r}
+aff_tob_ex <- tobit(affairs ~ yearsmarried, data = Affairs)
+coeftest(aff_tob_ex)
+```
+
+# Series de Tiempo en R
+
+## Introducción
+
+- R ofrece varias herramientas para analizar series de tiempo.
+- En esta breve presentación, nos enfocaremos en 5 aspectos:
+    - Creación de series de tiempo.
+    - Filtros Lineales.
+    - Modelos ARIMA.
+    - Modelos VAR.
+    - Modelos SS.
+    
+## 1. Creación de series de tiempo
+
+- R genera series de tiempo con la función `stats::ts()`.
+- Su sintaxis básica es `ts(data, start, end, frequency)`,
+  donde
+    - `data` es un vector, matrix y data frame.
+    - `start` es el período de la primera observación.
+    - `end` es el período de la última observación.
+    - `frequency` es el número de obs. por unidad de tiempo.
+    
+----
+
+### Ejemplo
+
+```{r}
+# Creemos un vector aleatorio, x:
+x <- rnorm(10)
+
+# Convirtámoslo en una serie anual que parta en 1959:
+y <- stats::ts(x, frequency = 1, start = 1959)
+
+# Convirtámoslo en una serie trimestral que parta en 1959Q2:
+y <- stats::ts(x, frequency = 4, start = c(1959, 2))
+```
+
+## 2. Filtros Lineales
+
+- R aplica filtros lineales usando la función `stats::filter()`.
+- Su sintaxis básica es `filter(x, filter, sides)`, donde
+    - `x` es vector o serie de tiempo.
+    - `filter` es un vector de coeficientes en orden de tiempo inverso.
+    - `sides` determina el tipo de filtro. 
+      - Si `sides = 1`, los coeficientes del filtro *partirán* del rezago 0.
+      - Si `sides = 2`, estos estarán *centrados* en el rezago 0.
+      
+----
+
+### Ejemplo
+
+```{r}
+# Creemos una serie de tiempo determinística
+x <- ts(1:10, frequency = 1, start = 1)
+
+# Generemos la serie y_t = x_{t-0} + x_{t-1} + x_{t-2}
+y <- stats::filter(x, filter = c(1, 1, 1), sides = 1)
+y[1:10]
+
+# Generemos la serie y_t = x_{t+1} + x_{t-0} + x_{t-1}
+z <- stats::filter(x, filter = c(1, 1, 1), sides = 2)
+z[1:10]
+```
+
+## 3. Modelos ARIMA
+
+- R ajusta modelos ARIMA con la función `stats::arima()`.
+- Su sintaxis básica es `arima(x, order, ...)`, donde
+  - `x` es la serie de tiempo estudiada.
+  - `order` es el vector $(p, d, q)$ asociado a un ARMA(p, d, q).
+- Adicionalmente, R simula modelos ARIMA con la función `stats::arima.sim()`.
+- Su sintaxis básica es `arima.sim(model, n, ...)`, donde
+  - `model` es un listado con dos componentes `ar` y `ma` que entregan los coeficientes de los componentes AR y MA, respectivamente.
+  - `n` es el tamaño de la serie deseada.
+  
+----
+
+### Ejemplo
+
+```{r}
+# Simulemos una serie de largo 1e3 de un proceso ARMA(1, 1):
+x <- arima.sim(list(ar = -0.6, ma = 0.5), n = 1e3)
+
+# Ahora, ajustemos un ARMA(1, 1) a la serie recién simulada:
+stats::coef(arima(x, order = c(1, 0, 1)))
+```
+
+- Los coeficientes estimados son cercanos a los valores poblacionales.  
+
+## 4. Modelos VAR
+
+- R ajusta modelos VAR con la función `vars::VAR()`.
+- Su sintaxis básica es `VAR(y, p = 1)`, donde
+  - `y` es la serie de tiempo (mulrivariada) estudiada.
+  - `p` es el orden del VAR.
+- Por supuesto, el orden del VAR raramente es conocido. Por esto, el comando admite una segunda sintaxis:  
+      `VAR(y, lag.max, ic = c("AIC", "HQ", "SC", "FPE"))`  
+  con la cual se usará el $p$ en `1:lag.max` que recomiende el criterio de selección `ic` (las siglas debiesen ser familiares).
+  
+----
+
+### Ejemplo
+
+- La BBDD `Canada` del paquete `vars` contiene 4 variables:
+  - `prod` Una proxy de productividad del trabajo.
+  - `e`: el logaritmo del empleo.
+  - `U`: la tasa de desemepleo.
+  - `rw`: el salario real.
+- Los datos son trimestrales y cubren el período 1980Q1-2004Q4.
+
+----
+
+### Ejemplo
+
+```{r}
+# Carguemos este BBDD y ajustémosle un VAR(1):
+library(vars)
+data("Canada", package = "vars")
+fit01 <- VAR(Canada, p = 1)
+
+# Ajustemos un VAR(p) con el p <= 10 que recomiende el AIC:
+fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
 ```
 
 
+## 5. Modelos de Estado Espacio
 
+----
+
+### Introducción
+
+- En esta sección, veremos cómo analizar modelos de Estado Espacio Lineales y Gaussianos (LG-SSM) usando R.
+- Actualmente, existen al menos 2 paquetes capaces estimar, predecir, filtrar y suavizar estos modelos.
+    - `dlm`, inspirado en West y Harrison (1997),
+    - `KFAS`, inspirado en Durbin y Koopman (2012).
+- Ya que el libro Durbin y Koopman (2012) es más popular entre economistas, nos concentraremos en el paquete `KFAS`.
+
+----
+
+
+### Notación
+
+- Según Durbin y Koopman (2012), un LG-SSM tiene 3 ecuaciones:
+    - Una ecuación de observación.
+    - Una ecuación de estado.
+    - Una condición inicial (potencialmente difusa).
+- Específicamente,
+  $$
+  \begin{aligned}
+  y_t &= Z \alpha_t + \epsilon_t,            && \epsilon_t \sim N(0, H) \\
+  \alpha_{t+1} &= T \alpha_t + R \eta_t,   && \eta_t     \sim N(0, Q) \\
+  \alpha_1 &\sim N(a_1, \kappa P_\infty + P_1) && \kappa \to \infty
+  \end{aligned}
+  $$
+- Así, cada componente no estacionario de $\alpha_t$ puede ser inicializado como una v.a. de varianza infinita.
+
+----
+
+### Ejemplo - Modelo de nivel/pendiente local
+
+- Considere el siguiente modelo de nivel/pendiente local:
+  $$
+  \begin{aligned}
+    y_t       &= \mu_t + \epsilon_t,    & \epsilon_t &\sim N(0, \sigma^2_\epsilon) \\
+    \mu_{t+1} &= \mu_t + \nu_t + \xi_t, & \xi_t      &\sim N(0, \sigma^2_\xi) \\
+    \nu_{t+1} &= \nu_t + \zeta_t,       & \zeta_t    &\sim N(0, \sigma^2_\zeta)
+  \end{aligned}
+  $$
+- Definiendo $\alpha_t = (\mu_t, \nu_t)$, obtenemos un LG-SSM con^[Aquí, $e_1 = (1, 0)$ y $1_2 = (1, 1)$.]
+  $$
+  \begin{aligned}
+    T &= \begin{bmatrix} e_1 & 1_2 \end{bmatrix}, &
+    R &= I_2, &
+    Z &= e_1^\top, \\
+    Q &= diag\{\sigma^2_\xi, \sigma^2_\zeta\}, &
+    H &= \sigma^2_\epsilon,
+  \end{aligned}
+  $$
+- Ya que $\mu_t \sim I(2)$ y $\nu_t \sim I(1)$, la inicialización será
+  $$
+  \begin{aligned}
+    (a_1, P_\infty, P_1) = (0_2, I_2, 0_{2\times 2})
+  \end{aligned}
+  $$
+
+----
+
+### Plantee el modelo con `KFAS::SSModel()`
+
+- `SSModel()` permite especificar cualquier LG-SSM.
+- La sintaxis básica es `SSModel(formula, data, H)`, donde
+    - `H` es literalmente $H$.
+    - `data` es la serie de tiempo analizada.
+    - `formula` es una expresión de la forma  
+      `y ~ SSMcustom(Z, T, R, Q, a1, P1, P1inf)`.
+
+----
+
+### Ejemplo - Modelo de nivel/pendiente local
+
+- La BBDD `alcohol` contiene la población (en cientos de miles) y el número de muertes asociadas al alcohol en Finlandia para los años 1969-2013 en el grupo etáreo de 40-49 años.
+- Calculemos la serie de muertes por 100.000 habitantes:
+```{r}
+library(KFAS)
+data("alcohol", package = "KFAS")
+muertes    <- alcohol[, 2]
+habitantes <- alcohol[, 6]
+y <- window(muertes / habitantes, end = 2012) # en 2013 hay un NA
+```
+
+----
+
+### Ejemplo - Modelo de nivel/pendiente local
+
+- Si pensáramos que `y` sigue un modelo de nivel/pendiente local, podríamos formularlo en `KFAS` de esta manera:
+```{r}
+m01 <- KFAS::SSModel(
+  y ~ -1 + SSMcustom(
+    Z     = matrix(c(1, 0), 1, 2),
+    T     = matrix(c(1, 0, 1, 1), 2, 2),
+    R     = diag(2),
+    Q     = diag(NA_real_, 2),
+    a1    = matrix(c(1, 0), 2, 1),
+    P1    = matrix(0, 2, 2),
+    P1inf = diag(2)
+  ), 
+  data = y,
+  H    = matrix(NA)
+) # OJO, cada parámetro desconocido se ingresa como un NA.
+```
+
+----
+
+### Ajuste el modelo con `KFAS::fitSSM()`
+
+- Ya planteado el modelo, `fitSSM()` lo ajusta usando MV.
+- Su sintaxis básica es `fitSSM(model, inits)` donde
+    - `model` es un modelo especificado con `SSModel()`.
+    - `inits` es el valor inicial del vector de parámetros.
+- Si el parámetro es una varianza, se estima su logaritmo.
+
+----
+
+### Ejemplo - Modelo de nivel/pendiente local
+
+- Continuando el ejemplo anterior, si quisiéramos ajustar el modelo e imprimir los coeficientes estimados, el comando apropiado sería
+```{r}
+fit01 <- KFAS::fitSSM(m01, inits = c(0, 0, 0)) # ajuste el modelo
+fit01$optim.out$par # imprime los coeficientes estimados
+```
+
+----
+
+### Prediga y Suavice usando `KFAS::KFS()`
+
+- La función `KFS()` permite, entre otras cosas, predecir (1 paso adelante) y suavizar $\alpha_t$.
+- Su sintaxis básica es `value <- KFS(fit$model)`, donde `fit` fue ajustado usando `fitSSM()`.
+- El resultado es un objeto con varios campos, entre ellos:
+    - `a:` que guarda los estados predichos (1 paso adelante).
+    - `alphahat`: que guarda los estados suavizados.
+    
+----
+
+### Ejemplo - Modelo de nivel/pendiente local
+
+- Continuando el ejemplo, si quisiéramos graficar $y_t$ junto a la tendencia (suavizada), el código apropiado sería
+```{r, message=FALSE}
+out01 <- KFAS::KFS(fit01$model)
+smo   <- out01$alphahat[, 1]
+ggplot(tibble(y = y), aes(x = time(y))) +
+  geom_line(aes(y = y,   colour = "serie")) +
+  geom_line(aes(y = smo, colour = "tendencia"))
+```
+
+----
+
+### `KFAS::SSModel():` Funciones de Ayuda
+
+- Ya vimos que la función `SSMcustom()` permite especificar cualquier LG-SSM. 
+- El costo de esa generalidad es que el código es bastante largo.
+- Por fortuna, `KFAS` tiene varias funciones de ayuda para especificar componentes *populares*, como por ejemplo:
+    - `KFAS::SSMarima()`: añade un componente ARIMA.
+    - `KFAS::SSMcycle()`: añade un ciclo local.
+    - `KFAS::SSMtrend()`: añade una tendencia local.
+    - `KFAS::SSMseasonal()`: añade una estacionalidad local.
+    
+----
+
+### Ejemplo - Modelo de nivel/pendiente local
+
+- El modelo de nivel/pendiente local puede enterse como un modelo de tendencia local de orden 2.
+- Luego, podríamos haber definido `m01` de la siguiente manera:
+```{r}
+Q0  <- list(matrix(NA), matrix(NA))
+m01 <- KFAS::SSModel(
+  y ~ -1 + SSMtrend(degree = 2, Q = Q0),
+  H = matrix(NA),
+  data = y
+) # Claramente, es menos verboso.
+```

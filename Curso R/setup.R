@@ -4,6 +4,7 @@ library(hrbrthemes)
 library(gridExtra)
 library(kableExtra)
 
+
 knitr::opts_chunk$set(
   fig.width = 10,
   fig.height = 6
