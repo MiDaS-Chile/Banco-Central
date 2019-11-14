@@ -35,7 +35,7 @@ source("setup.R")
 - R se descarga desde un repositorio llamado [CRAN](http://cran.r-project.org). Se debe elegir la opción que corresponda con el sistema operativo.
 - RStudio, el panel de control, se descarga desde su página oficial [http://www.rstudio.com](http://www.rstudio.com). Elegir la primera opción, "RStudio Desktop Open Source License". 
 - Instalar ambos programas de la forma usual.
-- Además existe una versión online, [Rstudio Cloud](http://rstudio.cloud)
+- Además, existe una versión online a la que se puede acceder a través del siguiente enlace [Rstudio Cloud](http://rstudio.cloud)
 
 ## Comparación R vs STATA
 
