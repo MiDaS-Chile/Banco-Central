@@ -619,15 +619,24 @@ Abra el archivo `Actividad-3.pdf` y responda las preguntas en él.
 
 ## Desarrollo de funciones
 
+<p style='text-align: justify;'> 
 La declaración de una función se realiza de forma general como sigue:
-`function(<lista de argumentos>) <cuerpo de la función>`<br>
+</p>
+`function(<lista de argumentos>) <cuerpo de la función>`
+<ul style='text-align: justify;'>
+<li>`<lista de argumentos>` es una lista de normbres de los argumentos.</li>
+<li>`<cuerpo de la función>` representa el contenido del código a ejecutar cuando se llama a la función.</li>
+</ul>
 
-- `<lista de argumentos>` es una lista de normbres de los argumentos.
-- `<cuerpo de la función>` representa el contenido del código a ejecutar cuando se llama a la función.
+
+---
 
 Ejemplo:
+
 ```{r}
-function(name) cat("Hello",name,"!")
+function(name){
+  cat("Hello",name,"!")
+} 
 ```
 
 ---
@@ -657,16 +666,18 @@ hello("Fernanda")
 
 ### Cuerpo de la función
 
-- El cuerpo de una función puede ser una simple instrucción de R o una secuencia de
-instrucciones de R.
-- En este último caso, las instrucciones deben estar incluidas entre
+<p style='text-align: justify;'> 
+El cuerpo de una función puede ser una simple instrucción de R o una secuencia de
+instrucciones de R.<br><br>
+En este último caso, las instrucciones deben estar incluidas entre
 los caracteres **{** y **}** para delimitar el principio y el final del cuerpo de la
-función.
-- Se pueden escribir varias instrucciones de R en la misma línea siempre que
-están separados por el caracter **;**.
-- Cuando el cuerpo de la función incluye varias instrucciones de R escritas
+función.<br><br>
+Se pueden escribir varias instrucciones de R en la misma línea siempre que
+están separados por el caracter **;**.<br><br>
+Cuando el cuerpo de la función incluye varias instrucciones de R escritas
 en la misma línea, no olvidar escribirlos entre los caracteres **{**
 y **}**.
+</p>
 
 ---
 
@@ -686,16 +697,16 @@ hello("Peter")
 
 ### Argumentos
 
-- Al declarar una función, todos los argumentos se identifican con un nombre único.
-- Cada argumento puede asociarse con un valor predeterminado.
-- Para especificar un valor predeterminado, se usa el carácter = seguido del valor predeterminado.
-- Cuando se llama a la función sin un argumento, se utilizará el valor predeterminado.
-
+<p style='text-align: justify;'> 
+Al declarar una función, todos los argumentos se identifican con un nombre único.<br><br>
+Cada argumento puede asociarse con un valor predeterminado.<br><br>
+Para especificar un valor predeterminado, se usa el carácter = seguido del valor predeterminado.<br><br>
+Cuando se llama a la función sin un argumento, se utilizará el valor predeterminado.<br><br>
 Ejemplo:
+</p>
 
 ```{r}
-hello <- function(name="Peter") cat("Hello",name,"!")
-hello()
+hello <- function(name="Peter") cat("Hello",name,"!"); hello()
 ```
 
 ---
@@ -721,12 +732,11 @@ hello("Ben","fr")
 
 ---
 
-Se puede asignar una lista de argumentos complementarios con la sintaxis ...
-
-Al llamar a la función, todos los argumentos "nombrados" que no están en la lista de argumentos se agrupan en la estructura ...
-
+<p style='text-align: justify;'> 
+Se puede asignar una lista de argumentos complementarios con la sintaxis ...<br><br>
+Al llamar a la función, todos los argumentos "nombrados" que no están en la lista de argumentos se agrupan en la estructura ...<br><br>
 En el cuerpo de la función, el usuario puede usar la sintaxis ... como si copiara-pegara la lista de argumentos suplementarios.
-
+</p>
 ```{r}
 test.3points <- function(a="foo",...) print(list(a=a,...))
 test.3points("bar",b="foo")
@@ -743,9 +753,10 @@ res
 
 ---
 
-- Una regla general para devolver un objeto es usar la función `return()`.
-- Esta instrucción detiene la ejecución del código del cuerpo de la función y devuelve el objeto entre paréntesis.
-
+<p style='text-align: justify;'> 
+Una regla general para devolver un objeto es usar la función `return()`.<br><br>
+Esta instrucción detiene la ejecución del código del cuerpo de la función y devuelve el objeto entre paréntesis.
+</p>
 ```{r}
 hello <- function(name="Peter") {
  return(paste("Hello",name,"!",collapse=" "))}
@@ -756,12 +767,13 @@ message
 
 ---
 
-- La noción de alcance de una variable es muy importante para un lenguaje que permite desarrollar funciones.<br><br>
-- La idea principal es que las variables definidas dentro del cuerpo de una función tienen un alcance local durante la ejecución de la función.<br><br>
-- Esto significa que una variable dentro del cuerpo de una función es físicamente diferente de otra variable con el mismo nombre, pero definida en el espacio de trabajo de su sesión R.<br><br>
-- En términos generales, el alcance local significa que una variable solo existe dentro del cuerpo de la función.<br><br>
-- Después de la ejecución de la función, la variable se elimina automáticamente de la memoria de la computadora.
-
+<p style='text-align: justify;'> 
+La noción de alcance de una variable es muy importante para un lenguaje que permite desarrollar funciones.<br><br>
+La idea principal es que las variables definidas dentro del cuerpo de una función tienen un alcance local durante la ejecución de la función.<br><br>
+Esto significa que una variable dentro del cuerpo de una función es físicamente diferente de otra variable con el mismo nombre, pero definida en el espacio de trabajo de la sesión de R.<br><br>
+En términos generales, el alcance local significa que una variable solo existe dentro del cuerpo de la función.<br><br>
+Después de la ejecución de la función, la variable se elimina automáticamente de la memoria de la computadora.
+</p>
 ---
 
 ```{r}
@@ -781,18 +793,23 @@ message # Workspace has not been modified!
 ```{r}
 message <- hello()
 message # Workspace has been modified!
+```
+
+---
+
+```{r}
 message <- hello(message="Welcome")
 message # Workspace has been modified again!
 ```
 
-
 ## Debugging de funciones
 
-- Una función de depuración útil en R es la función `browser()`.
-- Si inserta la instrucción `browser()` en el cuerpo de su función, el programa se detendrá en el lugar donde se insertó.
-- Al escribir la letra n (para el siguiente), se puede inspeccionar el código y el contenido de las variables secuencialmente.
-- Para salir del modo de inspección, se debe escribir Q.
-
+<p style='text-align: justify;'> 
+Una función de depuración útil en R es la función `browser()`.<br><br>
+Si inserta la instrucción `browser()` en el cuerpo de su función, el programa se detendrá en el lugar donde se insertó.<br><br>
+Al escribir la letra n, se puede inspeccionar el código y el contenido de las variables secuencialmente.<br><br>
+Para salir del modo de inspección, se debe escribir la letra Q.
+</p>
 ---
 
 ```{r}
@@ -802,10 +819,11 @@ apply(x,1,function(y){browser();sum(y)})
 
 ---
 
-- Otra función interesante es `debug()`, que es equivalente a colocar la instruccuón `browser()` en la parte superior del cuerpo de una función.
-- Por lo tanto, `debug(var)` marca la funció `var` como depurable.
-- Cualquier llamada posterior de esta función iniciará el depurador.
-
+<p style='text-align: justify;'> 
+Otra función interesante es `debug()`, que es equivalente a colocar la instruccuón `browser()` en la parte superior del cuerpo de una función.<br><br>
+Por lo tanto, `debug(var)` marca la funció `var` como depurable.<br><br>
+Cualquier llamada posterior de esta función iniciará el depurador.
+</p>
 ```{r, eval = FALSE}
 debug(var)
 var(1:3)
@@ -813,23 +831,30 @@ var(1:3)
 <p style='text-align: justify;'>
 Para deshacerse de esta marca, se usa la función `undebug()`.
 <p/>
+<!---
 ```{r, eval=FALSE}
 undebug(var)
 ```
+--->
 
 ## Administración
 
-- Después de haber creado los objetos R, puede obtener la lista de todos los objetos con la función `ls()` o la función `objects()`.
-- Para eliminar objetos, se usa la función `rm()`.
-- Vale la pena señalar que el comando `getwd()` devuelve el directorio de trabajo actual. El comando `setwd()` se usa para cambiar el directorio de trabajo.
+<p style='text-align: justify;'> 
+Después de haber creado los objetos R, se puede obtener la lista de todos los objetos con la función `ls()` o la función `objects()`.<br><br>
+Para eliminar objetos, se usa la función `rm()`.<br><br>
+El comando `getwd()` devuelve el directorio de trabajo actual.<br><br> 
+El comando `setwd()` se usa para cambiar el directorio de trabajo.
+</p>
 
 ---
 
-- Cuando se trabaja con R, se crean objetos: vectores, matrices, funciones, etc.<br><br>
-- Estos objetos se guardan físicamente en un archivo en el disco duro llamado espacio de trabajo.
-- La extensión del nombre del archivo debe ser `.RData`.
-- Es posible crear varios archivos .RData: uno para cada proyecto en el que está trabajando.
-- Debe crear estos archivos `.RData` en diferentes carpetas de manera apropiada.
+<p style='text-align: justify;'> 
+Cuando se trabaja con R, se crean objetos: vectores, matrices, funciones, etc.<br><br>
+Estos objetos se guardan físicamente en un archivo en el disco duro llamado espacio de trabajo.<br><br>
+La extensión del nombre del archivo debe ser `.RData`.<br><br>
+Es posible crear varios archivos `.RData`: uno para cada proyecto en el que se está trabajando.<br><br> 
+Se debe crear estos archivos `.RData` en diferentes carpetas de manera apropiada.
+</p>
 
 ---
 
@@ -840,39 +865,16 @@ La función `save.image()` se usa para guardar un espacio de trabajo; puede usar
 <p/>
 
 ---
-<!---
-## Actividad
-
-Inicie R y escriba las siguientes instrucciones:
-
-```{r, eval = FALSE}
-Mc <- "My car"
-# Use the up arrow and change the last command to:
-Yc <- "Your car"
-# Save a file cars.Rhistory in the folder Cars.
-savehistory("/path/to/Cars/cars.Rhistory")
-q("no") # Exit R.
-# Open R again.
-# Note that the up arrow does not
-# give access to the last two commands.
-# Open the file cars.Rhistory in the folder Cars.
-loadhistory(file.choose())
-# Now, the up arrow can be used
-# to find old commands.
-q("no")
-```
-
----
---->
 
 <p style='text-align: justify;'>
 R incluye un mecanismo para recuperar y volver a ejecutar comandos antiguos.<br><br>
 Las flechas hacia arriba y hacia abajo del teclado se pueden usar para retroceder y avanzar en el historial de comandos.<br><br>
-Una vez que haya localizado un comando con este método, puede mover el cursor con las flechas derecha e izquierda, eliminar caracteres con la tecla `DEL` y agregar o modificar caracteres con el teclado.<br><br>
-Para guardar el historial de comandos de la sesión actual, use el comando `savehistory()`.<br><br>
-Para cargar el historial de comandos de una sesión anterior, use el comando `loadhistory()`.<br><br>
+Una vez que localizado un comando con este método, se puede mover el cursor con las flechas derecha e izquierda, eliminar caracteres con la tecla `DEL` y agregar o modificar caracteres con el teclado.<br><br>
+Para guardar el historial de comandos de la sesión actual, se usa el comando `savehistory()`.<br><br>
+Para cargar el historial de comandos de una sesión anterior, se usa el comando `loadhistory()`.<br><br>
 Los comandos se guardan en un archivo que debe tener la extensión `.Rhistory` (o `.rhi` en versiones anteriores de R)
 <p/>
+
 
 # Programación eficiente en R{ .center .white data-background="#75AADB" }
 
@@ -880,25 +882,26 @@ Los comandos se guardan en un archivo que debe tener la extensión `.Rhistory` (
 
 <p style='text-align: justify;'>
 Muchas personas que usan R no se describirían a sí mismas como "programadores".<br><br>
-En cambio, tienden a tener un conocimiento de nivel avanzado, comprender estructuras estándar de datos de R, como vectores y data frames, pero tienen poca capacitación formal en informática.<br><br> </p>
-<p align = 'justify'> Discutiremos: </p>
+En cambio, tienden a tener un conocimiento de nivel avanzado, comprender estructuras estándar de datos de R, como vectores y data frames, pero tienen poca capacitación formal en informática.<br><br>
+Se discutirá los siguientes temas: 
+</p>
+<ul>
+<li>Técnicas de programación (panorama general).</li>
+<li>Asignación de memoria y código vectorizado.</li>
+</ul>
 
-- Técnicas de programación (panorama general).
-- Asignación de memoria y código vectorizado.
 
 ## Prerrequisitos
 
 <p style='text-align: justify;'>
-Se utilizarán dos paquetes: `complier` y `memoise`.<br><br>
+Se utilizarán dos paquetes: `complier`, `memoise`.<br><br>
 Estos paquetes forman parte de las librerias base de R, por lo tanto sólo se los debe cargar
 <p/>
 ```{r}
 library("compiler")
 library("memoise")
 ```
-<p style='text-align: justify;'>
-También serán utilizados (en los ejercicios) los paquetes `pryr` y `microbenchmark`.
-<p/>
+
 
 ## Consejos Generales
 
@@ -937,25 +940,19 @@ lograr esto, mejor.
 
 <p style='text-align: justify;'>
 Por ejemplo, supongamos que `x` es un vector estándar de longitud `n`. <br><br>
-Entonces, `x=x+1` implica la llamada de una única función `+`, mientras que el ciclo `for`: `for(i in seq_len(n)) x[i] <- x[i] + 1` tiene  <p/>
-- n llamadas a la función `+`.
-- n llamadas a la función `[]`.
-- n llamadas a la función `<-`.
-- 2 llamdas a las funciones: `for` y `seq_len`.
-
+Entonces, `x=x+1` implica la llamada de una única función `+`, mientras que el ciclo: `for(i in seq_len(n)) x[i] <- x[i] + 1` tiene:
+<ul>
+<li>n llamadas a la función `+`.</li>
+<li>n llamadas a la función `[]`.</li>
+<li>n llamadas a la función `<-`.</li>
+<li>2 llamdas a las funciones: `for` y `seq_len`.</li>
+</ul>
+<p/>
 <p style='text-align: justify;'>
 No es que el ciclo for sea lento, sino que tenemos muchas más llamadas a funciones.<br>
 Cada llamada de función individual es rápida, pero la combinación total es lenta.
 <p/>
 
----
-<!---
-### Actividad
-
-<p style='text-align: justify;'>
-Use el paquete `microbenchmark` para comparar la construcción vectorizada `x = x + 1` con la versión del ciclo for. Variar el tamaño del vector de entrada.
-<p/>
---->
 
 ## Asignación de memoria
 
@@ -994,9 +991,9 @@ method3 <- function(n) seq_len(n)
 
 Para comparar los tres métodos se utiliza la función `microbenchmark()`
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 library(microbenchmark)
-n=10^5
+n=10^2
 microbenchmark(times = 100, unit = "s", method1(n), method2(n), method3(n))
 ```
 
@@ -1015,33 +1012,26 @@ Por ejemplo, el código `x <- runif(n) + 1` realiza dos operaciones vectorizadas
 <p style='text-align: justify;'>
 En general, es una buena idea explotar las funciones vectorizadas.<br><br>
 Considere este fragmento de código de R que calcula la suma de `log(x)`:
-<p/>
 ```{r, eval=FALSE}
 log_sum <- 0
 for(i in 1:length(x)){
 log_sum <- log_sum + log(x[i])}
 ```
-<p style='text-align: justify;'>
 Este código se puede vectorizar fácilmente a través de
-<p/>
 ```{r, eval=FALSE}
 log_sum <- sum(log(x))
 ```
-
+<p/>
 ---
 
 Escribir código de esta manera tiene una serie de beneficios.
+<ul>
+<li>Es mas rapido. Cuando `n = 107`, es aproximadamente cuarenta veces más rápido.</li>
+<li>Es más ordenado.</li>
+<li>No contiene un error cuando `x` es de longitud `0`.</li>
+</ul>
 
-- Es mas rapido. Cuando `n = 107`, es aproximadamente cuarenta veces más rápido.
-- Es más ordenado.
-- No contiene un error cuando `x` es de longitud `0`.
 
-<!---
-## Actividad
-
-- Calcular el tiempo de ejecución de los dos métodos para `log_sum`.
-- ¿Qué sucede cuando la longitud de `x` es `0`?
---->
 ## Comunicarse con el usuario
 
 <p style='text-align: justify;'>
