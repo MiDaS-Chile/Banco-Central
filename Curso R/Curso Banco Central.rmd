@@ -28,14 +28,20 @@ source("setup.R")
 
 # <br><br>Curso de R<br><small> <br><br> MiDaS</small>{ .center .white data-background="#75AADB" }
 
-# Introduccion a R{ .center .white data-background="#75AADB" }
+# Conceptos Basicos de R{ .center .white data-background="#75AADB" }
 
 ## Descarga e Instalación
 
-- R, el software computacional, se descarga desde el [CRAN](http://cran.r-project.org). Debes elegir la opción que corresponda con tu sistema operativo.
-- Rstudio, el panel de control, se descarga desde [Rstudio](http://www.rstudio.com). Elegir la primera opción, "RStudio Desktop Open Source License". 
+- R se descarga desde un repositorio llamado [CRAN](http://cran.r-project.org). Se debe elegir la opción que corresponda con el sistema operativo.
+- RStudio, el panel de control, se descarga desde su página oficial [http://www.rstudio.com](http://www.rstudio.com). Elegir la primera opción, "RStudio Desktop Open Source License". 
 - Instalar ambos programas de la forma usual.
 - Además existe una versión online, [Rstudio Cloud](http://rstudio.cloud)
+
+## Comparación R vs STATA
+
+- En `R` no existen las MACROS
+- `R` facilita la composición de funciones
+- `R` puede tener abiertas muchas bases de datos simultáneamente
 
 ## Interfaz básica de RStudio
 
@@ -73,15 +79,23 @@ b = 3^2
 c <- "Hola Mundo" # String o carácter.
 ```
 
+**Nota:** Solo se pueden crear variables con caractéres alfanuméricos, "." y "_". Los espacios no están permitidos.
+
+----
+
+## Objetos básicos de R
+
 Para visualizar un objeto en consola, basta con escribir su nombre en ella, o bien ejecutar la línea deseada desde el editor.
 
 ```{r}
 a + b
 ```
 
+----
+
 ## Objetos básicos de R: Vectores
 
-Para crear un vector se ocupa la función **c()**. Además podemos crear secuencias con la función **seq()**.
+Para crear un vector se ocupa la función **c()**. Además se pueden crear secuencias con la función **seq()**.
 ```{r}
 x <- c(5,b,7,8,-8,20,7,a)
 x
@@ -91,7 +105,7 @@ y
 
 ## Objetos básicos de R: Vectores
 
-Podemos acceder a un elemento de un vector en una posición específica de un vector utilizando '[]'. Algunos ejemplos:
+Se puede acceder a un elemento de un vector en una posición específica de un vector utilizando '[]'. Algunos ejemplos:
 
 ```{r}
 x[3] # Elemento en la posición 3
@@ -107,26 +121,29 @@ x[-4] # Vector original sin el elemento en la posición 4
 
 ## Objetos básicos de R: Funciones
 
-La principal herramienta para trabajar con los diferentes objetos en R son las funciones. Algunos ejemplos son:
-  
-- `sum()`
-- `mean()`
-- `which()`
-- `summary()`
+<p align = "justify"> Una herramienta para la manipulación de objetos son las funciones. Una función en `R` tiene la estructura de `nombre_funcion(<lista de argumentos>)`. Para asignar el valor de un argumento existen dos opciones: </p>
+
+- `funcion(nombre_argumento1 = argumento1, nombre_argumento2 = argumento2)` 
+- `funcion(valor_argumento1, argumento_2)`
+
+**Importante:** En el segundo caso es necesario asignar los valores en el orden preestablecido por la función. Para averiguar dicho orden, así como el funcionamiento de una función, se debe hacer `?nombre_funcion()`.
+
+---- 
+
+### Algunos ejemplos de funciones
+
+```{r}
+log(10,3)
+log(base = 3, x = 10)
+log(3,10)
+```
 
 ----
 
-**Importante:** Si deseas saber como utilizar una función en específico puedes hacer `?nombre_funcion()`. También puedes buscar [aquí](https://www.google.com).
-
-```{r}
-mean(x)
-summary(y)
-```
-
-
 ## Objetos básicos de R: Paquetes
 
-Los paquetes de R son el eje central de su funcionamiento. En cada uno de ellos existen funciones desarrolladas para resolver diferentes tipos de problemáticas. En esta ocasión instalaremos y cargaremos el paquete 'Tidyverse':
+<p align = "justify">
+Los paquetes de R son el eje central de su funcionamiento. Cada uno de ellos provee de diferentes funciones desarrolladas para resolver diferentes tipos de problemáticas. En esta ocasión instalaremos y cargaremos el paquete 'Tidyverse': </p>
   ![](Images/tidyverse.png)
 
 ## Objetos básicos de R: Paquetes
@@ -143,7 +160,7 @@ library(tidyverse)
 
 ## Objetos básicos de R: `tibbles`
 
-Corresponden a una forma de guardar bases de datos en `R`. 
+Los tibbles corresponden a una forma de guardar bases de datos en `R`. 
 
 ```{r}
 data <- tibble("Sexo" = c("H","M","H","M"), "Edad" = c(20,18,19,30))
@@ -165,13 +182,13 @@ data[1,]
 data[,2]
 ```
 
-- Además, se puede acceder a una columna específica de la BD utilizando su nombre 
+- Además, se puede acceder a una columna específica de la base de datos utilizando su nombre 
 
 ```{r}
 data$Sexo
 ```
 
-## Operador %>% 
+## El operador %>% 
 
 Permite realizar composición de funciones. Un ejemplo de su utilización es:
   
@@ -180,15 +197,9 @@ x %>% mean() %>% log()
 log(mean(x))
 ```
 
-## Actividad 1
+# Importación y Manejo de Bases de Datos{ .center .white data-background="#75AADB" }
 
-- Genere un vector con los primeros 1000 números impares.
-- Del vector anterior, obtenga los impares número 1, 10, 100 y 1000.
-- Cálcule la suma de la raíz de los números generados antes utilizando 2 métodos diferentes.
-
-# Manejo de Base de Datos{ .center .white data-background="#75AADB" }
-
-## Orígen de la BD
+## Orígen de la Base de Datos
 
 Los datos pueden provenir de muchas fuentes:
   
@@ -202,18 +213,18 @@ Los datos pueden provenir de muchas fuentes:
 
 ## Funciones para Importar
 
-Cada fuente tiene su función de importación en tidyverse.
+Cada fuente tiene su función de importación en tidyverse:
 
 - Si es csv: **read_csv**.
 - Si es texto: **read_delim**.
 - Si es excel: **read_excel**.
 - Si es spss: **read_sav**.
 
-Para más información, pueden entrar al siguiente [torpedo](https://resources.rstudio.com/spanish-pdfs/data-import-cheatsheet-spanish).
+Para más información, pueden entrar al siguiente [sitio web.](https://resources.rstudio.com/spanish-pdfs/data-import-cheatsheet-spanish).
 
 ## Ejemplo: storms.csv
 
-La base de datos storms se encuentra en el siguiente [link](https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.csv).
+La base de datos storms se encuentra en el siguiente [url](https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.csv).
 
 ```{r}
 url  <- 'https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.csv'
@@ -246,7 +257,6 @@ library(haven)
 submuestra <- read_dta("Datasets/submuestra ENE 2018 07 JJA.dta")
 head(submuestra)
 ```
-
 
 ## filter(): *Seleccionar filas*
 
@@ -378,28 +388,14 @@ pollution2 %>%
 pollution2
 ```
 
-
-## Importar datos
-
-```{r, message = FALSE}
-songs <- read_csv("Datasets/songs.csv")
-songs
-```
-
-----
-  
-```{r}
-artists <- read_csv("Datasets/artists.csv")
-artists
-```
-
 ## Rename: *Renombrar columnas*
 
 Permite cambiar los nombres de las columnas seleccionadas
 
 ```{r}
-artists %>%
-  rename(Nombres = name) -> artist2
+artists <- read_csv("Datasets/artists.csv")
+artists
+artists %>% rename(Nombres = name) -> artist2
 artist2
 ```
 
@@ -412,10 +408,15 @@ Existen 7 funciones, en dplyr, que permiten juntar/contrastar dos bases de datos
   - **right_join()**
   
 ## **left_join**: *Ejemplo*
+
+```{r, message = FALSE}
+songs <- read_csv("Datasets/songs.csv")
+songs
+```
   
   ![](Images/left_join.png)
 
-## Algunos otros ejemplos:
+## `inner_join()` y `right_join`
 
 ```{r}
 artist3 <- inner_join(songs, artists, by = "name")
@@ -425,7 +426,7 @@ artist4
 ```
 ----
   
-¿Qué pasa si las columnas links poseen 2 nombres diferentes?
+¿Qué pasa si las columnas 'links' poseen nombres diferentes?
   
 ```{r}
 left_join(songs,artist2, by = c("name" = "Nombres"))
@@ -458,25 +459,9 @@ table2s <- spread(table2, type, count)
 table2s
 ```
 
-## Actividad 2
-
-- Cargue la base de datos Encuesta.xlsx.
-- Seleccione Región, Sexo, Edad, cuánto gastó en seguridad y Score Socioeconómico. Filtre según hombres de Valparaíso.
-- Ordene de menor a mayor la edad. Genere un indicador para la variable edad.
-- Añada una nueva variable denominada PRSC, calculada como el Score del individuo dividido por el máximo del score observado.
-- Obtenga el promedio del PRSC para cada grupo de gasto en seguridad.
-
-**Nota:** Cada ítem se realiza utilizando la base de datos resultante del ítem anterior
-
-# Analisis exploratorio y visualizacion de datos { .center .white data-background="#75AADB"}
-
-## Definición técnica
+# Visualizacion de datos { .center .white data-background="#75AADB"}
   
-Representación gráfica de datos __codificando la información__ como: posición, tamaño, formas, colores
-
-<img src="static/img/data-viz.jpg" width="60%">
-  
-## Algunos gráficos
+## Algunos gráficos de `R`
   
   ![](static/img/charts.gif)
   
@@ -531,11 +516,11 @@ ggplot(data = paises) +
 
 - Cada función `geom_algo` tiene un argumento de mapping que define cómo se asignan o se “mapean” las variables del conjunto de datos a propiedades visuales del `geom_algo`
 -  El argumento de mapping siempre aparece emparejado con `aes()`, y los argumentos `x` e `y` especifican qué variables asignar a los ejes `x` e `y`
-- Para más gráficos, pueden visitar el siguiente [link](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization)
+- Para más gráficos, pueden visitar el siguiente ['link'](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization)
 
 ----
   
-Podemos setear las propiedades estéticas de tu geom manualmente:
+Podemos asignar las propiedades estéticas de tu geom manualmente:
   
 ```{r, echo=TRUE,  fig.height = 4}
 ggplot(data = paises) + 
@@ -554,7 +539,7 @@ ggplot(data = paises) +
 
 ---- 
   
-Quizás en lugar de setear color fijo, podemos asignarlo segun una variable
+Quizás en lugar de asignar color fijo, podemos asignarlo segun una variable
 
 ```{r, echo=TRUE,  fig.height = 4}
 ggplot(data = paises) + 
@@ -623,11 +608,16 @@ ggplot(data = Ang) +
 
 ## Actividad III
 
+- Genere un vector con los primeros 1000 números impares.
+- Del vector anterior, obtenga los impares número 1, 10, 100 y 1000.
+- Cálcule la suma de la raíz de los números generados antes utilizando 2 métodos diferentes.
+
 Abra el archivo `Actividad-3.pdf` y responda las preguntas en él.
 
 # Programación en R { .center .white data-background="#75AADB" }
 
 ## Desarrollo de funciones
+
 La declaración de una función se realiza de forma general como sigue:
 `function(<lista de argumentos>) <cuerpo de la función>`<br>
 
@@ -1620,280 +1610,6 @@ res <- nlm(f,c(0,0)) # The second effective argument gives the initial values.
 res
 ```
 
-# Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
-
-## {data-background-video="video1.mp4"}
-
-## ¿Qué es R Markdown?
-
-- Marco unificado para ciencia de datos
-- Combina:
-    - Código
-    - Resultados
-    - Gráficos
-- Los documentos R Markdown son totalmente reproducibles y automatizables.
-
-## Diferentes formatos de salida
-
-   ![](https://rmarkdown.rstudio.com/images/RMarkdownOutputFormats.png)
-   
-## Primer vistazo
-![](Images/rmark1.png)
-
-## Detrás de escenas
-
-`Ventaja flujo de trabajo de dos pasos:` ¡Se puede crear una amplia gama de formatos de salida!
-![](http://r4ds.had.co.nz/images/RMarkdownFlow.png)
-
-- Word: Requiere Microsoft Word instalado.
-- PDF: Requiere un compilador de LaTeX instalado.
-- HTML.
-
-## Sintaxis
-- `*cursiva*` y `_cursiva_` -> *cursiva* y _cursiva_
-- `**negrita**` y `__negrita__` -> **negrita** y __negrita__
-- `[link](www.rstudio.com)` -> [link](www.rstudio.com)
-- `# Encabezado 1`
-- `## Encabezado 2`
-- `### Encabezado 3`
-- imagen: `![](camino/a/imagen.png)`
-- ` - lista`
-
-## Código
-
-Podemos ingresar código de R en nuestros documentos utilizando los `chunks`(ctrl + alt + I). Existen opciones que permiten manipular la acción de un chunk en específico en nuestro documento. Algunas opciones son:
-
-Opción  | Efecto
-------  | -------------------
-include | ¿Muestra el fragmento de código de R y su resultado?
-echo    | ¿Muestra el fragmento de código de R?
-message | ¿Muestra los mensajes de salida?
-warning | ¿Muestra las advertencias?
-eval    | ¿Evalúa el fragmento de código?
-
-Para más información ver el siguiente [link](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
-
-## YAML
-
-Aquí se escriben opciones generales del documento. Se pueden configurar, entre muchas otras cosas:
-
-- Fuente y formato
-- Tamaños de figuras o gráficos
-- Agregar un CSS
-
-## Código entre texto
-
-Podemos realizar código r en cualquier oración. Para ello basta escribir
-
-![](Images/rinline.png)
-
-Para mayor información de todo esto, ver el siguiente [link](https://bookdown.org/yihui/rmarkdown/)
-
-## Actividad IV: parte I
-
-Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones:
-
-- Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final.
-- Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre
-
-## Actividad IV: parte II
-
-- En la línea 10, convertir "Candy Crush Saga" en negrita
-- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa)
-- Enfatice el texto en la línea 141 convirtiéndola en itálica
-- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png
-
-## Actividad IV: parte III
-
-- Quitar los mensajes que genera el cargar la librería en la línea 18
-- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes
-- Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44.
-
-```{r, eval = FALSE}
-range(data$dt)
-length(unique(data$player_id))
-```
-
-## Actividad IV: parte IV
-
-- Agregar el `theme:paper`, `toc:true` y `toc_float:true`. Comente lo ocurrido.
-- ¿Qué pasa si agrego la opción 'code_folding: show'?
-
-# Ejemplo: Boletin Empleo Trimestral{ .center .white data-background="#75AADB" }
-
-## Descripción
-
-- El INE publica mensualmente un Boletín de Empleo Trimestral. 
-- En la página 3 de dicho informe, se presentan cifras relacionadas con la evolución de los ocupados según grupo ocupacional (CIUO.08). Específicamente:
-    1. La participación de los ocupados según grupo ocupacional.
-    2. El crecimiento porcentual del número de ocupados segùn grupo ocupacional.
-- El primer grupo de cifras se presenta como un gráfico, pero el grupo de cifras se presentan dentro del texto.
-- En este ejericicio final, explicaremos cómo reproducir este extracto del Boletín usando RMarkdown.
-
-## Crecimiento porcentual de los ocupados
-
-Cargamos los datos (también cargaremos datos del 2018):
-
-```{r}
-ene_jja <- list(
-  "2018" = haven::read_dta("Datasets/submuestra ENE 2018 07 JJA.dta"),
-  "2019" = haven::read_dta("Datasets/submuestra ENE 2019 07 JJA.dta")
-)
-```
-
-Estimamos el número de ocupados, para el trimestre junio-agosto 2018
-
-```{r}
-ocup_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::pull(1)
-```
-
-----
-
-Estimamos el número de ocupados, para el trimestre junio-agosto 2019
-```{r}
-ocup_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::pull(1)
-```
-
-Estimamos la variación porcentual en 12 meses del número de ocupados
-```{r}
-ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1)
-```
-
-----
-
-## Variación en 12 meses de los ocupados por grupo de ocupación
-
-Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
-
-```{r}
-tbl1_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact))
-```
-
-----
-
-## Variación en 12 meses de los ocupados por grupo de ocupación
-
-Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
-
-```{r}
-tbl1_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact))
-```
-
-----
-
-## Variación en 12 meses de los ocupados por grupo de ocupación
-
-Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019
-
-```{r}
-tbl1 <-
-  dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>%
-  dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>%
-  dplyr::arrange(desc(delta)) %>%
-  haven::as_factor()
-```
-
-Convierte el resultado en un vector
-
-```{r}
-pcts <- round(tbl1$delta, 1)
-names(pcts) <- tbl1$b1
-```
-
-----
-
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
-
-Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
-
-```{r}
-tbl2_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::mutate(
-    pct       = 100 * n / sum(n),
-    trimestre = "junio-agosto 2019"
-  )
-```
-
-----
-
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
-
-Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
-
-```{r}
-tbl2_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::mutate(
-    pct       = 100 * n / sum(n),
-    trimestre = "junio-agosto 2018"
-  )
-```
-
-----
-
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
-
-Combina la información en una tabla
-
-```{r}
-tbl2_3FN <-
-  rbind(tbl2_2018, tbl2_2019) %>%
-  dplyr::select(b1, pct, trimestre) %>%
-  dplyr::mutate(
-    trimestre = haven::as_factor(trimestre),
-    b1        = haven::as_factor(b1)
-  )
-```
-
-----
-
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
-
-Crea el Gráfico 1
-
-```{r, eval=FALSE}
-tbl2_3FN %>%
-  ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) +
-  ggplot2::geom_bar(position = "dodge", stat = "identity") +
-  ggplot2::coord_flip() +
-  ggplot2::scale_fill_manual(values = c("darkblue", "darkred")) +
-  ggplot2::labs(
-    x        = "Grupo ocupacional (CIUO 08.cl)",
-    y        = "Participación (%)",
-    title    = "Gráfico 1. Participación de ocupados",
-    subtitle = "según grupo ocupacional (CIUO 08.cl)",
-    caption  = "Elaboración propia en base a datos de la ENE 2018/2019."
-  )
-```
-
-
 # Variables Aleatorias{ .center .white data-background="#75AADB" }
 
 ## Objetivos
@@ -2006,7 +1722,11 @@ plot1
 
 <p align = "justify"> El modelo de regresión lineal simple busca explicar el comportamiento medio de cierta variable respuesta $y$ utilizando una variable explicativa $x$. </p>
 
-<p align = "justify"> Su formulación corresponde a $$y_i = \beta_0 + \beta_1x_i + \epsilon_i$$ donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$.</p>
+<p align = "justify"> Su formulación corresponde a </p>
+
+$$y_i = \beta_0 + \beta_1x_i + \epsilon_i$$ 
+
+<p align = "justify"> donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$. </p>
 
 ----
 <p align = "justify"> La función `lm()` permite ajustar el modelo: </p>
@@ -2076,7 +1796,11 @@ ggPredict(model1,interactive = TRUE, se = TRUE)
 
 <p align = "justify"> El modelo de regresión lineal simple busca explicar el comportamiento medio de cierta variable respuesta $y$ utilizando variables explicativas $x_1, \ldots, x_p$. </p>
 
-<p align = "justify"> Su formulación corresponde a $$y_i = \beta_0 + \beta_1x_{1i} + \cdots + \beta_px_{pi} + \epsilon_i$$ donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$.</p>
+<p align = "justify"> Su formulación corresponde a </p>
+
+$$y_i = \beta_0 + \beta_1x_{1i} + \cdots + \beta_px_{pi} + \epsilon_i$$ 
+
+<p align = "justify"> donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$.</p>
 
 ----
 
@@ -2527,7 +2251,7 @@ coeftest(aff_tob_ex)
     - Modelos VAR.
     - Modelos SS.
     
-## 1. Creación de series de tiempo
+## Creación de series de tiempo
 
 - R genera series de tiempo con la función `stats::ts()`.
 - Su sintaxis básica es `ts(data, start, end, frequency)`,
@@ -2552,7 +2276,7 @@ y <- stats::ts(x, frequency = 1, start = 1959)
 y <- stats::ts(x, frequency = 4, start = c(1959, 2))
 ```
 
-## 2. Filtros Lineales
+## Filtros Lineales
 
 - R aplica filtros lineales usando la función `stats::filter()`.
 - Su sintaxis básica es `filter(x, filter, sides)`, donde
@@ -2579,7 +2303,7 @@ z <- stats::filter(x, filter = c(1, 1, 1), sides = 2)
 z[1:10]
 ```
 
-## 3. Modelos ARIMA
+## Modelos ARIMA
 
 - R ajusta modelos ARIMA con la función `stats::arima()`.
 - Su sintaxis básica es `arima(x, order, ...)`, donde
@@ -2604,7 +2328,7 @@ stats::coef(arima(x, order = c(1, 0, 1)))
 
 - Los coeficientes estimados son cercanos a los valores poblacionales.  
 
-## 4. Modelos VAR
+## Modelos VAR
 
 - R ajusta modelos VAR con la función `vars::VAR()`.
 - Su sintaxis básica es `VAR(y, p = 1)`, donde
@@ -2640,9 +2364,7 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
 ```
 
 
-## 5. Modelos de Estado Espacio
-
-----
+## Modelos de Estado Espacio
 
 ### Introducción
 
@@ -2653,7 +2375,6 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
 - Ya que el libro Durbin y Koopman (2012) es más popular entre economistas, nos concentraremos en el paquete `KFAS`.
 
 ----
-
 
 ### Notación
 
@@ -2683,7 +2404,7 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
     \nu_{t+1} &= \nu_t + \zeta_t,       & \zeta_t    &\sim N(0, \sigma^2_\zeta)
   \end{aligned}
   $$
-- Definiendo $\alpha_t = (\mu_t, \nu_t)$, obtenemos un LG-SSM con^[Aquí, $e_1 = (1, 0)$ y $1_2 = (1, 1)$.]
+- Definiendo $\alpha_t = (\mu_t, \nu_t)$, obtenemos un LG-SSM con 
   $$
   \begin{aligned}
     T &= \begin{bmatrix} e_1 & 1_2 \end{bmatrix}, &
@@ -2692,7 +2413,7 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
     Q &= diag\{\sigma^2_\xi, \sigma^2_\zeta\}, &
     H &= \sigma^2_\epsilon,
   \end{aligned}
-  $$
+  $$ donde $e_1 = (1, 0)$ y $1_2 = (1, 1)$.
 - Ya que $\mu_t \sim I(2)$ y $\nu_t \sim I(1)$, la inicialización será
   $$
   \begin{aligned}
@@ -2814,4 +2535,277 @@ m01 <- KFAS::SSModel(
   H = matrix(NA),
   data = y
 ) # Claramente, es menos verboso.
+```
+
+# Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
+
+## {data-background-video="video1.mp4"}
+
+## ¿Qué es R Markdown?
+
+- Marco unificado para ciencia de datos
+- Combina:
+    - Código
+    - Resultados
+    - Gráficos
+- Los documentos R Markdown son totalmente reproducibles y automatizables.
+
+## Diferentes formatos de salida
+
+   ![](https://rmarkdown.rstudio.com/images/RMarkdownOutputFormats.png)
+   
+## Primer vistazo
+![](Images/rmark1.png)
+
+## Detrás de escenas
+
+`Ventaja flujo de trabajo de dos pasos:` ¡Se puede crear una amplia gama de formatos de salida!
+![](http://r4ds.had.co.nz/images/RMarkdownFlow.png)
+
+- Word: Requiere Microsoft Word instalado.
+- PDF: Requiere un compilador de LaTeX instalado.
+- HTML.
+
+## Sintaxis
+- `*cursiva*` y `_cursiva_` -> *cursiva* y _cursiva_
+- `**negrita**` y `__negrita__` -> **negrita** y __negrita__
+- `[link](www.rstudio.com)` -> [link](www.rstudio.com)
+- `# Encabezado 1`
+- `## Encabezado 2`
+- `### Encabezado 3`
+- imagen: `![](camino/a/imagen.png)`
+- ` - lista`
+
+## Código
+
+Podemos ingresar código de R en nuestros documentos utilizando los `chunks`(ctrl + alt + I). Existen opciones que permiten manipular la acción de un chunk en específico en nuestro documento. Algunas opciones son:
+
+Opción  | Efecto
+------  | -------------------
+include | ¿Muestra el fragmento de código de R y su resultado?
+echo    | ¿Muestra el fragmento de código de R?
+message | ¿Muestra los mensajes de salida?
+warning | ¿Muestra las advertencias?
+eval    | ¿Evalúa el fragmento de código?
+
+Para más información ver el siguiente [link](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+## YAML
+
+Aquí se escriben opciones generales del documento. Se pueden configurar, entre muchas otras cosas:
+
+- Fuente y formato
+- Tamaños de figuras o gráficos
+- Agregar un CSS
+
+## Código entre texto
+
+Podemos realizar código r en cualquier oración. Para ello basta escribir
+
+![](Images/rinline.png)
+
+Para mayor información de todo esto, ver el siguiente [link](https://bookdown.org/yihui/rmarkdown/)
+
+## Actividad IV: parte I
+
+Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones:
+
+- Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final.
+- Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre
+
+## Actividad IV: parte II
+
+- En la línea 10, convertir "Candy Crush Saga" en negrita
+- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa)
+- Enfatice el texto en la línea 141 convirtiéndola en itálica
+- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png
+
+## Actividad IV: parte III
+
+- Quitar los mensajes que genera el cargar la librería en la línea 18
+- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes
+- Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44.
+
+```{r, eval = FALSE}
+range(data$dt)
+length(unique(data$player_id))
+```
+
+## Actividad IV: parte IV
+
+- Agregar el `theme:paper`, `toc:true` y `toc_float:true`. Comente lo ocurrido.
+- ¿Qué pasa si agrego la opción 'code_folding: show'?
+
+## Ejemplo: Boletin Empleo Trimestral INE{ .center .white data-background="#75AADB" }
+
+## Descripción
+
+- El INE publica mensualmente un Boletín de Empleo Trimestral. 
+- En la página 3 de dicho informe, se presentan cifras relacionadas con la evolución de los ocupados según grupo ocupacional (CIUO.08). Específicamente:
+    1. La participación de los ocupados según grupo ocupacional.
+    2. El crecimiento porcentual del número de ocupados segùn grupo ocupacional.
+- El primer grupo de cifras se presenta como un gráfico, pero el grupo de cifras se presentan dentro del texto.
+- En este ejericicio final, explicaremos cómo reproducir este extracto del Boletín usando RMarkdown.
+
+## Crecimiento porcentual de los ocupados
+
+Cargamos los datos (también cargaremos datos del 2018):
+
+```{r}
+ene_jja <- list(
+  "2018" = haven::read_dta("Datasets/submuestra ENE 2018 07 JJA.dta"),
+  "2019" = haven::read_dta("Datasets/submuestra ENE 2019 07 JJA.dta")
+)
+```
+
+Estimamos el número de ocupados, para el trimestre junio-agosto 2018
+
+```{r}
+ocup_2018 <-
+  ene_jja[["2018"]] %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::pull(1)
+```
+
+----
+
+Estimamos el número de ocupados, para el trimestre junio-agosto 2019
+```{r}
+ocup_2019 <-
+  ene_jja[["2019"]] %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::pull(1)
+```
+
+Estimamos la variación porcentual en 12 meses del número de ocupados
+```{r}
+ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1)
+```
+
+----
+
+## Variación en 12 meses de los ocupados por grupo de ocupación
+
+Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
+
+```{r}
+tbl1_2018 <-
+  ene_jja[["2018"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact))
+```
+
+----
+
+## Variación en 12 meses de los ocupados por grupo de ocupación
+
+Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
+
+```{r}
+tbl1_2019 <-
+  ene_jja[["2019"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact))
+```
+
+----
+
+## Variación en 12 meses de los ocupados por grupo de ocupación
+
+Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019
+
+```{r}
+tbl1 <-
+  dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>%
+  dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>%
+  dplyr::arrange(desc(delta)) %>%
+  haven::as_factor()
+```
+
+Convierte el resultado en un vector
+
+```{r}
+pcts <- round(tbl1$delta, 1)
+names(pcts) <- tbl1$b1
+```
+
+----
+
+## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+
+Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
+
+```{r}
+tbl2_2019 <-
+  ene_jja[["2019"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::mutate(
+    pct       = 100 * n / sum(n),
+    trimestre = "junio-agosto 2019"
+  )
+```
+
+----
+
+## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+
+Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
+
+```{r}
+tbl2_2018 <-
+  ene_jja[["2018"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::mutate(
+    pct       = 100 * n / sum(n),
+    trimestre = "junio-agosto 2018"
+  )
+```
+
+----
+
+## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+
+Combina la información en una tabla
+
+```{r}
+tbl2_3FN <-
+  rbind(tbl2_2018, tbl2_2019) %>%
+  dplyr::select(b1, pct, trimestre) %>%
+  dplyr::mutate(
+    trimestre = haven::as_factor(trimestre),
+    b1        = haven::as_factor(b1)
+  )
+```
+
+----
+
+## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+
+Crea el Gráfico 1
+
+```{r, eval=FALSE}
+tbl2_3FN %>%
+  ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) +
+  ggplot2::geom_bar(position = "dodge", stat = "identity") +
+  ggplot2::coord_flip() +
+  ggplot2::scale_fill_manual(values = c("darkblue", "darkred")) +
+  ggplot2::labs(
+    x        = "Grupo ocupacional (CIUO 08.cl)",
+    y        = "Participación (%)",
+    title    = "Gráfico 1. Participación de ocupados",
+    subtitle = "según grupo ocupacional (CIUO 08.cl)",
+    caption  = "Elaboración propia en base a datos de la ENE 2018/2019."
+  )
 ```
