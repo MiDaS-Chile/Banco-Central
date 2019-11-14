@@ -641,21 +641,26 @@ function(name) cat("Hello",name,"!")
 
 ---
 
-- Para R, una función es un objeto específico.
-- Por lo tanto, crear una función corresponde a asignar el objeto "función R"
-a una variable, cuyo nombre corresponde a la función misma.
-- Por ejemplo, para crear la función `hello()`, se puede proceder como sigue:
+<p style='text-align: justify;'> 
+Para R, una función es un objeto específico.<br><br>
+Por lo tanto, crear una función corresponde a asignar el objeto "función R"
+a una variable, cuyo nombre corresponde a la función misma.<br><br>
+Por ejemplo, para crear la función `hello()`, se puede proceder como sigue:
+</p>
 
 ```{r}
 hello <- function(name) cat("Hello",name,"!")
 hello
 ```
+---
+
 <p style='text-align: justify;'> 
-Para que esta función se ejecute, el usuario debe llamar a la función,
-seguido del argumento entre paréntesis.
+Para que esta función se ejecute, el usuario debe escribir el nombre de la función,
+seguido por el argumento entre paréntesis.
 </p>
 ```{r}
 hello("Peter")
+hello("Fernanda")
 ```
 ---
 
