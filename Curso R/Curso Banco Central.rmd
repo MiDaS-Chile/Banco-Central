@@ -1022,9 +1022,11 @@ Este código se puede vectorizar fácilmente a través de
 log_sum <- sum(log(x))
 ```
 <p/>
+
 ---
 
 Escribir código de esta manera tiene una serie de beneficios.
+
 <ul>
 <li>Es mas rapido. Cuando `n = 107`, es aproximadamente cuarenta veces más rápido.</li>
 <li>Es más ordenado.</li>
@@ -1035,14 +1037,15 @@ Escribir código de esta manera tiene una serie de beneficios.
 ## Comunicarse con el usuario
 
 <p style='text-align: justify;'>
-Cuando creamos una función, a menudo queremos que la función proporcione comentarios eficientes sobre el estado actual. Por ejemplo, ¿faltan argumentos o ha fallado un cálculo numérico?. <p/>
-
+Cuando creamos una función, a menudo queremos que la función proporcione comentarios eficientes sobre el estado actual. Por ejemplo, ¿faltan argumentos o ha fallado un cálculo numérico?.<br><br>
 Existen tres técnicas principales de comunicación con el usuario:
-
-- `stop()`
-- `warning()`
-- `message()`
-
+<ul>
+<li> `stop()`</li>
+<li> `warning()`</li>
+<li> `message()`</li>
+</ul>
+ <p/>
+ 
 ---
 
 <p style='text-align: justify;'>
@@ -1062,7 +1065,6 @@ Un código eficiente y robusto detecta el error y lo maneja de manera adecuada.<
 Los errores pueden detectarse usando `try()` y `tryCatch()`.<br><br>
 Por ejemplo,
 <p/>
-
 ```{r, eval=FALSE}
 # Suppress the error message
 good <- try(1 + 1, silent = TRUE)
@@ -1105,7 +1107,7 @@ Otra función utilizada para imprimir mensajes es `cat()`.<br><br>
 ---
 
 <p style='text-align: justify;'>
-La función `invisible ()` le permite devolver una copia temporalmente invisible de un objeto.<br><br>
+La función `invisible()` le permite devolver una copia temporalmente invisible de un objeto.<br><br>
 Esto es particularmente útil para funciones que devuelven valores que pueden asignarse, pero que no se imprimen cuando no están asignados.<br><br>
 Por ejemplo, supongamos que tenemos una función que traza los datos y se ajusta a una línea recta.
 <p/>
@@ -1115,7 +1117,7 @@ regression_plot <- function(x, y, ...)
 # Plot and pass additional arguments to default plot method
 plot(x, y, ...)
 # Fit regression model
-model <- lm(y ˜ x)
+model <- lm(y~x)
 # Add line of best fit to the plot
 abline(model)
 invisible(model)
@@ -1149,7 +1151,7 @@ c(factor(x))
 ---
 
 Los factores se pueden usar para ordenar en gráficos:
-```{r}
+```{r fig1, out.width = '70%'}
 boxplot(count~spray, data = InsectSprays, col = "lightgray")
 ```
 
@@ -1432,6 +1434,9 @@ x <- seq(1,4)
 y <- seq(4,7)
 outer(x,y,FUN="*")
 ```
+
+---
+
 Producto de Kronecker ($\mathbf{A}\otimes\mathbf{B}$)
 ```{r}
 kronecker(A,B)
@@ -1611,10 +1616,7 @@ res <- nlm(f,c(0,0)) # The second effective argument gives the initial values.
 res
 ```
 
-<<<<<<< HEAD
-# Variables Aleatorias{ .center .white data-background="#75AADB" }
-=======
-## Actividad
+## Actividad 2
 
 <p style='text-align: justify;'>
 La función gamma incompleta inferior se define como:
@@ -1627,9 +1629,11 @@ $\gamma(s,x)=x^s\Gamma(s)\exp(-x)\sum\limits_{k=0}^{\infty}\dfrac{x^k}{\Gamma(s+
 
 ---
 
-- Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.
-- Considere el siguiente conjunto de argumentos : $(s,x)\in \{(2,5);(2,20);(10,2);(10,20\}$. Evalue las funciones creadas anteriormente y la función `Igamma( )` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.
-- Utilizando las funciones anteriormente implementadas y la función `Igamma( )`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$,$x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución. 
+<p style='text-align: justify;'>
+Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.<br><br>
+Considere el siguiente conjunto de argumentos : $(s,x)\in \{(2,5);(2,20);(10,2);(10,20)\}$. Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.<br><br>
+Utilizando las funciones anteriormente implementadas y la función `Igamma()`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$,$x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución. 
+</p>
 
 # Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
 >>>>>>> a86f0961453982da220a7014d06ab24adba94198
