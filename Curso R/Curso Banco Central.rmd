@@ -631,21 +631,26 @@ function(name) cat("Hello",name,"!")
 
 ---
 
-- Para R, una función es un objeto específico.
-- Por lo tanto, crear una función corresponde a asignar el objeto "función R"
-a una variable, cuyo nombre corresponde a la función misma.
-- Por ejemplo, para crear la función `hello()`, se puede proceder como sigue:
+<p style='text-align: justify;'> 
+Para R, una función es un objeto específico.<br><br>
+Por lo tanto, crear una función corresponde a asignar el objeto "función R"
+a una variable, cuyo nombre corresponde a la función misma.<br><br>
+Por ejemplo, para crear la función `hello()`, se puede proceder como sigue:
+</p>
 
 ```{r}
 hello <- function(name) cat("Hello",name,"!")
 hello
 ```
+---
+
 <p style='text-align: justify;'> 
-Para que esta función se ejecute, el usuario debe llamar a la función,
-seguido del argumento entre paréntesis.
+Para que esta función se ejecute, el usuario debe escribir el nombre de la función,
+seguido por el argumento entre paréntesis.
 </p>
 ```{r}
 hello("Peter")
+hello("Fernanda")
 ```
 ---
 
@@ -832,7 +837,7 @@ La función `save.image()` se usa para guardar un espacio de trabajo; puede usar
 <p/>
 
 ---
-
+<!---
 ## Actividad
 
 Inicie R y escriba las siguientes instrucciones:
@@ -855,6 +860,7 @@ q("no")
 ```
 
 ---
+--->
 
 <p style='text-align: justify;'>
 R incluye un mecanismo para recuperar y volver a ejecutar comandos antiguos.<br><br>
@@ -940,12 +946,13 @@ Cada llamada de función individual es rápida, pero la combinación total es le
 <p/>
 
 ---
-
+<!---
 ### Actividad
 
 <p style='text-align: justify;'>
 Use el paquete `microbenchmark` para comparar la construcción vectorizada `x = x + 1` con la versión del ciclo for. Variar el tamaño del vector de entrada.
 <p/>
+--->
 
 ## Asignación de memoria
 
@@ -1026,12 +1033,12 @@ Escribir código de esta manera tiene una serie de beneficios.
 - Es más ordenado.
 - No contiene un error cuando `x` es de longitud `0`.
 
-
+<!---
 ## Actividad
 
 - Calcular el tiempo de ejecución de los dos métodos para `log_sum`.
 - ¿Qué sucede cuando la longitud de `x` es `0`?
-
+--->
 ## Comunicarse con el usuario
 
 <p style='text-align: justify;'>
@@ -1089,17 +1096,17 @@ Cuando se genera una advertencia, indica posibles problemas.<br><br>
 Por ejemplo, `mean(NULL)` devuelve `NA` y también genera una advertencia.<br><br>
 Cuando nos encontramos con una advertencia en nuestro código, es importante resolver el problema y no solo ignorarlo.<br><br>
 Si bien ignorar las advertencias ahorra tiempo a corto plazo, las advertencias a menudo pueden ocultar problemas más profundos que se han generado en nuestro código.<br><br>
-Las advertencias pueden ocultarse usando `suppressWarnings ()`.
+Las advertencias pueden ocultarse usando `suppressWarnings()`.
 <p/>
 
 ---
 
 <p style='text-align: justify;'>
-Para dar una salida informativa, use la función `message ()`.<br><br>
-Por ejemplo, en el paquete `poweRlaw`, la función` message () `se usa para dar al usuario una estimación del tiempo de ejecución esperado.<br><br>
+Para dar una salida informativa, use la función `message()`.<br><br>
+Por ejemplo, en el paquete `poweRlaw`, la función ` message() `se usa para dar al usuario una estimación del tiempo de ejecución esperado.<br><br>
 Proporcionar una estimación aproximada de cuánto tiempo lleva la función, permite al usuario optimizar su tiempo.<br><br>
-Similar a las advertencias, los mensajes se pueden suprimir con `suppressMessages ()`.<br><br>
-Otra función utilizada para imprimir mensajes es `cat ()`.<br><br>
+Similar a las advertencias, los mensajes se pueden suprimir con `suppressMessages()`.<br><br>
+Otra función utilizada para imprimir mensajes es `cat()`.<br><br>
 <p/>
 
 ---
@@ -1584,6 +1591,7 @@ Optimizar una función significa encontrar dónde alcanza su máximo o su mínim
 Hay varias funciones en R para este fin, estas estan basadas en varios algoritmos: `optimize()`, `optim()`, `nlm()`, `constrOptim()`, `nlminb()`.<br><br>
 La función `optimize()`, que solo funciona en una dimensión, es la más fácil de manipular:
 </p>
+
 ```{r}
 optimize(f=function(x)cos(x^2),lower=0,upper=2)
 ```
@@ -1610,7 +1618,28 @@ res <- nlm(f,c(0,0)) # The second effective argument gives the initial values.
 res
 ```
 
+<<<<<<< HEAD
 # Variables Aleatorias{ .center .white data-background="#75AADB" }
+=======
+## Actividad
+
+<p style='text-align: justify;'>
+La función gamma incompleta inferior se define como:
+</p>
+$\gamma(s,x)=\int\limits_{0}^{x}t^{s-1}\exp(-t)dt$,
+<p style='text-align: justify;'>
+donde $s$ es un número positivo. Esta función tambien puede ser representada en series de potencia de la siguiente manera
+</p>
+$\gamma(s,x)=x^s\Gamma(s)\exp(-x)\sum\limits_{k=0}^{\infty}\dfrac{x^k}{\Gamma(s+k+1)}$
+
+---
+
+- Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.
+- Considere el siguiente conjunto de argumentos : $(s,x)\in \{(2,5);(2,20);(10,2);(10,20\}$. Evalue las funciones creadas anteriormente y la función `Igamma( )` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.
+- Utilizando las funciones anteriormente implementadas y la función `Igamma( )`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$,$x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución. 
+
+# Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
+>>>>>>> a86f0961453982da220a7014d06ab24adba94198
 
 ## Objetivos
 
