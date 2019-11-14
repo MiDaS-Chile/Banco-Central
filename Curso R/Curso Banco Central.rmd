@@ -720,9 +720,11 @@ hello("Ben","fr")
 
 ---
 
-- Se puede asignar una lista de argumentos complementarios con la sintaxis ...
-- Al llamar a la función, todos los argumentos "nombrados" que no están en la lista de argumentos se agrupan en la estructura ...
-- En el cuerpo de la función, el usuario puede usar la sintaxis ... como si copiara-pegara la lista de argumentos suplementarios.
+Se puede asignar una lista de argumentos complementarios con la sintaxis ...
+
+Al llamar a la función, todos los argumentos "nombrados" que no están en la lista de argumentos se agrupan en la estructura ...
+
+En el cuerpo de la función, el usuario puede usar la sintaxis ... como si copiara-pegara la lista de argumentos suplementarios.
 
 ```{r}
 test.3points <- function(a="foo",...) print(list(a=a,...))
