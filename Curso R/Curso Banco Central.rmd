@@ -1620,6 +1620,25 @@ res <- nlm(f,c(0,0)) # The second effective argument gives the initial values.
 res
 ```
 
+## Actividad
+
+<p style='text-align: justify;'>
+La función gamma incompleta inferior se define como:
+</p>
+$\gamma(s,x)=\int\limits_{0}^{x}t^{s-1}\exp(-t)dt$,
+<p style='text-align: justify;'>
+donde $s$ es un número positivo. Esta función tambien puede ser representada en series de potencia de la siguiente manera
+</p>
+$\gamma(s,x)=x^s\Gamma(s)\exp(-x)\sum\limits_{k=0}^{\infty}\dfrac{x^k}{\Gamma(s+k+1)}$
+
+---
+
+<p style='text-align: justify;'>
+Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.<br><br>
+Considere el siguiente conjunto de argumentos : $(s,x)\in \{(2,5);(2,20);(10,2);(10,20\}$. Evalue las funciones creadas anteriormente y la función `Igamma( )` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.<br><br>
+Utilizando las funciones anteriormente implementadas y la función `Igamma( )`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$,$x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución. 
+</p>
+
 <<<<<<< HEAD
 # Variables Aleatorias{ .center .white data-background="#75AADB" }
 =======
