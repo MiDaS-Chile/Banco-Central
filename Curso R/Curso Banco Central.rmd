@@ -21,6 +21,14 @@ editor_options:
   chunk_output_type: console
 ---
 
+<style>
+pre.smallCode {
+  width:  360px;               /* Change the width of the chunk */
+  height: 360px;               /* Change the height of the chunk */
+  font-size: 0.4em;            /* Change the font-size */
+} 
+</style>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.path = "static/img/", echo = TRUE, cache = TRUE)
 source("setup.R")
