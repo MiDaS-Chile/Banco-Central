@@ -2335,12 +2335,22 @@ coeftest(aff_tob_ex)
 
 # Series de Tiempo en R{ .center .white data-background="#75AADB" }
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(seasonal)
+library(KFAS)
+library(vars)
+library(xts)
+```
+
 ## Introducción
 
 - R ofrece varias herramientas para analizar series de tiempo.
-- En esta breve presentación, nos enfocaremos en 5 aspectos:
+- En esta breve presentación, nos enfocaremos en 7 temas:
     - Creación de series de tiempo.
     - Filtros Lineales.
+    - Desestacionalización.
+    - Descomposición tendencia/ciclo
     - Modelos ARIMA.
     - Modelos VAR.
     - Modelos SS.
@@ -2384,8 +2394,8 @@ y <- stats::ts(x, frequency = 4, start = c(1959, 2))
 
 ### Ejemplo
 
+Creemos una serie de tiempo determinística
 ```{r}
-# Creemos una serie de tiempo determinística
 x <- ts(1:10, frequency = 1, start = 1)
 
 # Generemos la serie y_t = x_{t-0} + x_{t-1} + x_{t-2}
@@ -2395,6 +2405,59 @@ y[1:10]
 # Generemos la serie y_t = x_{t+1} + x_{t-0} + x_{t-1}
 z <- stats::filter(x, filter = c(1, 1, 1), sides = 2)
 z[1:10]
+```
+
+## Desestacionalización
+
+- Podemos desestacionalizar series de tiempo vía X-13-ARIMA-SEATS (en adelante, X-13) con la función `seasonal::seas()`.
+- Su sintaxis básica es `seas(x, ...)`, donde `x` es la serie analizada.
+- El resultado de esta función será un objeto de clase `seas`. 
+- Adicionalmente, el paquete crea un nuevo método para la función `plot()`, de modo que sea fácil graficar el resultado.
+
+----
+
+### Ejemplo
+
+```{r}
+# La BBDD `seasonal::unemp` contiene la serie del número de desocupados 
+# (en miles) entre enero de 1990 y noviembre del 2016.
+
+unemp_sa <- seasonal::seas(seasonal::unemp) # Desestaciona la serie con X-13
+plot(unemp_sa) # Grafica la serie original y la ajustada
+```
+
+## Descomposición tendencia/ciclo
+
+- Muchos métodos más populares ya están implementados en R. 
+- Entre otros: el filtro de Hodrick-Prescott, el filtro de Baxter-King y el filtro de Hamilton (que en teoría, es superior).
+- La idea del filtro de Hamilton es sencilla: dada una serie $y_t$, Hamilton propone estimar la tendencia con los valores predichos por la regresión de $y_{t+h}$ vs $y_{t-1}, \ldots, y_{t-p}$.
+- Se recomienda usar $(h, p)$ igual $(24, 12)$ o $(8, 4)$, dependiendo de que si serie es mensual o trimestral.
+
+----
+
+## Descomposición tendencia/ciclo
+
+- Podemos usar el filtro de Hamilton con la función `neverhpfilter::yth_filter()`.
+- Su sintaxis básica es `yth_filter(x, h, p, output)`, donde
+  - `x` es la serie analizada.
+  - `h` es literalmente el $h$ señalado en la diapositiva anterior.
+  - `p` es literalmente el $p$ señalado en la diapositiva anterior.
+  - `output` es un vector de strings con los outputs esperados: `"x"` para la serie original, `"trend"` para tendencia, `"cycle"` para el ciclo.
+- El resultado un objeto de clase `xts`.
+- Adicionalmente, el paquete crea un nuevo método para la función `plot()`, de modo que sea fácil graficar el resultado.
+
+----
+
+### Ejemplo
+
+- La BBDD `neverhpfilter::GDPC1` contiene la serie del PIB real de USA 
+entre 1947Q1 y 2017Q3. Carguemos la serie y pasémosla a escala logarítmica
+```{r}
+y <- log(neverhpfilter::GDPC1)
+
+# Luego, grafiquemos la serie junto a su tendencia usando el filtro de Hamilton
+gdp_trend = neverhpfilter::yth_filter(y, h = 8, p = 4, output = c("x", "trend"))
+plot(gdp_trend, legend.loc = "topleft", grid.col = "white")
 ```
 
 ## Modelos ARIMA
@@ -2449,7 +2512,6 @@ stats::coef(arima(x, order = c(1, 0, 1)))
 
 ```{r}
 # Carguemos este BBDD y ajustémosle un VAR(1):
-library(vars)
 data("Canada", package = "vars")
 fit01 <- VAR(Canada, p = 1)
 
@@ -2460,6 +2522,8 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
 
 ## Modelos de Estado Espacio
 
+----
+
 ### Introducción
 
 - En esta sección, veremos cómo analizar modelos de Estado Espacio Lineales y Gaussianos (LG-SSM) usando R.
@@ -2469,6 +2533,7 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
 - Ya que el libro Durbin y Koopman (2012) es más popular entre economistas, nos concentraremos en el paquete `KFAS`.
 
 ----
+
 
 ### Notación
 
@@ -2498,7 +2563,7 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
     \nu_{t+1} &= \nu_t + \zeta_t,       & \zeta_t    &\sim N(0, \sigma^2_\zeta)
   \end{aligned}
   $$
-- Definiendo $\alpha_t = (\mu_t, \nu_t)$, obtenemos un LG-SSM con 
+- Definiendo $\alpha_t = (\mu_t, \nu_t)$, obtenemos un LG-SSM con
   $$
   \begin{aligned}
     T &= \begin{bmatrix} e_1 & 1_2 \end{bmatrix}, &
@@ -2507,7 +2572,8 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
     Q &= diag\{\sigma^2_\xi, \sigma^2_\zeta\}, &
     H &= \sigma^2_\epsilon,
   \end{aligned}
-  $$ donde $e_1 = (1, 0)$ y $1_2 = (1, 1)$.
+  $$
+  donde $e_1 = (1, 0)$ y $1_2 = (1, 1)$.
 - Ya que $\mu_t \sim I(2)$ y $\nu_t \sim I(1)$, la inicialización será
   $$
   \begin{aligned}
@@ -2533,7 +2599,6 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
 - La BBDD `alcohol` contiene la población (en cientos de miles) y el número de muertes asociadas al alcohol en Finlandia para los años 1969-2013 en el grupo etáreo de 40-49 años.
 - Calculemos la serie de muertes por 100.000 habitantes:
 ```{r}
-library(KFAS)
 data("alcohol", package = "KFAS")
 muertes    <- alcohol[, 2]
 habitantes <- alcohol[, 6]
@@ -2586,7 +2651,7 @@ fit01$optim.out$par # imprime los coeficientes estimados
 ### Prediga y Suavice usando `KFAS::KFS()`
 
 - La función `KFS()` permite, entre otras cosas, predecir (1 paso adelante) y suavizar $\alpha_t$.
-- Su sintaxis básica es `value <- KFS(fit$model)`, donde `fit` fue ajustado usando `fitSSM()`.
+- Su sintaxis básica es `KFS(fit$model)`, donde `fit` fue ajustado usando `fitSSM()`.
 - El resultado es un objeto con varios campos, entre ellos:
     - `a:` que guarda los estados predichos (1 paso adelante).
     - `alphahat`: que guarda los estados suavizados.
@@ -2596,7 +2661,7 @@ fit01$optim.out$par # imprime los coeficientes estimados
 ### Ejemplo - Modelo de nivel/pendiente local
 
 - Continuando el ejemplo, si quisiéramos graficar $y_t$ junto a la tendencia (suavizada), el código apropiado sería
-```{r, message=FALSE, fig.height=3}
+```{r, message=FALSE}
 out01 <- KFAS::KFS(fit01$model)
 smo   <- out01$alphahat[, 1]
 ggplot(tibble(y = y), aes(x = time(y))) +
@@ -2608,7 +2673,7 @@ ggplot(tibble(y = y), aes(x = time(y))) +
 
 ### `KFAS::SSModel():` Funciones de Ayuda
 
-- Ya vimos que la función `SSMcustom()` permite especificar cualquier LG-SSM. 
+- La función `SSMcustom()` permite especificar cualquier LG-SSM. 
 - El costo de esa generalidad es que el código es bastante largo.
 - Por fortuna, `KFAS` tiene varias funciones de ayuda para especificar componentes *populares*, como por ejemplo:
     - `KFAS::SSMarima()`: añade un componente ARIMA.
@@ -2630,6 +2695,24 @@ m01 <- KFAS::SSModel(
   data = y
 ) # Claramente, es menos verboso.
 ```
+
+----
+
+#### Actividad (parte I)
+
+- El archivo `Seatbelt.txt` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y Diciembre de 1984. Dado lo anterior:
+  - Importe la BBDD como un `data.frame`.
+  - Convierta el resultado en una serie de tiempo.
+  - Estime un modelo de nivel, pendiente y estacionalidad local.
+  - Grafique los componentes tendencial y estacional ya suavizados.
+  
+----
+
+#### Actividad (parte II)
+
+- Reconsidere el ejemplo dado para el filtro de Hamilton.
+  - Estime un modelo de nivel, pendiente y estacionalidad local y grafique la tendencia suavizada. ¿Cómo luce en relación a lo obtenido con el filtro de Hamilton?
+  - Repita el ejercicio anterior, pero ahora con una pendiente no local sino global.
 
 # Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
 
