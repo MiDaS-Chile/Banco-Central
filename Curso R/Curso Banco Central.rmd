@@ -29,7 +29,7 @@ source("setup.R")
 
 # <br><br>Curso de R<br><small> <br><br> MiDaS</small>{ .center .white data-background="#75AADB" }
 
-# Conceptos Basicos de R{ .center .white data-background="#75AADB" }
+# Conceptos Básicos de R{ .center .white data-background="#75AADB" }
 
 ## Descarga e Instalación
 
