@@ -1952,12 +1952,12 @@ predict(model2, newdata, interval = "confidence")
 
 ```{r}
 anova(model1,model2)
-model3 <- lm(BWT ~ LWT + factor(SMOKE), data = mydata1)
 ```
 
 ----
 
 ```{r}
+model3 <- lm(BWT ~ LWT + factor(SMOKE), data = mydata1)
 anova(model3,model2)
 ```
 
@@ -2073,7 +2073,7 @@ BIC(model5, model6)
 
 ## Bondad de ajuste del modelo
 
-Supongamos que el modelo seleccionado corresponde al siguiente:
+<p align = "justify"> Supongamos que el modelo seleccionado corresponde al siguiente: </p>
 
 ```{r}
 library(lmtest)
@@ -2085,7 +2085,7 @@ coeftest(finalmodel)
 
 ###  Anásilis de Residuos
 
-Debemos verificar que los residuos de nuestro modelo cumplen los supuestos preestablecidos. Para ello debemos verificar:
+<p align = "jusitfy"> Debemos verificar que los residuos de nuestro modelo cumplen los supuestos preestablecidos. Para ello debemos verificar: </p>
 
 - Normalidad de los residuos.
 - Homocedasticidad de la varianza de los residuos.
