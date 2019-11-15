@@ -12,7 +12,7 @@ En este [Curso](https://midas-chile.github.io/INE/Curso%20R/Curso-INE.html#/curs
 
 # Links
 
-- [Conceptos básicos de `R`.](https://midas-chile.github.io/Banco-Central/Curso%20R/Curso-Banco-Central.html#/conceptos-basicos-de-r)
+- [Conceptos básicos de `R`.](https://midas-chile.github.io/Banco-Central/Curso%20R/Curso-Banco-Central.html#/conceptos-bsicos-de-r)
 - [Manejo de base de datos.](https://midas-chile.github.io/Banco-Central/Curso%20R/Curso-Banco-Central.html#/importación-y-manejo-de-base-de-datos)
 - [Visualización de datos.](https://midas-chile.github.io/Banco-Central/Curso%20R/Curso-Banco-Central.html#/visualizacion-de-datos)
 - [Programación en `R`.](https://midas-chile.github.io/Banco-Central/Curso%20R/Curso-Banco-Central.html#/programación-en-r)

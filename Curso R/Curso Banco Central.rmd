@@ -38,12 +38,6 @@ source("setup.R")
 - Instalar ambos programas de la forma usual.
 - Además, existe una versión online a la que se puede acceder a través del siguiente enlace [Rstudio Cloud](http://rstudio.cloud).
 
-## Comparación R vs STATA
-
-- En `R` no existen las MACROS
-- `R` facilita la composición de funciones
-- `R` puede tener abiertas muchas bases de datos simultáneamente
-
 ## Interfaz básica de RStudio
 
 ![http://edild.github.io/qetxrbook/rintro/rstudio.html](Images/rstudio.png)
@@ -80,7 +74,8 @@ b = 3^2
 c <- "Hola Mundo" # String o carácter.
 ```
 
-**Nota:** Solo se pueden crear variables con caractéres alfanuméricos, "." y "_". Los espacios no están permitidos.
+<p align = "justify">
+**Nota:** Solo se pueden crear variables con caractéres alfanuméricos, "." y "_". Los espacios no están permitidos.</p>
 
 ----
 
@@ -122,12 +117,15 @@ x[-4] # Vector original sin el elemento en la posición 4
 
 ## Objetos básicos de R: Funciones
 
-<p align = "justify"> Una herramienta para la manipulación de objetos son las funciones. Una función en `R` tiene la estructura de `nombre_funcion(<lista de argumentos>)`. Para asignar el valor de un argumento existen dos opciones: </p>
+<p align = "left"> Una herramienta para la manipulación de objetos son las funciones. Una función en `R` tiene la estructura de `nombre_funcion(<lista de argumentos>)`. </p> 
+
+<p align = "left"> Para asignar el valor de un argumento existen dos opciones: </p> 
 
 - `funcion(nombre_argumento1 = argumento1, nombre_argumento2 = argumento2)` 
 - `funcion(valor_argumento1, argumento_2)`
 
-**Importante:** En el segundo caso es necesario asignar los valores en el orden preestablecido por la función. Para averiguar dicho orden, así como el funcionamiento de una función, se debe hacer `?nombre_funcion()`.
+<p align = "justify">
+**Importante:** En el segundo caso es necesario asignar los valores en el orden preestablecido por la función. Para averiguar dicho orden, así como el funcionamiento de una función, se debe hacer `?nombre_funcion()`. </p>
 
 ---- 
 
@@ -150,7 +148,7 @@ Los paquetes de R son el eje central de su funcionamiento. Cada uno de ellos pro
 ## Objetos básicos de R: Paquetes
 
 Para utilizar un paquete en R hay que realizar las siguientes operaciones:
-  
+
 - Instalar el paquete, **install.packages('nombre_paquete').** 
 - Cargar el paquete,  **library('nombre_paquete')**.
 
@@ -183,7 +181,7 @@ data[1,]
 data[,2]
 ```
 
-- Además, se puede acceder a una columna específica de la base de datos utilizando su nombre 
+<p align = "left"> Además, se puede acceder a una columna específica de la base de datos utilizando su nombre </p>
 
 ```{r}
 data$Sexo
@@ -191,12 +189,19 @@ data$Sexo
 
 ## El operador %>% 
 
-Permite realizar composición de funciones. Un ejemplo de su utilización es:
+<p align = "justify">
+Permite realizar composición de funciones. Un ejemplo de su utilización es: </p>
   
 ```{r}
 x %>% mean() %>% log()
 log(mean(x))
 ```
+
+## Comparación R vs STATA
+
+- En `R` no existen las MACROS
+- `R` facilita la composición de funciones
+- `R` puede tener abiertas muchas bases de datos simultáneamente
 
 # Importación y Manejo de Bases de Datos{ .center .white data-background="#75AADB" }
 
@@ -238,7 +243,8 @@ storms
 
 ## Ejemplo: storms.csv
 
-El comando **glimpse()** nos otorga características de las columnas(variables) de la BD.
+<p align = "justify">
+El comando **glimpse()** nos otorga características de las columnas(variables) de la BD.</p>
 ```{r}
 glimpse(storms)
 ```
@@ -298,7 +304,8 @@ storms %>%
 
 ## arrange(): *Ordenar filas*
 
-Permite ordenar de menor a mayor una BD teniendo en consideración una o más variables.
+<p align = "justify">
+Permite ordenar de menor a mayor una BD teniendo en consideración una o más variables. </p>
 
 ![](Images/arrange.PNG)
 
@@ -344,7 +351,8 @@ storms %>%
 
 ## group_by + summarise: *Resumir Columnas por Grupos*
 
-Group_by divide la base de datos en grupos, lo cual permite obtener medidas de resumen por grupos utilizando summarise.
+<p align = "justify">
+`group_by` divide la base de datos en grupos, lo cual permite obtener medidas de resumen por grupos utilizando summarise. </p>
 
 ![](Images/gby.PNG)
 
@@ -363,9 +371,10 @@ pollution %>%
             max = max(amount))
 ```
 
-## mutate + case_when: *Creación de indicadores*
+## mutate + case_when: *Indicadores*
 
-**case_when()** es una función que permite, en conjunto con **mutate()**, generar variables indicadoras.
+<p align = "justify">
+`case_when()` es una función que permite, en conjunto con `mutate`, generar variables indicadoras. </p>
 
 ```{r}
 pollution %>% 
@@ -396,28 +405,38 @@ Permite cambiar los nombres de las columnas seleccionadas
 ```{r}
 artists <- read_csv("Datasets/artists.csv")
 artists
+```
+
+----
+
+```{r}
 artists %>% rename(Nombres = name) -> artist2
 artist2
 ```
 
 ## join: *Juntar bases de datos*
 
-Existen 7 funciones, en dplyr, que permiten juntar/contrastar dos bases de datos en una sola, utilizando una columna como link. Algunos ejemplos son:
+<p align = "justify">
+Existen 7 funciones, en dplyr, que permiten juntar/contrastar dos bases de datos en una sola, utilizando una columna como link.</p> 
+<p align = "left"> Algunos ejemplos son: </p>
   
-  - **inner_join()**
-  - **left_join()**
-  - **right_join()**
+  - `inner_join()`
+  - `left_join()`
+  - `right_join()`
+
   
-## **left_join**: *Ejemplo*
+## left_join: *Ejemplo*
+  
+  ![](Images/left_join.png)
+
+## left_join: *Código*
 
 ```{r, message = FALSE}
 songs <- read_csv("Datasets/songs.csv")
 songs
 ```
-  
-  ![](Images/left_join.png)
 
-## `inner_join()` y `right_join`
+## inner_join y right_join : *Código*
 
 ```{r}
 artist3 <- inner_join(songs, artists, by = "name")
@@ -435,8 +454,8 @@ left_join(songs,artist2, by = c("name" = "Nombres"))
 
 ## gather: *Reunir columnas*
 
-Coloca nombres de columnas en una variable (columna) __key__, recolectando los 
-valores (__value__) de las columnas en un __sola__ columna
+<p align  = "justify">
+Coloca nombres de columnas en una variable (columna) __key__, recolectando los valores (__value__) de las columnas en un __sola__ columna </p>
 
 ![](Images/gather.png)
 
@@ -449,7 +468,7 @@ table4ag
 
 ## spread: *Esparcir*
 
-Esparce un par de columnas (2, key-value) en multiples columnas 
+Esparce un par de columnas (2, key-value) en múltiples columnas 
 
 ![](Images/spread.png)
 
@@ -460,7 +479,7 @@ table2s <- spread(table2, type, count)
 table2s
 ```
 
-# Visualizacion de datos { .center .white data-background="#75AADB"}
+# Visualización de datos { .center .white data-background="#75AADB"}
   
 ## Algunos gráficos de `R`
   
@@ -517,7 +536,7 @@ ggplot(data = paises) +
 
 - Cada función `geom_algo` tiene un argumento de mapping que define cómo se asignan o se “mapean” las variables del conjunto de datos a propiedades visuales del `geom_algo`
 -  El argumento de mapping siempre aparece emparejado con `aes()`, y los argumentos `x` e `y` especifican qué variables asignar a los ejes `x` e `y`
-- Para más gráficos, pueden visitar el siguiente ['link'](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization)
+- Para más gráficos, pueden visitar el siguiente [sitio web.](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization)
 
 ----
   
@@ -557,7 +576,7 @@ ggplot(data = paises) +
   facet_wrap(vars(continent))
 ```
 
-## Paquete Útil: `GGTHEMEASSIST`
+## Paquete GGTHEMEASSIST: *Asistente de edición*
 
 Para editar algunas características de los gráficos, se puede utilizar el adicional proveniente del paquete `ggThemeAssist`. Para ello:
 
@@ -566,7 +585,7 @@ Para editar algunas características de los gráficos, se puede utilizar el adic
 - Hacer click en Addins > ggplot Theme Assistant.
 - Editar todo lo deseado.
 
-## Gráficos en la misma ventana: `Rmisc`
+## Paquete Rmisc: *Gráficos en la misma ventana*
 
 Generamos 3 gráficos diferentes:
 
@@ -607,13 +626,62 @@ ggplot(data = Ang) +
 
 ```
 
-## Actividad III
+# Actividad I { .center .white data-background="#75AADB"}
+
+## Parte I
 
 - Genere un vector con los primeros 1000 números impares.
 - Del vector anterior, obtenga los impares número 1, 10, 100 y 1000.
-- Cálcule la suma de la raíz de los números generados antes utilizando 2 métodos diferentes.
+- Cálcule la suma de la raíz de los números generados antes.
 
-Abra el archivo `Actividad-3.pdf` y responda las preguntas en él.
+## Parte II
+
+<p align = "justify"> Instale los siguientes paquetes: `babynames`, `nycflights13`, `maps` y carguelos (con `library`) junto a `tidyverse`. Resuelva las siguientes preguntas: </p>
+
+<p align = "justify"> **Pregunta 1** </p>
+
+<p align = "justify"> Considere la tabla `births` paquete `babynames`.</p>
+
+- ¿Cuántas columnas y filas posee esta tabla?
+- Utilizando un gráfico adecuado, estudie los nacimientos por años en EE.UU. ¿En qué década se obtuvo la menor cantidad de nacimientos?
+
+----
+
+<p align = "justify"> **Pregunta 2** </p>
+
+<p align = "justify"> Considere ahora la tabla `babynames` del paquete `babynames`. </p>
+
+- Obtener la misma estructura en cuanto a **columnas** que la tabla `births`, esto es, generar una nueva tabla que nos entregue el número de nacimientos por año.
+- Genere una tabla partir de `babynames` que contenga los nacimientos de las personas de género femenino con el nombre **Nala, Ariel** y **Elsa** desde los años 1980.
+- Con el `tibble` anterior genere un gráfico que contenga la información de los nacimientos por año de cada uno de los nombres mencionados. *Hint:* Use `face_wrap(~ name, scales = "free_y")`.
+
+----
+
+<p align = "justify"> **Pregunta 3** </p>
+
+<p align = "justify"> Utilizando las tablas `airports` y `flights` del paquete `nycflights13`</p>
+
+- Obtenga una tabla que contenga conteos de vuelos según su destino `dest` además de la longitud y latitud del aeropuerto(de destino). 
+
+----
+
+<p align = "justify"> **Pregunta 4** </p>
+
+<p align = "justify"> Considere el siguiente gráfico </p>
+
+```{r,message = FALSE, fig.height= 2.5}
+library(maps)
+us <- map_data("state")
+ggmap <- ggplot() +
+  geom_polygon(data = us, aes(long, lat, group = group), alpha = 0.25) +
+  coord_fixed()
+ggmap
+```
+
+----
+
+- Agregue una capa de puntos ubicando los aeropuertos obtenidos de la pregunta anterior y usando además: `aes(size = la_cantidad_de_vuelos_a_dicho_aeropuerto)`.
+- A la izquierda del gráfico anterior se observan 2 puntos. Genere el/los pasos necesarios para seleccionarlos usando la tabla resultante de la pregunta 5 para identificar los nombres de dichos aeropuertos y responda: ¿Donde están? ¿Qué gracias tienen?
 
 # Programación en R { .center .white data-background="#75AADB" }
 
@@ -894,7 +962,7 @@ Se discutirá los siguientes temas:
 ## Prerrequisitos
 
 <p style='text-align: justify;'>
-Se utilizarán dos paquetes: `complier`, `memoise`.<br><br>
+Se utilizarán dos paquetes: `compiler`, `memoise`.<br><br>
 Estos paquetes forman parte de las librerias base de R, por lo tanto sólo se los debe cargar
 <p/>
 ```{r}
@@ -946,11 +1014,9 @@ Entonces, `x=x+1` implica la llamada de una única función `+`, mientras que el
 <li>n llamadas a la función `[]`.</li>
 <li>n llamadas a la función `<-`.</li>
 <li>2 llamdas a las funciones: `for` y `seq_len`.</li>
-</ul>
 <p/>
 <p style='text-align: justify;'>
-No es que el ciclo for sea lento, sino que tenemos muchas más llamadas a funciones.<br>
-Cada llamada de función individual es rápida, pero la combinación total es lenta.
+No es que el ciclo for sea lento, sino que tenemos muchas más llamadas a funciones. Cada llamada de función individual es rápida, pero la combinación total es lenta.
 <p/>
 
 
@@ -1010,8 +1076,7 @@ Por ejemplo, el código `x <- runif(n) + 1` realiza dos operaciones vectorizadas
 ---
 
 <p style='text-align: justify;'>
-En general, es una buena idea explotar las funciones vectorizadas.<br><br>
-Considere este fragmento de código de R que calcula la suma de `log(x)`:
+En general, es una buena idea explotar las funciones vectorizadas. Considere este fragmento de código de R que calcula la suma de `log(x)`:
 ```{r, eval=FALSE}
 log_sum <- 0
 for(i in 1:length(x)){
@@ -1063,8 +1128,7 @@ Por lo tanto, las primeras líneas de una función suelen realizar la comprobaci
 Supongamos que llamamos a una función que genera un error. ¿Entonces que?<br><br>
 Un código eficiente y robusto detecta el error y lo maneja de manera adecuada.<br><br>
 Los errores pueden detectarse usando `try()` y `tryCatch()`.<br><br>
-Por ejemplo,
-<p/>
+Por ejemplo, <p/>
 ```{r, eval=FALSE}
 # Suppress the error message
 good <- try(1 + 1, silent = TRUE)
@@ -1152,7 +1216,7 @@ c(factor(x))
 
 Los factores se pueden usar para ordenar en gráficos:
 ```{r fig1, out.width = '70%'}
-boxplot(count~spray, data = InsectSprays, col = "lightgray")
+ggplot(data = InsectSprays) + geom_boxplot(aes(x = spray, y = count)) + theme_light()
 ```
 
 ---
@@ -1518,8 +1582,8 @@ all.equal(A,Q%*%R) # A = QR
 
 ## Integración y diferenciación numérica
 
-Supongamos que deseamos verificar numéricamente que 
-$\int\limits_{-\infty}^{\infty}\frac{\exp\{-x^2/2\}}{\sqrt{2\pi}}=1$
+<p align = "justify">
+Supongamos que deseamos verificar numéricamente que </p> $$\int\limits_{-\infty}^{\infty}\frac{\exp\{-x^2/2\}}{\sqrt{2\pi}}=1$$ 
 
 ```{r}
 myf <- function(x) exp(-x^2/2)/sqrt(2*pi)
@@ -1528,7 +1592,7 @@ integrate(myf,lower=-Inf,upper=Inf)$value
 
 ---
 
-Tenga en cuenta que en R también es posible integrar funciones de varias variables $\int\limits_{0}^{1}\int\limits_{2}^{3}\cos(x+y)dydx=2\cos(3)-\cos(4)-\cos(2)$
+<p align = "justify">Tenga en cuenta que en R también es posible integrar funciones de varias variables </p> $$\int\limits_{0}^{1}\int\limits_{2}^{3}\cos(x+y)dydx=2\cos(3)-\cos(4)-\cos(2)$$
 
 ```{r}
 myf <- function(x)
@@ -1597,7 +1661,7 @@ optimize(f=function(x)cos(x^2),lower=0,upper=2)
 ---
 
 <p style='text-align: justify;'>
-Utilizemos la función `nlm()` para optimización multidimensional, esta calcula el mínimo de una función. Suponer que $f(x,y)=10\frac{\sin(\sqrt{(x-3)^2+(y-4)^2})}{((x-3)^2+(y-4)^2)^{\alpha}}$, con $\alpha=1$ </p>
+Utilizemos la función `nlm()` para optimización multidimensional, esta calcula el mínimo de una función. Suponer que </p> $$f(x,y)=10\frac{\sin\left(\sqrt{(x-3)^2+(y-4)^2}\right)}{((x-3)^2+(y-4)^2)^{\alpha}}, \quad \alpha=1$$ 
 
 ```{r}
 f <- function(z,alpha=1.1)
@@ -1628,19 +1692,15 @@ donde $s$ es un número positivo. Esta función tambien puede ser representada e
 $\gamma(s,x)=x^s\Gamma(s)\exp(-x)\sum\limits_{k=0}^{\infty}\dfrac{x^k}{\Gamma(s+k+1)}$
 
 ---
+- Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.
+- Considere el siguiente conjunto de argumentos : $$(s,x)\in \{(2,5);(2,20);(10,2);(10,20)\}.$$ Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.
+- Utilizando las funciones anteriormente implementadas y la función `Igamma()`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$, $x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución. 
 
-<p style='text-align: justify;'>
-Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.<br><br>
-Considere el siguiente conjunto de argumentos : $(s,x)\in \{(2,5);(2,20);(10,2);(10,20)\}$. Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.<br><br>
-Utilizando las funciones anteriormente implementadas y la función `Igamma()`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$,$x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución. 
-</p>
-
-# Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
->>>>>>> a86f0961453982da220a7014d06ab24adba94198
+# Variables Aleatorias{ .center .white data-background="#75AADB" }
 
 ## Objetivos
 
-En este capítulo discutiremos los siguientes temas:
+<p align = "justify"> En este capítulo discutiremos los siguientes temas: </p>
 
 - Distribuciones de probabilidad.
 - Conceptos básicos de la inferencia estadística en el caso frequentista.
@@ -1664,7 +1724,7 @@ qnorm(0.95, mean = 500, sd = 100)
 
 ----
 
-```{r}
+```{r, fig.height= 4}
 df <- tibble("muestra" = rnorm(1000, mean = 500, sd = 100))
 hist <- ggplot(df) + geom_histogram(aes(x = muestra)) + ggtitle("Histograma")
 density <- ggplot(df) + geom_density(aes(x = muestra)) + ggtitle("Gráfico de Densidad")
@@ -1674,7 +1734,7 @@ multiplot(hist,density, cumulative, cols = 3)
 
 ## Ley de los grandes números
 
-<p align = "justify"> Sea \(\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i\) donde los \(X_i\) son variables aleatorias independientes e idénticamente distribuidas con $E(X_i \ ) = \mu, \text{var}(X_i \ ) = \sigma^2$. La ley de los grandes números nos dice que $$\bar{X}_n \xrightarrow{P} \mu.$$ </p>
+<p align = "justify"> Sea \(\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i\) donde los \(X_i\) son variables aleatorias independientes e idénticamente distribuidas con $E(X_i \ ) = \mu, \text{var}(X_i \ ) = \sigma^2$. La ley de los grandes números nos dice que </p> $$\bar{X}_n \xrightarrow{P} \mu.$$ 
 
 ## Ejemplo
 
@@ -1694,7 +1754,7 @@ ggplot(df) +
 
 <p align = "justify">  Sean $X_1,\ldots,X_n$ variables aleatorias independientes e idénticamente distribuidas. Bajo un tamaño de muestra lo suficientemente grande se cumplirá que $$\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{D} N(0,1).$$ </p>
 
-En este [link](https://gallery.shinyapps.io/CLT_mean/) se puede encontrar un ejemplo de las aplicaciones del teorema.
+<p align = "justify"> En este [enlace](https://gallery.shinyapps.io/CLT_mean/) se puede encontrar un ejemplo de las aplicaciones del teorema. </p>
 
 ## Estimación Puntual
 
@@ -1713,7 +1773,7 @@ theta_estimado
 
 <p align = "justify"> Las estimaciones no seran exactamente igual al valor original parámetro original. Una forma de solventar este problema es generar intervalos, a partir de la estimación, que contengan el verdadero valor del parámetro. </p>
 
-<p align = "justify"> Un intervalo de confianza contendrá un 95% de las veces el verdadero real del parámetro. En este [link](https://istats.shinyapps.io/ExploreCoverage/) se puede observar cómo se comportan los intervalos de confianza </p>
+<p align = "justify"> Un intervalo de confianza contendrá un 95% de las veces el verdadero real del parámetro. En este [enlace](https://istats.shinyapps.io/ExploreCoverage/) se puede observar cómo se comportan los intervalos de confianza </p>
 
 # Regresión Lineal{ .center .white data-background="#75AADB" }
 
@@ -1735,7 +1795,7 @@ head(mydata)
 
 ----
 
-Transformamos pounds a kilogramos
+Transformamos libras a kilogramos
 
 ```{r, fig.height = 4}
 mydata <- mydata %>% mutate(LWT = LWT*0.4535923)
@@ -1797,22 +1857,25 @@ anova(model1)
 
 ----
 
-### Intervalos de confianza para los coeficientes de regresión
+### I.C. para los coeficientes de regresión
 
 ```{r}
 confint(model1)
 ```
+
+----
 
 ### Predicción:
 
 ```{r}
 lwt0 <- c(56, 40)
 predict(model1, tibble(LWT = lwt0), interval = "prediction")
+predict(model1, tibble(LWT = lwt0), interval = "confidence") 
 ```
 
 ----
 
-### Agregar banda de confianza de la recta estimada
+### Banda de confianza de la recta estimada
 
 ```{r}
 ggPredict(model1,interactive = TRUE, se = TRUE)
@@ -1826,17 +1889,17 @@ ggPredict(model1,interactive = TRUE, se = TRUE)
 
 $$y_i = \beta_0 + \beta_1x_{1i} + \cdots + \beta_px_{pi} + \epsilon_i$$ 
 
-<p align = "justify"> donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$.</p>
+<p align = "justify"> donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1, \ldots, \beta_p \in \mathbb{R}$.</p>
 
 ----
 
-Modelaremos BWT utilizando BWT,LWT,AGE y SMOKE.
+Modelaremos BWT utilizando LWT,AGE y SMOKE.
 
 ```{r, fig.height=4}
 mydata1 <- mydata %>%  select(BWT,LWT,AGE,SMOKE)
 library(GGally)
 pairs <- mydata1 %>% select(-SMOKE) %>% ggpairs()
-boxplot <- mydata1 %>% ggplot() + geom_boxplot_interactive(aes(x = factor(SMOKE), y = BWT))
+boxplot <- mydata1 %>% ggplot() + geom_boxplot_interactive(aes(x = factor(SMOKE), y = BWT))+ theme_light()
 multiplot(pairs,boxplot,cols = 2)
 ```
 
@@ -1867,7 +1930,7 @@ anova(model2)
 
 ----
 
-### Intervalos de confianza para los coeficientes
+### I.C. para los coeficientes
 
 ```{r}
 confint(model2)
@@ -1880,6 +1943,7 @@ confint(model2)
 ```{r}
 newdata <- tibble("AGE" = 23, "LWT" = 57, "SMOKE" = 1)
 predict(model2, newdata, interval = "pred")
+predict(model2, newdata, interval = "confidence")
 ```
 
 ----
@@ -1889,12 +1953,17 @@ predict(model2, newdata, interval = "pred")
 ```{r}
 anova(model1,model2)
 model3 <- lm(BWT ~ LWT + factor(SMOKE), data = mydata1)
+```
+
+----
+
+```{r}
 anova(model3,model2)
 ```
 
 ----
 
-### Variables con más de 2 categorías
+### Variables con más de dos categorías
 
 ```{r}
 model4 <- lm(BWT ~ LWT + factor(RACE), data = mydata)
@@ -1931,7 +2000,7 @@ ggPredict(model6, se = TRUE, interactive = TRUE)
 
 ## Selección de variables
 
-<p align = "justify"> Los siguientes algoritmos generan modelos de regresión en forma secuencial e incluyendo una sola variable predictora en cada paso: </p>
+<p align = "justify"> Los siguientes corresponden a algoritmos implementados en `R` para la selección de variables </p>
 
 - Método Forward
 - Método Backward
@@ -1952,7 +2021,7 @@ add1(lm(BWT ~ 1, data = mydata), BWT ~ LWT + AGE + UI + factor(SMOKE) +
 
 ### Método Backward
 
-<p align = "justify"> Se parte de un modelo complejo y en cada etapa se eliminan las variables menos influyentes.</p>
+<p align = "justify"> Se parte de un modelo complejo y en cada etapa se elimina la variable menos influyente.</p>
 
 ```{r}
 drop1(lm(BWT ~ LWT + AGE + UI + factor(SMOKE) + 
@@ -1976,12 +2045,12 @@ step(lm(BWT ~ 1, data = mydata), BWT ~ LWT + AGE + UI + factor(SMOKE) +
 
 <p align = "justify"> Existen diferentes medidas para comparar diferentes modelos de regresión: </p>
 
-- $R^2$ ó $R^2$ ajustado
+- $R^2$ ó $R^2$-ajustado
 - AIC ó BIC
 
 ----
 
-### $R^2$ ó $R^2$ ajustado
+### $R^2$ ó $R^2$-ajustado
 
 Se prefieren los modelos con $R^2$ y $R^2$ ajustados más cercanos a 1.
 
@@ -1995,7 +2064,7 @@ r2.adj
 
 ### AIC ó BIC
 
-Se prefieren los modelos con menor AIC o BIC
+<p align = "justify"> Se prefieren los modelos con menor AIC o BIC </p>
 
 ```{r}
 AIC(model5, model6)
@@ -2007,8 +2076,9 @@ BIC(model5, model6)
 Supongamos que el modelo seleccionado corresponde al siguiente:
 
 ```{r}
+library(lmtest)
 finalmodel <- lm(BWT ~ SMOKE + AGE + LWT + factor(RACE) + UI + HT + SMOKE:AGE, data = mydata)
-summary(finalmodel)
+coeftest(finalmodel)
 ```
 
 ----
@@ -2045,15 +2115,12 @@ p1
 #### Independencia de los residuos
 
 ```{r}
-library(lmtest)
 dwtest(BWT ~ SMOKE + AGE + LWT + factor(RACE) + UI + HT + SMOKE:AGE, data = mydata)
 ```
 
 ----
 
 ### Identificación de outliers
-
-<p align = "justify"> Diremos que un dato es outlier si se encuentra `lejos` del resto de los datos. Una forma de encontrarlos es utilizar los residuos studentizados </p>
 
 ```{r, fig.height=4, size= 1}
 library(ggrepel)
@@ -2067,13 +2134,14 @@ ggplot(data, aes(x = fit, y = res_stud, label = labels)) + geom_point() +
 
 ----
 
-### Identificación de puntos palanca
+### Identificación de puntos influyentes
 
-<p align = "justify"> Una observación es palanca si el valor del predictor esta muy alejado de la media. Suelen provocar desviaciones en la recta de regresión. Algunos test para detectarlos son: </p>
+<p align = "justify"> Algunos test para identificarlos son:</p>
 
 - Distancia de Cook
 - DFFITS
 - DFBETAS
+- COVRATIO
 
 ---- 
 
