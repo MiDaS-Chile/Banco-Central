@@ -223,11 +223,11 @@ log(mean(x))
 - Si es texto: **read_delim**.
 - Si es excel: **read_excel**.
 - Si es spss: **read_sav**.
-- Para más información, pueden entrar al siguiente [sitio web.](https://resources.rstudio.com/spanish-pdfs/data-import-cheatsheet-spanish).
+- Para más información, pueden entrar al siguiente [enlace](https://resources.rstudio.com/spanish-pdfs/data-import-cheatsheet-spanish)
 
 ## Ejemplo: storms.csv
 
-La base de datos storms se encuentra en el siguiente [url](https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.csv).
+La base de datos storms se encuentra en el siguiente [enlace](https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.csv).
 
 ```{r}
 url  <- 'https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.csv'
@@ -264,7 +264,7 @@ head(submuestra)
 
 ## filter(): *Seleccionar filas*
 
-Permite seleccionar filas de cierta BD utilizando un criterio particular.
+Permite seleccionar filas de cierta base de datos utilizando un criterio particular.
 
 ![](Images/filter.PNG)
 
@@ -279,7 +279,7 @@ storms %>%
 
 ## select(): *Seleccionar Columnas*
 
-Permite seleccionar columnas de una base de datos en específico.
+Permite seleccionar columnas de una base de datos.
 
 ![](Images/select.PNG)
 
@@ -302,7 +302,7 @@ storms %>%
 ## arrange(): *Ordenar filas*
 
 <p align = "justify">
-Permite ordenar de menor a mayor una BD teniendo en consideración una o más variables. </p>
+Permite ordenar de menor a mayor una base de datos teniendo en consideración una o más variables. </p>
 
 ![](Images/arrange.PNG)
 
@@ -323,7 +323,7 @@ storms %>%
 
 ## mutate(): *Crear/Modificar Columnas*
 
-Permite crear o modificar una columna de la BD.
+Permite crear o modificar una columna de la base de datos.
 
 ![](Images/mutate.PNG)
 
@@ -336,7 +336,7 @@ storms %>%
 
 ## summarise(): *Resumir Columnas*
 
-Permite aplicar funciones de resumen en las columnas de una BD.
+Permite aplicar funciones de resumen en las columnas de una base de datos.
 
 ![](Images/summarize.PNG)
 
@@ -397,7 +397,7 @@ pollution2
 
 ## Rename: *Renombrar columnas*
 
-Permite cambiar los nombres de las columnas seleccionadas
+Permite cambiar los nombres de las columnas seleccionadas.
 
 ```{r}
 artists <- read_csv("Datasets/artists.csv")
@@ -452,7 +452,7 @@ left_join(songs,artist2, by = c("name" = "Nombres"))
 ## gather: *Reunir columnas*
 
 <p align  = "justify">
-Coloca nombres de columnas en una variable (columna) __key__, recolectando los valores (__value__) de las columnas en un __sola__ columna </p>
+Coloca nombres de columnas en una variable (columna) __key__, recolectando los valores (__value__) de las columnas en un __sola__ columna.</p>
 
 ![](Images/gather.png)
 
@@ -465,7 +465,7 @@ table4ag
 
 ## spread: *Esparcir*
 
-Esparce un par de columnas (2, key-value) en múltiples columnas 
+Esparce un par de columnas (2, key-value) en múltiples columnas. 
 
 ![](Images/spread.png)
 
