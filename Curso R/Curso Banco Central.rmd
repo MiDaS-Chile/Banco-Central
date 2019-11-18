@@ -1385,11 +1385,14 @@ mean_r(x), cmp_mean_r(x), mean(x))
 
 ## Objetivos
 
-- Funciones matemáticas básicas
-- Operaciones habituales en matrices y descomposiciones
-- Integracion numerica
-- Diferenciación numérica
-- Optimización
+<ul>
+<li> Funciones matemáticas básicas</li>
+<li> Operaciones habituales en matrices y descomposiciones</li>
+<li> Integracion numerica</li>
+<li> Diferenciación numérica</li>
+<li> Optimización</li>
+</ul>
+
 
 ## Funciones matemáticas básicas
 
@@ -1677,7 +1680,9 @@ res <- nlm(f,c(0,0)) # The second effective argument gives the initial values.
 res
 ```
 
-## Actividad 2
+# Actividad II { .center .white data-background="#75AADB" }
+
+---
 
 <p style='text-align: justify;'>
 La función gamma incompleta inferior se define como:
@@ -1689,9 +1694,13 @@ donde $s$ es un número positivo. Esta función tambien puede ser representada e
 $\gamma(s,x)=x^s\Gamma(s)\exp(-x)\sum\limits_{k=0}^{\infty}\dfrac{x^k}{\Gamma(s+k+1)}$
 
 ---
-- Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.
-- Considere el siguiente conjunto de argumentos : $$(s,x)\in \{(2,5);(2,20);(10,2);(10,20)\}.$$ Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.
-- Utilizando las funciones anteriormente implementadas y la función `Igamma()`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$, $x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución. 
+
+<ul>
+<li> Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.</li>
+<li> Considere el siguiente conjunto de argumentos : $$(s,x)\in \{(2,5);(2,20);(10,2);(10,20)\}.$$ Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.</li>
+<li> Utilizando las funciones anteriormente implementadas y la función `Igamma()`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$, $x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución.</li>
+</ul>
+
 
 # Variables Aleatorias{ .center .white data-background="#75AADB" }
 
