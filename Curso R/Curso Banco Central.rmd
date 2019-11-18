@@ -2424,7 +2424,7 @@ z[1:10]
 
 ### Ejemplo
 
-```{r}
+```{r, fig.height = 3, fig.width = 4, fig.align = "center"}
 # La BBDD `seasonal::unemp` contiene la serie del número de desocupados 
 # (en miles) entre enero de 1990 y noviembre del 2016.
 
@@ -2456,9 +2456,11 @@ plot(unemp_sa) # Grafica la serie original y la ajustada
 
 ### Ejemplo
 
-- La BBDD `neverhpfilter::GDPC1` contiene la serie del PIB real de USA 
-entre 1947Q1 y 2017Q3. Carguemos la serie y pasémosla a escala logarítmica
-```{r}
+```{r, fig.height = 3, fig.width = 4, fig.align = "center"}
+# La BBDD neverhpfilter::GDPC1 contiene la serie 
+# del PIB real de USA entre 1947Q1 y 2017Q3.
+
+# Carguemos la serie y pasémosla a escala logarítmica
 y <- log(neverhpfilter::GDPC1)
 
 # Luego, grafiquemos la serie junto a su tendencia usando el filtro de Hamilton
@@ -2646,7 +2648,7 @@ m01 <- KFAS::SSModel(
 
 ### Ejemplo - Modelo de nivel/pendiente local
 
-- Continuando el ejemplo anterior, si quisiéramos ajustar el modelo e imprimir los coeficientes estimados, el comando apropiado sería
+Continuando el ejemplo anterior, si quisiéramos ajustar el modelo e imprimir los coeficientes estimados, el comando apropiado sería
 ```{r}
 fit01 <- KFAS::fitSSM(m01, inits = c(0, 0, 0)) # ajuste el modelo
 fit01$optim.out$par # imprime los coeficientes estimados
@@ -2666,8 +2668,9 @@ fit01$optim.out$par # imprime los coeficientes estimados
 
 ### Ejemplo - Modelo de nivel/pendiente local
 
-- Continuando el ejemplo, si quisiéramos graficar $y_t$ junto a la tendencia (suavizada), el código apropiado sería
-```{r, message=FALSE}
+```{r, message=FALSE, fig.height = 3, fig.width = 4, fig.align = "center"}
+# Continuando el ejemplo, si quisiéramos graficar y_t 
+# junto a la tendencia (suavizada), el código apropiado sería
 out01 <- KFAS::KFS(fit01$model)
 smo   <- out01$alphahat[, 1]
 ggplot(tibble(y = y), aes(x = time(y))) +
@@ -2702,19 +2705,18 @@ m01 <- KFAS::SSModel(
 ) # Claramente, es menos verboso.
 ```
 
-----
+# Actividad III{ .center .white data-background="#75AADB" }
 
-#### Actividad (parte I)
 
-- El archivo `Seatbelt.txt` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y Diciembre de 1984. Dado lo anterior:
+## Parte 1
+
+- El archivo `seatbelt.csv` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y diciembre de 1984. Dado lo anterior:
   - Importe la BBDD como un `data.frame`.
   - Convierta el resultado en una serie de tiempo.
   - Estime un modelo de nivel, pendiente y estacionalidad local.
   - Grafique los componentes tendencial y estacional ya suavizados.
-  
-----
 
-#### Actividad (parte II)
+## Parte 2
 
 - Reconsidere el ejemplo dado para el filtro de Hamilton.
   - Estime un modelo de nivel, pendiente y estacionalidad local y grafique la tendencia suavizada. ¿Cómo luce en relación a lo obtenido con el filtro de Hamilton?
@@ -2992,3 +2994,7 @@ tbl2_3FN %>%
     caption  = "Elaboración propia en base a datos de la ENE 2018/2019."
   )
 ```
+
+<!-- TODO -->
+<!-- chunk 46. -->
+<!-- El código no explota al 100% las capcidades de ggplot2 -->
