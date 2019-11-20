@@ -266,7 +266,7 @@ numeros
 
 ```{r}
 library(haven)
-submuestra <- read_dta("Datasets/submuestra ENE 2018 07 JJA.dta")
+submuestra <- read_dta("Datasets/ENE 2018 07 JJA.dta")
 head(submuestra)
 ```
 
@@ -2896,8 +2896,8 @@ Cargamos los datos (también cargaremos datos del 2018):
 
 ```{r}
 ene_jja <- list(
-  "2018" = haven::read_dta("Datasets/submuestra ENE 2018 07 JJA.dta"),
-  "2019" = haven::read_dta("Datasets/submuestra ENE 2019 07 JJA.dta")
+  "2018" = haven::read_dta("Datasets/ENE 2018 07 JJA.dta"),
+  "2019" = haven::read_dta("Datasets/ENE 2019 07 JJA.dta")
 )
 ```
 
