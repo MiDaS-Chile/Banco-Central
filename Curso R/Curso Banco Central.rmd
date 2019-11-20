@@ -141,9 +141,8 @@ log(3,10)
 
 ## Objetos básicos de R: Paquetes
 
-<p align = "justify">
 - Los paquetes de R son el eje central de su funcionamiento. 
-- Instalaremos y cargaremos el paquete 'Tidyverse': </p>
+- Instalaremos y cargaremos el paquete 'Tidyverse':
   ![](Images/tidyverse.png)
 
 ## Objetos básicos de R: Paquetes
@@ -157,7 +156,7 @@ Para utilizar un paquete en R hay que realizar las siguientes operaciones:
 ## Ejemplo
 
 
-```{r message=FALSE}
+```{r}
 # install.packages('tidyverse')
 library(tidyverse)
 ```
@@ -242,14 +241,14 @@ url  <- 'https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.
 download.file(url, "storms.csv", mode = "wb")
 
 library(readr)
-storms <- read.csv('storms.csv', header = T)
+storms <- read_csv('storms.csv')
 storms
 ```
 
 ## Importación de Bases de Datos: Ejemplo CSV
 
 <p align = "justify">
-El comando **glimpse()** nos otorga características de las columnas(variables) de la BD.</p>
+El comando **glimpse()** nos otorga características de las columnas(variables) de la base de datos.</p>
 ```{r}
 glimpse(storms)
 ```
@@ -368,7 +367,10 @@ storms %>%
 
 ```{r, cache = FALSE}
 pollution <- read.csv("https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/pollution.csv")
+pollution
 ```
+
+----
 
 ```{r}
 pollution %>%
@@ -470,7 +472,8 @@ Coloca nombres de columnas en una variable (columna) __key__, recolectando los v
 ## gather: *Ejemplo*
 
 ```{r}
-table4ag <- gather(table4a, `1999`, `2000`, key = "year", value = "cases")
+table4a
+table4ag <- table4a %>% gather(`1999`, `2000`, key = "year", value = "cases")
 table4ag
 ```
 
@@ -483,7 +486,14 @@ Esparce un par de columnas (2, key-value) en múltiples columnas.
 ## spread: *Ejemplo*
 
 ```{r}
-table2s <- spread(table2, type, count)
+head(table2)
+```
+
+----
+
+```{r}
+table2s <- table2 %>% 
+  spread(type, count)
 table2s
 ```
 
@@ -2758,7 +2768,7 @@ m01 <- KFAS::SSModel(
 ```
 
 
-# Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
+# Generación de Reportes Automatizables{ .center .white data-background="#75AADB" }
 
 ## {data-background-video="video1.mp4"}
 
@@ -2827,7 +2837,36 @@ Podemos realizar código r en cualquier oración. Para ello basta escribir
 
 Para mayor información de todo esto, ver el siguiente [link](https://bookdown.org/yihui/rmarkdown/)
 
+## Ejemplo
 
+Considere el archivo Actividad 4.Rmd del siguiente [url](http://midas.mat.uc.cl/courses/bc2019/Actividades/) y la siguiente [base de datos](http://midas.mat.uc.cl/courses/bc2019/Datasets/candy_crush.csv)
+
+- Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones:
+- Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final. -->
+- Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre.
+
+----
+
+- En la línea 10, convertir "Candy Crush Saga" en negrita
+- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa) 
+- Enfatice el texto en la línea 141 convirtiéndola en itálica 
+- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png 
+
+----
+
+- Quitar los mensajes que genera el cargar la librería en la línea 18 
+- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes
+- Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44.
+
+```{r, eval = FALSE}
+range(data$dt)
+length(unique(data$player_id))
+```
+
+----
+
+- Agregar el `theme:paper`, `toc:true` y `toc_float:true`. Comente lo ocurrido.
+- ¿Qué pasa si agrego la opción 'code_folding: show'?
 
 # Actividad IV{ .center .white data-background="#75AADB" }
 
@@ -2854,42 +2893,13 @@ Para mayor información de todo esto, ver el siguiente [link](https://bookdown.o
   - Estime la variación porcentual en 12 meses del n. de ocupados.
   - Estime el n. de ocupados por grupo ocupacional, según trimestre.
   - Estime la variación (%) en 12 meses del n. de ocupados por grupo de ocupación.
+
+----
+
   - Estime la distribución de los ocupados por grupo de ocupación, según trimestre.
   - Presente los resultados del ítem anterior en un solo cuadro.
   - Presente los resultados del ítem anterior en un solo gráfico.
 
-
-<!-- ## Parte 3 -->
-
-<!-- Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones: -->
-
-<!-- - Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final. -->
-<!-- - Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre -->
-
-
-<!-- ## Parte 4 -->
-
-<!-- - En la línea 10, convertir "Candy Crush Saga" en negrita -->
-<!-- - Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa) -->
-<!-- - Enfatice el texto en la línea 141 convirtiéndola en itálica -->
-<!-- - Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png -->
-
-
-<!-- ## Parte 5 -->
-
-<!-- - Quitar los mensajes que genera el cargar la librería en la línea 18 -->
-<!-- - Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes -->
-<!-- - Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44. -->
-
-<!-- ```{r, eval = FALSE} -->
-<!-- range(data$dt) -->
-<!-- length(unique(data$player_id)) -->
-<!-- ``` -->
-
-<!-- ## Parte 6 -->
-
-<!-- - Agregar el `theme:paper`, `toc:true` y `toc_float:true`. Comente lo ocurrido. -->
-<!-- - ¿Qué pasa si agrego la opción 'code_folding: show'? -->
 
 <!-- ## Ejemplo: Boletin Empleo Trimestral INE{ .center .white data-background="#75AADB" } -->
 
