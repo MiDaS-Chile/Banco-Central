@@ -2846,212 +2846,224 @@ Para mayor información de todo esto, ver el siguiente [link](https://bookdown.o
   - Estime un modelo de nivel, pendiente y estacionalidad local y grafique la tendencia suavizada. ¿Cómo luce en relación a lo obtenido con el filtro de Hamilton?
   - Repita el ejercicio anterior, pero ahora con una pendiente no local sino global.
 
-
 ## Parte 3
 
-Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones:
-
-- Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final.
-- Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre
-
-
-## Parte 4
-
-- En la línea 10, convertir "Candy Crush Saga" en negrita
-- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa)
-- Enfatice el texto en la línea 141 convirtiéndola en itálica
-- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png
+- Los archivos `ENE 2018 07 JJA.dta` y `ENE 2019 07 JJA.dta` contienen submuestras de la Encuesta Nacional de Empleo  para los trimestres junio-agosto de 2018 y 2019, respectivamente.
+  - Importe ambas BBDD a R.
+  - Estime el n. de ocupados, según trimestre.
+  - Estime la variación porcentual en 12 meses del n. de ocupados.
+  - Estime el n. de ocupados por grupo ocupacional, según trimestre.
+  - Estime la variación (%) en 12 meses del n. de ocupados por grupo de ocupación.
+  - Estime la distribución de los ocupados por grupo de ocupación, según trimestre.
+  - Presente los resultados del ítem anterior en un solo cuadro.
+  - Presente los resultados del ítem anterior en un solo gráfico.
 
 
-## Parte 5
+<!-- ## Parte 3 -->
 
-- Quitar los mensajes que genera el cargar la librería en la línea 18
-- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes
-- Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44.
+<!-- Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones: -->
 
-```{r, eval = FALSE}
-range(data$dt)
-length(unique(data$player_id))
-```
+<!-- - Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final. -->
+<!-- - Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre -->
 
-## Parte 6
 
-- Agregar el `theme:paper`, `toc:true` y `toc_float:true`. Comente lo ocurrido.
-- ¿Qué pasa si agrego la opción 'code_folding: show'?
+<!-- ## Parte 4 -->
 
-## Ejemplo: Boletin Empleo Trimestral INE{ .center .white data-background="#75AADB" }
+<!-- - En la línea 10, convertir "Candy Crush Saga" en negrita -->
+<!-- - Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa) -->
+<!-- - Enfatice el texto en la línea 141 convirtiéndola en itálica -->
+<!-- - Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png -->
 
-## Descripción
 
-- El INE publica mensualmente un Boletín de Empleo Trimestral. 
-- En la página 3 de dicho informe, se presentan cifras relacionadas con la evolución de los ocupados según grupo ocupacional (CIUO.08). Específicamente:
-    1. La participación de los ocupados según grupo ocupacional.
-    2. El crecimiento porcentual del número de ocupados segùn grupo ocupacional.
-- El primer grupo de cifras se presenta como un gráfico, pero el grupo de cifras se presentan dentro del texto.
-- En este ejericicio final, explicaremos cómo reproducir este extracto del Boletín usando RMarkdown.
+<!-- ## Parte 5 -->
 
-## Crecimiento porcentual de los ocupados
+<!-- - Quitar los mensajes que genera el cargar la librería en la línea 18 -->
+<!-- - Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes -->
+<!-- - Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44. -->
 
-Cargamos los datos (también cargaremos datos del 2018):
+<!-- ```{r, eval = FALSE} -->
+<!-- range(data$dt) -->
+<!-- length(unique(data$player_id)) -->
+<!-- ``` -->
 
-```{r}
-ene_jja <- list(
-  "2018" = haven::read_dta("Datasets/ENE 2018 07 JJA.dta"),
-  "2019" = haven::read_dta("Datasets/ENE 2019 07 JJA.dta")
-)
-```
+<!-- ## Parte 6 -->
 
-Estimamos el número de ocupados, para el trimestre junio-agosto 2018
+<!-- - Agregar el `theme:paper`, `toc:true` y `toc_float:true`. Comente lo ocurrido. -->
+<!-- - ¿Qué pasa si agrego la opción 'code_folding: show'? -->
 
-```{r}
-ocup_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::pull(1)
-```
+<!-- ## Ejemplo: Boletin Empleo Trimestral INE{ .center .white data-background="#75AADB" } -->
 
-----
+<!-- ## Descripción -->
 
-Estimamos el número de ocupados, para el trimestre junio-agosto 2019
-```{r}
-ocup_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::pull(1)
-```
+<!-- - El INE publica mensualmente un Boletín de Empleo Trimestral.  -->
+<!-- - En la página 3 de dicho informe, se presentan cifras relacionadas con la evolución de los ocupados según grupo ocupacional (CIUO.08). Específicamente: -->
+<!--     1. La participación de los ocupados según grupo ocupacional. -->
+<!--     2. El crecimiento porcentual del número de ocupados segùn grupo ocupacional. -->
+<!-- - El primer grupo de cifras se presenta como un gráfico, pero el grupo de cifras se presentan dentro del texto. -->
+<!-- - En este ejericicio final, explicaremos cómo reproducir este extracto del Boletín usando RMarkdown. -->
 
-Estimamos la variación porcentual en 12 meses del número de ocupados
-```{r}
-ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1)
-```
+<!-- ## Crecimiento porcentual de los ocupados -->
 
-----
+<!-- Cargamos los datos (también cargaremos datos del 2018): -->
 
-## Variación en 12 meses de los ocupados por grupo de ocupación
+<!-- ```{r} -->
+<!-- ene_jja <- list( -->
+<!--   "2018" = haven::read_dta("Datasets/ENE 2018 07 JJA.dta"), -->
+<!--   "2019" = haven::read_dta("Datasets/ENE 2019 07 JJA.dta") -->
+<!-- ) -->
+<!-- ``` -->
 
-Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
+<!-- Estimamos el número de ocupados, para el trimestre junio-agosto 2018 -->
 
-```{r}
-tbl1_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact))
-```
+<!-- ```{r} -->
+<!-- ocup_2018 <- -->
+<!--   ene_jja[["2018"]] %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::pull(1) -->
+<!-- ``` -->
 
-----
+<!-- ---- -->
 
-## Variación en 12 meses de los ocupados por grupo de ocupación
+<!-- Estimamos el número de ocupados, para el trimestre junio-agosto 2019 -->
+<!-- ```{r} -->
+<!-- ocup_2019 <- -->
+<!--   ene_jja[["2019"]] %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::pull(1) -->
+<!-- ``` -->
 
-Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
+<!-- Estimamos la variación porcentual en 12 meses del número de ocupados -->
+<!-- ```{r} -->
+<!-- ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1) -->
+<!-- ``` -->
 
-```{r}
-tbl1_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact))
-```
+<!-- ---- -->
 
-----
+<!-- ## Variación en 12 meses de los ocupados por grupo de ocupación -->
 
-## Variación en 12 meses de los ocupados por grupo de ocupación
+<!-- Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018 -->
 
-Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019
+<!-- ```{r} -->
+<!-- tbl1_2018 <- -->
+<!--   ene_jja[["2018"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) -->
+<!-- ``` -->
 
-```{r}
-tbl1 <-
-  dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>%
-  dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>%
-  dplyr::arrange(desc(delta)) %>%
-  haven::as_factor()
-```
+<!-- ---- -->
 
-Convierte el resultado en un vector
+<!-- ## Variación en 12 meses de los ocupados por grupo de ocupación -->
 
-```{r}
-pcts <- round(tbl1$delta, 1)
-names(pcts) <- tbl1$b1
-```
+<!-- Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019 -->
 
-----
+<!-- ```{r} -->
+<!-- tbl1_2019 <- -->
+<!--   ene_jja[["2019"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) -->
+<!-- ``` -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- ---- -->
 
-Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
+<!-- ## Variación en 12 meses de los ocupados por grupo de ocupación -->
 
-```{r}
-tbl2_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::mutate(
-    pct       = 100 * n / sum(n),
-    trimestre = "junio-agosto 2019"
-  )
-```
+<!-- Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019 -->
 
-----
+<!-- ```{r} -->
+<!-- tbl1 <- -->
+<!--   dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>% -->
+<!--   dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>% -->
+<!--   dplyr::arrange(desc(delta)) %>% -->
+<!--   haven::as_factor() -->
+<!-- ``` -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- Convierte el resultado en un vector -->
 
-Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
+<!-- ```{r} -->
+<!-- pcts <- round(tbl1$delta, 1) -->
+<!-- names(pcts) <- tbl1$b1 -->
+<!-- ``` -->
 
-```{r}
-tbl2_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::mutate(
-    pct       = 100 * n / sum(n),
-    trimestre = "junio-agosto 2018"
-  )
-```
+<!-- ---- -->
 
-----
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019 -->
 
-Combina la información en una tabla
+<!-- ```{r} -->
+<!-- tbl2_2019 <- -->
+<!--   ene_jja[["2019"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::mutate( -->
+<!--     pct       = 100 * n / sum(n), -->
+<!--     trimestre = "junio-agosto 2019" -->
+<!--   ) -->
+<!-- ``` -->
 
-```{r}
-tbl2_3FN <-
-  rbind(tbl2_2018, tbl2_2019) %>%
-  dplyr::select(b1, pct, trimestre) %>%
-  dplyr::mutate(
-    trimestre = haven::as_factor(trimestre),
-    b1        = haven::as_factor(b1)
-  )
-```
+<!-- ---- -->
 
-----
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018 -->
 
-Crea el Gráfico 1
+<!-- ```{r} -->
+<!-- tbl2_2018 <- -->
+<!--   ene_jja[["2018"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::mutate( -->
+<!--     pct       = 100 * n / sum(n), -->
+<!--     trimestre = "junio-agosto 2018" -->
+<!--   ) -->
+<!-- ``` -->
 
-```{r, eval=FALSE}
-tbl2_3FN %>%
-  ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) +
-  ggplot2::geom_bar(position = "dodge", stat = "identity") +
-  ggplot2::coord_flip() +
-  ggplot2::scale_fill_manual(values = c("darkblue", "darkred")) +
-  ggplot2::labs(
-    x        = "Grupo ocupacional (CIUO 08.cl)",
-    y        = "Participación (%)",
-    title    = "Gráfico 1. Participación de ocupados",
-    subtitle = "según grupo ocupacional (CIUO 08.cl)",
-    caption  = "Elaboración propia en base a datos de la ENE 2018/2019."
-  )
-```
+<!-- ---- -->
+
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
+
+<!-- Combina la información en una tabla -->
+
+<!-- ```{r} -->
+<!-- tbl2_3FN <- -->
+<!--   rbind(tbl2_2018, tbl2_2019) %>% -->
+<!--   dplyr::select(b1, pct, trimestre) %>% -->
+<!--   dplyr::mutate( -->
+<!--     trimestre = haven::as_factor(trimestre), -->
+<!--     b1        = haven::as_factor(b1) -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- ---- -->
+
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
+
+<!-- Crea el Gráfico 1 -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- tbl2_3FN %>% -->
+<!--   ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) + -->
+<!--   ggplot2::geom_bar(position = "dodge", stat = "identity") + -->
+<!--   ggplot2::coord_flip() + -->
+<!--   ggplot2::scale_fill_manual(values = c("darkblue", "darkred")) + -->
+<!--   ggplot2::labs( -->
+<!--     x        = "Grupo ocupacional (CIUO 08.cl)", -->
+<!--     y        = "Participación (%)", -->
+<!--     title    = "Gráfico 1. Participación de ocupados", -->
+<!--     subtitle = "según grupo ocupacional (CIUO 08.cl)", -->
+<!--     caption  = "Elaboración propia en base a datos de la ENE 2018/2019." -->
+<!--   ) -->
+<!-- ``` -->
 
 <!-- TODO -->
 <!-- chunk 46. -->
