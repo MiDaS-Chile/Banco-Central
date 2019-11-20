@@ -2839,23 +2839,23 @@ Para mayor información de todo esto, ver el siguiente [link](https://bookdown.o
 
 ## Ejemplo
 
-Considere el archivo Actividad 4.Rmd del siguiente [url](http://midas.mat.uc.cl/courses/bc2019/Actividades/) y la siguiente [base de datos](http://midas.mat.uc.cl/courses/bc2019/Datasets/candy_crush.csv)
+Considere el archivo Actividad 4.Rmd del siguiente [url](http://midas.mat.uc.cl/courses/bc2019/Actividades/) y la siguiente [base de datos](http://midas.mat.uc.cl/courses/bc2019/Datasets/candy_crush.csv).
 
-- Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones:
+- Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones.
 - Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final. -->
 - Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre.
 
 ----
 
-- En la línea 10, convertir "Candy Crush Saga" en negrita
-- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa) 
-- Enfatice el texto en la línea 141 convirtiéndola en itálica 
-- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png 
+- En la línea 10, convertir "Candy Crush Saga" en negrita.
+- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa). 
+- Enfatice el texto en la línea 141 convirtiéndola en itálica. 
+- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png. 
 
 ----
 
-- Quitar los mensajes que genera el cargar la librería en la línea 18 
-- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes
+- Quitar los mensajes que genera el cargar la librería en la línea 18. 
+- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes.
 - Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44.
 
 ```{r, eval = FALSE}
@@ -2889,9 +2889,9 @@ length(unique(data$player_id))
 
 - Los archivos `ENE 2018 07 JJA.dta` y `ENE 2019 07 JJA.dta` contienen submuestras de la Encuesta Nacional de Empleo  para los trimestres junio-agosto de 2018 y 2019, respectivamente.
   - Importe ambas BBDD a R.
-  - Estime el n. de ocupados, según trimestre.
+  - Estime el número de ocupados, según trimestre.
   - Estime la variación porcentual en 12 meses del n. de ocupados.
-  - Estime el n. de ocupados por grupo ocupacional, según trimestre.
+  - Estime el número de ocupados por grupo ocupacional, según trimestre.
   - Estime la variación (%) en 12 meses del n. de ocupados por grupo de ocupación.
 
 ----
