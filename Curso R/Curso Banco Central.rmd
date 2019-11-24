@@ -556,6 +556,7 @@ ggplot(data = paises) +
 ```
 
 ---- 
+
 Se puede definir el tamaño de los puntos en función de otra variable.  
 
 ```{r, echo=TRUE,  fig.height = 4}
