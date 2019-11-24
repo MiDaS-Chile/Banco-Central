@@ -6,3 +6,13 @@ output:
     theme: cayman
 
 ---
+
+El archivo $\texttt{fishing.csv}$ contiene 147 observaciones sobre el número total de peces ($\texttt{totabund}$), profundidad media del agua ($\texttt{meandepth}$), área ($\texttt{sweptarea}$), índice de densidad de follaje ($\texttt{density}$), entre otras .
+
+
+- Realice gráficos de dispersión de la variable $\texttt{totabund}$ versus las variables $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Además , realice un histrograma de la varible $\texttt{totabund}$ y un boxplot de esta misma variable para los diferentes períodos.
+- Obtener una nueva base de datos que contenga las variables $\texttt{totabund}$, $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Para esta nueva base de datos considere solo los años 1977, 1984 y 1986.
+- Ajuste un modelo lineal generalizado Poisson para la variable $\texttt{totabund}$ considerando las covariables: $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza.
+- Realice un test de sobredispersión y comente sus resultados. 
+- Ajuste un modelo utilizando la familia $``\texttt{quasi-...}''$. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza. Compare los resulatdos con los obtenidos en el literal anterior.
+- Ajuste un modelo lineal generalizado Binomail Negativo para la variable $\texttt{totabund}$ considerando las covariables: $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza. Compare los resulatdos con los obtenidos en los literales anteriores. 
