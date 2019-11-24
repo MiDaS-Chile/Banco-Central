@@ -176,6 +176,63 @@ ggmap <- ggplot() +
 
 ## Actividad II
 
+
+Cree dos funciones para γ(s,x), la primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento s es negativo y un mensaje debe ser entregado al usuario.
+
+
+```{r }
+gam1<- function(s,x){
+  if(s < 0) stop("s debe ser positivo")
+  myf<-function(t){
+    t^(s-1)*exp(-t)
+  }
+  integrate(myf,0,x)$value
+}
+
+gam2<- function(s,x){
+  if(s < 0) stop("s debe ser positivo")
+  k<-0
+  aux<-0
+  while (!is.infinite(gamma(s+k+1))){
+    aux=sum(x^(0:k)/gamma(s+0:k+1))
+    k<-k+1
+  }
+  ifelse(is.infinite(aux),gamma(s),x^s*gamma(s)*exp(-x)*aux)
+}
+```
+
+
+Considere el siguiente conjunto de argumentos :$$(s,x)\in {(2,5);(2,20);(10,2);(10,20)}$$.
+Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcule y compare el tiempo de ejecución.
+
+
+
+```{r}
+library(zipfR)
+library(microbenchmark)
+data.frame(Argumentos=c('(2,5)','(2,20)','(10,2)','(10,20)'),gam1=c(gam1(2,5),gam1(2,20),gam1(10,2),gam1(10,20)),gam2=c(gam2(2,5),gam2(2,20),gam2(10,2),gam2(10,20)),Igamma=c(Igamma(2,5),Igamma(2,20),Igamma(10,2),Igamma(10,20)))
+```
+
+```{r}
+microbenchmark(times = 100, unit = "s", gam1(2,5), gam2(2,5), Igamma(2,3))
+microbenchmark(times = 100, unit = "s", gam1(2,20), gam2(2,20), Igamma(2,20))
+microbenchmark(times = 100, unit = "s", gam1(10,2), gam2(10,2), Igamma(10,2))
+microbenchmark(times = 100, unit = "s", gam1(10,20), gam2(10,20), Igamma(10,20))
+```
+
+Utilizando las funciones anteriormente implementadas y la función `Igamma()` encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$, $x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución.
+
+```{r}
+data.frame(x=c(2,3,5,100),gam1=c(optimize(gam1,lower=0,upper=4,x=2)$minimum,optimize(gam1,lower=0,upper=4,x=3)$minimum,optimize(gam1,lower=0,upper=4,x=5)$minimum,optimize(gam1,lower=0,upper=4,x=100)$minimum),gam2=c(optimize(gam2,lower=0,upper=4,x=2)$minimum,optimize(gam2,lower=0,upper=4,x=3)$minimum,optimize(gam2,lower=0,upper=4,x=5)$minimum,optimize(gam2,lower=0,upper=4,x=100)$minimum),Igamma=c(optimize(Igamma,lower=0,upper=4,x=2)$minimum,optimize(Igamma,lower=0,upper=4,x=3)$minimum,optimize(Igamma,lower=0,upper=4,x=5)$minimum,optimize(Igamma,lower=0,upper=4,x=100)$minimum))
+```
+
+```{r}
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=2), optimize(gam2,lower=0,upper=4,x=2), optimize(Igamma,lower=0,upper=4,x=2))
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=3), optimize(gam2,lower=0,upper=4,x=3), optimize(Igamma,lower=0,upper=4,x=3))
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=5), optimize(gam2,lower=0,upper=4,x=5), optimize(Igamma,lower=0,upper=4,x=5))
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=100), optimize(gam2,lower=0,upper=4,x=100), optimize(Igamma,lower=0,upper=4,x=100))
+```
+
 ## Actividad III
 
 ## Actividad IV
