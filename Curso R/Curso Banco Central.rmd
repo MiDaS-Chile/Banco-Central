@@ -141,9 +141,8 @@ log(3,10)
 
 ## Objetos básicos de R: Paquetes
 
-<p align = "justify">
 - Los paquetes de R son el eje central de su funcionamiento. 
-- Instalaremos y cargaremos el paquete 'Tidyverse': </p>
+- Instalaremos y cargaremos el paquete 'Tidyverse':
   ![](Images/tidyverse.png)
 
 ## Objetos básicos de R: Paquetes
@@ -157,7 +156,7 @@ Para utilizar un paquete en R hay que realizar las siguientes operaciones:
 ## Ejemplo
 
 
-```{r message=FALSE}
+```{r}
 # install.packages('tidyverse')
 library(tidyverse)
 ```
@@ -242,14 +241,14 @@ url  <- 'https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/storms.
 download.file(url, "storms.csv", mode = "wb")
 
 library(readr)
-storms <- read.csv('storms.csv', header = T)
+storms <- read_csv('storms.csv')
 storms
 ```
 
 ## Importación de Bases de Datos: Ejemplo CSV
 
 <p align = "justify">
-El comando **glimpse()** nos otorga características de las columnas(variables) de la BD.</p>
+El comando **glimpse()** nos otorga características de las columnas(variables) de la base de datos.</p>
 ```{r}
 glimpse(storms)
 ```
@@ -266,7 +265,7 @@ numeros
 
 ```{r}
 library(haven)
-submuestra <- read_dta("Datasets/submuestra ENE 2018 07 JJA.dta")
+submuestra <- read_dta("Datasets/ENE 2018 07 JJA.dta")
 head(submuestra)
 ```
 
@@ -368,7 +367,10 @@ storms %>%
 
 ```{r, cache = FALSE}
 pollution <- read.csv("https://raw.githubusercontent.com/rstudio/EDAWR/master/data-raw/pollution.csv")
+pollution
 ```
+
+----
 
 ```{r}
 pollution %>%
@@ -470,7 +472,8 @@ Coloca nombres de columnas en una variable (columna) __key__, recolectando los v
 ## gather: *Ejemplo*
 
 ```{r}
-table4ag <- gather(table4a, `1999`, `2000`, key = "year", value = "cases")
+table4a
+table4ag <- table4a %>% gather(`1999`, `2000`, key = "year", value = "cases")
 table4ag
 ```
 
@@ -483,7 +486,14 @@ Esparce un par de columnas (2, key-value) en múltiples columnas.
 ## spread: *Ejemplo*
 
 ```{r}
-table2s <- spread(table2, type, count)
+head(table2)
+```
+
+----
+
+```{r}
+table2s <- table2 %>% 
+  spread(type, count)
 table2s
 ```
 
@@ -695,12 +705,12 @@ ggmap
 ## Desarrollo de funciones
 
 <p style='text-align: justify;'> 
-La declaración de una función se realiza de forma general como sigue:
+La declaración de una función se realiza de la siguiente forma:
 </p>
-`function(<lista de argumentos>) <cuerpo de la función>`
+`function(<argumentos>) <cuerpo>`
 <ul style='text-align: justify;'>
-<li>`<lista de argumentos>` es una lista de normbres de los argumentos.</li>
-<li>`<cuerpo de la función>` representa el contenido del código a ejecutar cuando se llama a la función.</li>
+<li>`<argumentos>` es una lista de los argumentos.</li>
+<li>`<cuerpo>` contiene el código a ejecutar cuando se llama a la función.</li>
 </ul>
 
 
@@ -746,9 +756,9 @@ El cuerpo de una función puede ser una simple instrucción de R o una secuencia
 instrucciones de R.<br><br>
 En este último caso, las instrucciones deben estar incluidas entre
 los caracteres **{** y **}** para delimitar el principio y el final del cuerpo de la
-función.<br><br>
-Se pueden escribir varias instrucciones de R en la misma línea siempre que
-están separados por el caracter **;**.<br><br>
+función, respectivamente.<br><br>
+Se pueden escribir varias instrucciones de R en la misma línea, siempre que
+estén separados por el caracter **;**.<br><br>
 Cuando el cuerpo de la función incluye varias instrucciones de R escritas
 en la misma línea, no olvidar escribirlos entre los caracteres **{**
 y **}**.
@@ -756,8 +766,8 @@ y **}**.
 
 ---
 
-Recuerde que en una línea, cualquier código escrito después del carácter # no es
-interpretado por R y se toma como un comentario
+En una línea, cualquier código escrito después del carácter # no es
+interpretado por R y se toma como un comentario.
 
 ```{r}
 hello <- function(name) {
@@ -786,7 +796,7 @@ hello <- function(name="Peter") cat("Hello",name,"!"); hello()
 
 ---
 
-Agreguemos a nuestra función `hello()` la posibilidad de elegir un idioma, y veamos algunas llamadas de esta función
+Agreguaremos a nuestra función `hello()` la posibilidad de elegir un idioma:
 
 ```{r}
 hello <- function(name="Peter",language="eng") {
@@ -843,11 +853,11 @@ message
 ---
 
 <p style='text-align: justify;'> 
-La noción de alcance de una variable es muy importante para un lenguaje que permite desarrollar funciones.<br><br>
-La idea principal es que las variables definidas dentro del cuerpo de una función tienen un alcance local durante la ejecución de la función.<br><br>
-Esto significa que una variable dentro del cuerpo de una función es físicamente diferente de otra variable con el mismo nombre, pero definida en el espacio de trabajo de la sesión de R.<br><br>
-En términos generales, el alcance local significa que una variable solo existe dentro del cuerpo de la función.<br><br>
-Después de la ejecución de la función, la variable se elimina automáticamente de la memoria de la computadora.
+- La noción de alcance de una variable es muy importante para un lenguaje que permite desarrollar funciones.
+- La idea principal es que las variables definidas dentro del cuerpo de una función tienen un alcance local durante la ejecución de la función.
+- Esto significa que una variable dentro del cuerpo de una función es físicamente diferente de otra variable con el mismo nombre, pero definida en el espacio de trabajo de la sesión de R.
+- En términos generales, el alcance local significa que una variable sólo existe dentro del cuerpo de la función.
+- Después de la ejecución de la función, la variable se elimina automáticamente de la memoria de la computadora.
 </p>
 ---
 
@@ -877,13 +887,13 @@ message <- hello(message="Welcome")
 message # Workspace has been modified again!
 ```
 
-## Debugging de funciones
+## Debugging de Funciones
 
 <p style='text-align: justify;'> 
-Una función de depuración útil en R es la función `browser()`.<br><br>
-Si inserta la instrucción `browser()` en el cuerpo de su función, el programa se detendrá en el lugar donde se insertó.<br><br>
-Al escribir la letra n, se puede inspeccionar el código y el contenido de las variables secuencialmente.<br><br>
-Para salir del modo de inspección, se debe escribir la letra Q.
+- Una función de depuración útil en R es la función `browser()`.
+- Si inserta la instrucción `browser()` en el cuerpo de su función, el programa se detendrá en el lugar donde se insertó.
+- Al escribir la letra n, se puede inspeccionar el código y el contenido de las variables secuencialmente.
+- Para salir del modo de inspección, se debe escribir la letra Q.
 </p>
 ---
 
@@ -896,7 +906,7 @@ apply(x,1,function(y){browser();sum(y)})
 
 <p style='text-align: justify;'> 
 Otra función interesante es `debug()`, que es equivalente a colocar la instruccuón `browser()` en la parte superior del cuerpo de una función.<br><br>
-Por lo tanto, `debug(var)` marca la funció `var` como depurable.<br><br>
+Por lo tanto, `debug(var)` marca la función `var` como depurable.<br><br>
 Cualquier llamada posterior de esta función iniciará el depurador.
 </p>
 ```{r, eval = FALSE}
@@ -915,39 +925,44 @@ undebug(var)
 ## Administración
 
 <p style='text-align: justify;'> 
-Después de haber creado los objetos R, se puede obtener la lista de todos los objetos con la función `ls()` o la función `objects()`.<br><br>
-Para eliminar objetos, se usa la función `rm()`.<br><br>
-El comando `getwd()` devuelve el directorio de trabajo actual.<br><br> 
-El comando `setwd()` se usa para cambiar el directorio de trabajo.
+- Después de haber creado los objetos R, se puede obtener la lista de todos los objetos con la función `ls()` o la función `objects()`.
+- Para eliminar objetos, se usa la función `rm()`.
+- El comando `getwd()` devuelve el directorio de trabajo actual. 
+- El comando `setwd()` se usa para cambiar el directorio de trabajo.
 </p>
 
 ---
 
 <p style='text-align: justify;'> 
-Cuando se trabaja con R, se crean objetos: vectores, matrices, funciones, etc.<br><br>
-Estos objetos se guardan físicamente en un archivo en el disco duro llamado espacio de trabajo.<br><br>
-La extensión del nombre del archivo debe ser `.RData`.<br><br>
-Es posible crear varios archivos `.RData`: uno para cada proyecto en el que se está trabajando.<br><br> 
-Se debe crear estos archivos `.RData` en diferentes carpetas de manera apropiada.
+- Cuando se trabaja con R, se crean objetos: vectores, matrices, funciones, etc.
+- Estos objetos se guardan físicamente en un archivo en el disco duro llamado espacio de trabajo.
+- La extensión del nombre del archivo es `.RData`.
+- Es posible crear varios archivos `.RData`: uno para cada proyecto en el que se está trabajando.
+- Se debe crear estos archivos `.RData` en diferentes carpetas de manera apropiada.
 </p>
 
 ---
 
 <p style='text-align: justify;'>
-Por ejemplo, suponga que está trabajando en dos proyectos diferentes: uno relacionado con automóviles y otro relacionado con eventos climáticos.<br><br>
-Luego, puede crear una carpeta llamada `Cars` que contenga un archivo `cars.RData`, y otra carpeta llamada `Climate` que contenga un archivo llamado `climevt.RData`; estos archivos contendrán los objetos R correspondientes a los dos estudios.<br><br>
-La función `save.image()` se usa para guardar un espacio de trabajo; puede usar la función `load()` para cargar un espacio de trabajo existente.
+- Por ejemplo, suponga que está trabajando en dos proyectos diferentes: uno relacionado con automóviles y otro relacionado con eventos climáticos.
+- Luego, puede crear una carpeta llamada `Cars` que contenga un archivo `cars.RData`, y otra carpeta llamada `Climate` que contenga un archivo llamado `climevt.RData`; estos archivos contendrán los objetos R correspondientes a los dos estudios.
+- La función `save.image()` se usa para guardar un espacio de trabajo; puede usar la función `load()` para cargar un espacio de trabajo existente.
 <p/>
 
 ---
 
 <p style='text-align: justify;'>
-R incluye un mecanismo para recuperar y volver a ejecutar comandos antiguos.<br><br>
-Las flechas hacia arriba y hacia abajo del teclado se pueden usar para retroceder y avanzar en el historial de comandos.<br><br>
-Una vez que localizado un comando con este método, se puede mover el cursor con las flechas derecha e izquierda, eliminar caracteres con la tecla `DEL` y agregar o modificar caracteres con el teclado.<br><br>
-Para guardar el historial de comandos de la sesión actual, se usa el comando `savehistory()`.<br><br>
-Para cargar el historial de comandos de una sesión anterior, se usa el comando `loadhistory()`.<br><br>
-Los comandos se guardan en un archivo que debe tener la extensión `.Rhistory` (o `.rhi` en versiones anteriores de R)
+- R incluye un mecanismo para recuperar y volver a ejecutar comandos antiguos.
+- Las flechas hacia arriba y hacia abajo del teclado se pueden usar para retroceder y avanzar en el historial de comandos.
+- Una vez que localizado un comando con este método, se puede mover el cursor con las flechas derecha e izquierda, eliminar caracteres con la tecla `DEL` y agregar o modificar caracteres con el teclado.
+<p/>
+
+---
+
+<p style='text-align: justify;'>
+- Para guardar el historial de comandos de la sesión actual, se usa el comando `savehistory()`.
+- Para cargar el historial de comandos de una sesión anterior, se usa el comando `loadhistory()`.
+- Los comandos se guardan en un archivo que debe tener la extensión `.Rhistory` (o `.rhi` en versiones anteriores de R)
 <p/>
 
 
@@ -981,26 +996,26 @@ library("memoise")
 ## Consejos Generales
 
 <p style='text-align: justify;'>
-Los lenguajes de bajo nivel como C y Fortran exigen más del programador.<br><br>
-Obligan a declarar el tipo de cada variable utilizada, dan la gran responsabilidad de la administración de memoria y se tiene que compilar.<br><br>
-La ventaja de tales lenguajes, en comparación con R, es que son más rápidos de ejecutar.<br><br>
-La desventaja es que se tardan más en aprender y no se pueden ejecutar de forma interactiva.<br><br>
-La página de wikipedia sobre [optimización de compiladores](https://en.wikipedia.org/wiki/Optimizing_compiler) ofrece una buena descripción de las técnicas de optimización estándar.
+- Los lenguajes de bajo nivel como C y Fortran exigen más del programador.
+- Obligan a declarar el tipo de cada variable utilizada, dan la gran responsabilidad de la administración de memoria y se tiene que compilar.
+- La ventaja de tales lenguajes, en comparación con R, es que son más rápidos de ejecutar.
+- La desventaja es que se tardan más en aprender y no se pueden ejecutar de forma interactiva.
+- La página de wikipedia sobre [optimización de compiladores](https://en.wikipedia.org/wiki/Optimizing_compiler) ofrece una buena descripción de las técnicas de optimización estándar.
 <p/>
 
 ---
 
 <p style='text-align: justify;'>
-Los usuarios de R no tienden a preocuparse por los tipos de datos.<br><br>
-Esto es ventajoso en términos de creación de código conciso, pero puede resultar que programas de R sean lentos.<br><br>
-Si bien las optimizaciones como paralelizar pueden duplicar la velocidad, un código deficiente puede ejecutarse fácilmente cientos de veces más lento, por lo que es importante comprender las causas del código lento.<br><br>
-En última instancia, llamar a una función de R siempre termina llamando a algún código C/Fortran subyacente.
+- Los usuarios de R no tienden a preocuparse por los tipos de datos.
+- Esto es ventajoso en términos de creación de código conciso, pero puede resultar que programas de R sean lentos.
+- Si bien las optimizaciones como paralelizar pueden duplicar la velocidad, un código deficiente puede ejecutarse fácilmente cientos de veces más lento, por lo que es importante comprender las causas del código lento.
+- En última instancia, llamar a una función de R siempre termina llamando a algún código C/Fortran subyacente.
 <p/>
 
 ---
 
 <p style='text-align: justify;'>
-Por ejemplo, la función base de R `runif()` contiene una sola línea que consiste en llamar a `C_ _runif()`.
+Por ejemplo, la función base de R `runif()` contiene una sola línea que consiste en llamar a `C_runif()`.
 <p/>
 ```{r, eval=FALSE}
 function (n, min = 0, max = 1)
@@ -1027,15 +1042,15 @@ No es que el ciclo for sea lento, sino que tenemos muchas más llamadas a funcio
 <p/>
 
 
-## Asignación de memoria
+## Asignación de Memoria
 
 <p style='text-align: justify;'>
-Otra técnica general es tener cuidado con la asignación de memoria.<br><br>
-Si es posible, preasigne su vector y luego complete los valores.<br><br>
-Consideremos tres métodos para crear una secuencia de números.<br><br>
-El método 1 crea un vector vacío y aumenta gradualmente la longitud del vector.<br><br>
-El método 2 crea un objeto de la longitud final y luego cambia los valores en el objeto mediante `subscriptingr`.<br><br>
-El método 3 crea directamente el objeto final.
+- Otra técnica general es tener cuidado con la asignación de memoria.
+- Si es posible, preasigne su vector y luego complete los valores.
+- Consideremos tres métodos para crear una secuencia de números.
+- El método 1 crea un vector vacío y aumenta gradualmente la longitud del vector.
+- El método 2 crea un objeto de la longitud final y luego cambia los valores en el objeto.
+- El método 3 crea directamente el objeto final.
 <p/>
 
 ---
@@ -1074,10 +1089,10 @@ microbenchmark(times = 100, unit = "s", method1(n), method2(n), method3(n))
 ## Vectorización
 
 <p style='text-align: justify;'>
-Recuerde la regla de oro en la programación R, acceda a las rutinas subyacentes de C/Fortran lo más rápido posible.<br><br>
-Cuantas menos llamadas a funciones se requieran para lograr esto, mejor.<br><br>
-Con esto mente, muchas funciones R están vectorizadas. Las entradas y/o salidas funcionan naturalmente con vectores, reduciendo el número de llamadas a funciones requeridas.<br><br>
-Por ejemplo, el código `x <- runif(n) + 1` realiza dos operaciones vectorizadas.
+- Recuerde la regla de oro en la programación R, acceda a las rutinas subyacentes de C/Fortran lo más rápido posible.
+- Cuantas menos llamadas a funciones se requieran para lograr esto, mejor.
+- Con esto mente, muchas funciones R están vectorizadas. Las entradas y/o salidas funcionan naturalmente con vectores, reduciendo el número de llamadas a funciones requeridas.
+- Por ejemplo, el código `x <- runif(n) + 1` realiza dos operaciones vectorizadas.
 <p/>
 
 ---
@@ -1097,20 +1112,19 @@ log_sum <- sum(log(x))
 
 ---
 
-Escribir código de esta manera tiene una serie de beneficios.
+<p style='text-align: justify;'>Escribir código de esta manera tiene una serie de beneficios:<p/>
 
-<ul>
-<li>Es mas rapido. Cuando `n = 107`, es aproximadamente cuarenta veces más rápido.</li>
-<li>Es más ordenado.</li>
-<li>No contiene un error cuando `x` es de longitud `0`.</li>
-</ul>
+- Es más rápido. Cuando `n = 107`, es aproximadamente cuarenta veces más rápido.
+- Es más ordenado.
+- No genera un error cuando `x` es de longitud `0`.
 
 
-## Comunicarse con el usuario
+
+## Comunicación con el Usuario
 
 <p style='text-align: justify;'>
-Cuando creamos una función, a menudo queremos que la función proporcione comentarios eficientes sobre el estado actual. Por ejemplo, ¿faltan argumentos o ha fallado un cálculo numérico?.<br><br>
-Existen tres técnicas principales de comunicación con el usuario:
+Cuando creamos una función, a menudo queremos que la función proporcione comentarios eficientes sobre el estado actual.<br><br> 
+Existen tres técnicas principales de comunicación con el usuario:<br><br>
 <ul>
 <li> `stop()`</li>
 <li> `warning()`</li>
@@ -1121,11 +1135,11 @@ Existen tres técnicas principales de comunicación con el usuario:
 ---
 
 <p style='text-align: justify;'>
-Los errores fatales se generan llamando a `stop()`, es decir, se termina la ejecución.<br><br>
-Cuando se llama a `stop()`, no hay forma de que una función continúe.<br><br>
-Por ejemplo, cuando generamos números aleatorios usando `rnorm()`, el primer argumento es el tamaño de la muestra, `n`.<br><br>
-Si el número de observaciones para devolver es menor a 1, se genera un error.<br><br>
-Cuando necesitamos generar un error, debemos hacerlo lo más rápido posible; de lo contrario es un desperdicio de recursos.<br><br>
+- Los errores fatales se generan llamando a `stop()`, es decir, se termina la ejecución.
+- Cuando se llama a `stop()`, no hay forma de que una función continúe.
+- Por ejemplo, cuando generamos números aleatorios usando `rnorm()`, el primer argumento es el tamaño de la muestra, `n`.
+- Si el número de observaciones para devolver es menor a 1, se genera un error.
+- Cuando necesitamos generar un error, debemos hacerlo lo más rápido posible; de lo contrario es un desperdicio de recursos.
 Por lo tanto, las primeras líneas de una función suelen realizar la comprobación de argumentos.
 <p/>
 
@@ -1157,22 +1171,22 @@ if(class(bad) == "try-error")
 ---
 
 <p style='text-align: justify;'>
-Las advertencias se generan utilizando la función `warning()`.<br><br>
-Cuando se genera una advertencia, indica posibles problemas.<br><br>
-Por ejemplo, `mean(NULL)` devuelve `NA` y también genera una advertencia.<br><br>
-Cuando nos encontramos con una advertencia en nuestro código, es importante resolver el problema y no solo ignorarlo.<br><br>
-Si bien ignorar las advertencias ahorra tiempo a corto plazo, las advertencias a menudo pueden ocultar problemas más profundos que se han generado en nuestro código.<br><br>
-Las advertencias pueden ocultarse usando `suppressWarnings()`.
+- Las advertencias se generan utilizando la función `warning()`.
+-  Cuando se genera una advertencia, indica posibles problemas.
+- Por ejemplo, `mean(NULL)` devuelve `NA` y también genera una advertencia.
+- Cuando nos encontramos con una advertencia en nuestro código, es importante resolver el problema y no solo ignorarlo.
+- Si bien ignorar las advertencias ahorra tiempo a corto plazo, las advertencias a menudo pueden ocultar problemas más profundos que se han generado en nuestro código.
+- Las advertencias pueden ocultarse usando `suppressWarnings()`.
 <p/>
 
 ---
 
 <p style='text-align: justify;'>
-Para dar una salida informativa, use la función `message()`.<br><br>
-Por ejemplo, en el paquete `poweRlaw`, la función ` message() `se usa para dar al usuario una estimación del tiempo de ejecución esperado.<br><br>
-Proporcionar una estimación aproximada de cuánto tiempo lleva la función, permite al usuario optimizar su tiempo.<br><br>
-Similar a las advertencias, los mensajes se pueden suprimir con `suppressMessages()`.<br><br>
-Otra función utilizada para imprimir mensajes es `cat()`.<br><br>
+- Para dar una salida informativa, use la función `message()`.
+- Por ejemplo, en el paquete `poweRlaw`, la función ` message() ` se usa para dar al usuario una estimación del tiempo de ejecución esperado.
+- Proporcionar una estimación aproximada de cuánto tiempo lleva la función, permite al usuario optimizar su tiempo.
+- Similar a las advertencias, los mensajes se pueden suprimir con `suppressMessages()`.
+- Otra función utilizada para imprimir mensajes es `cat()`.
 <p/>
 
 ---
@@ -1200,12 +1214,12 @@ invisible(model)
 ### Factores
 
 <p style='text-align: justify;'>
-Los factores son objetos tratados muy injustamente.<br><br>
-Si bien a veces son incómodos, tienen sus usos.<br><br>
-Se utiliza un factor para almacenar variables categóricas.<br><br>
-Este tipo de datos es exclusivo de R (o al menos no es común entre los lenguajes de programación).<br><br>
-La diferencia entre factores y cadenas es importante porque R trata los factores y las cadenas de manera diferente.<br><br>
-Aunque los factores se parecen a los vectores de caracteres, en realidad son enteros
+- Los factores son objetos tratados muy injustamente.
+- Si bien a veces son incómodos, tienen sus usos.
+- Se utiliza un factor para almacenar variables categóricas.
+- Es exclusivo de R (o al menos no es común entre los lenguajes de programación)
+- La diferencia entre factores y cadenas es importante porque R trata los factores y las cadenas de manera diferente.
+- Aunque los factores se parecen a los vectores de caracteres, en realidad son enteros.
 <p/>
 
 ---
@@ -1221,7 +1235,7 @@ c(factor(x))
 
 ---
 
-Los factores se pueden usar para ordenar en gráficos:
+Los factores se pueden usar para ordenar en la construcción de gráficos:
 ```{r fig1, out.width = '70%'}
 ggplot(data = InsectSprays) + geom_boxplot(aes(x = spray, y = count)) + theme_light()
 ```
@@ -1240,25 +1254,23 @@ sort(fac_m)
 
 ## La familia `apply`
 
-Las funciones `apply` pueden ser una alternativa a la escritura de bucles.
+Las funciones `apply` pueden ser una alternativa a la escritura de loops.
 La idea general es aplicar (o asignar) una función a cada elemento de un objeto.
 
 
 Opción  | Efecto
 ------  | -------------------
-apply   | Aplicar funciones sobre márgenes de un `array`
-by      | Aplicar una función a un `data frame` dividido por factores
-eapply  | Aplicar una función sobre valores en un entorno
-lapply  | Aplicar una función sobre valores en una lista o vector
-mapply  | Aplicar una función a múltiples listas o argumentos vectoriales
-rapply  | Aplicar de forma recursiva una función a una lista
-tapply  | Aplicar una función sobre una matriz irregular
-sapply  | Una versión fácil de usar de lapply
+apply   | Aplicar funciones sobre márgenes de un `array`.
+by      | Aplicar una función a un `data frame` dividido por factores.
+eapply  | Aplicar una función sobre valores en un entorno.
+lapply  | Aplicar una función sobre valores en una lista o vector.
+mapply  | Aplicar una función a múltiples listas o argumentos vectoriales.
+rapply  | Aplicar de forma recursiva una función a una lista.
+tapply  | Aplicar una función sobre una matriz irregular.
+sapply  | Una versión fácil de usar de lapply.
 
 
----
-
-MCMC con bucles:
+## MCMC con loops
 
 ```{r}
 gibbs.loop.1 <- function (Itr=1e5, rho=0.5)
@@ -1275,9 +1287,7 @@ mat
 system.time(gibbs.loop.1()->g1)
 ```
 
----
-
-MCMC con “mejores” bucles:
+## MCMC con “mejores” loops
 
 ```{r}
 gibbs.loop.2 <- function (Itr=1e5, rho=0.5)
@@ -1297,9 +1307,7 @@ mat
 system.time(gibbs.loop.2()->g2)
 ```
 
-----
-
-MCMC sin bucles:
+## MCMC sin loops:
 
 ```{r}
 gibbs.noloop <- function(Itr=1e5, rho=0.5)
@@ -1335,16 +1343,14 @@ apply(x, 2, function(i) mean(i) / sd_x)
 ---
 
 <p style='text-align: justify;'>
-Una forma más avanzada de almacenamiento en caché es utilizar el paquete `memoise`.<br><br>
-Si una función se llama varias veces con la misma entrada, es posible acelerar las cosas manteniendo un caché de respuestas conocidas que puede recuperar.<br><br>
-El paquete `memoise` nos permite almacenar fácilmente el valor de la llamada de la función y devuelve el resultado almacenado en caché cuando se vuelve a llamar a la función con los mismos argumentos.<br><br>
-Este paquete intercambia memoria versus velocidad, ya que la función memorizada almacena todas las entradas y salidas anteriores.<br><br>
-Para almacenar en caché una función, simplemente pasamos la función a la función `memoise`.
+- Una forma más avanzada de almacenamiento en caché es utilizar el paquete `memoise`.
+- Si una función se llama varias veces con la misma entrada, es posible acelerar las cosas manteniendo un caché de respuestas conocidas que puede recuperar.
+- El paquete `memoise` nos permite almacenar fácilmente el valor de la llamada de la función y devuelve el resultado almacenado en caché cuando se vuelve a llamar a la función con los mismos argumentos.
+- Este paquete intercambia memoria versus velocidad, ya que la función memorizada almacena todas las entradas y salidas anteriores.
+- Para almacenar en caché una función, simplemente pasamos la función a la función `memoise`.
 </p>
 
----
-
-Por ejemplo,
+## Ejemplo
 
 ```{r, eval=FALSE}
 library(microbenchmark)
@@ -1365,8 +1371,8 @@ microbenchmark(times = 10, unit = "ms", m_plot_mpg(10), plot_mpg(10))
 ## El paquete `compiler`
 
 <p style='text-align: justify;'>
-El paquete `compiler`, escrito por Luke Tierney ha sido parte de R desde la versión 2.13.0<br><br>
-El paquete `compiler` permite compilar las funciones de R, lo que da como resultado una versión de código de bytes que puede ejecutarse más rápido.
+- El paquete `compiler`, escrito por Luke Tierney ha sido parte de R desde la versión 2.13.0.
+- El paquete `compiler` permite compilar las funciones de R, lo que da como resultado una versión de código de bytes que puede ejecutarse más rápido.
 </p>
 
 ---
@@ -1391,20 +1397,20 @@ mean_r(x), cmp_mean_r(x), mean(x))
 ```
 
 
-# Operaciones matemáticas{ .center .white data-background="#75AADB" }
+# Operaciones Matemáticas{ .center .white data-background="#75AADB" }
 
 ## Objetivos
 
 <ul>
-<li> Funciones matemáticas básicas</li>
-<li> Operaciones habituales en matrices y descomposiciones</li>
-<li> Integracion numerica</li>
-<li> Diferenciación numérica</li>
-<li> Optimización</li>
+<li> Funciones matemáticas básicas.</li>
+<li> Operaciones habituales en matrices y descomposiciones.</li>
+<li> Integracion numérica.</li>
+<li> Diferenciación numérica.</li>
+<li> Optimización.</li>
 </ul>
 
 
-## Funciones matemáticas básicas
+## Funciones Matemáticas Básicas
 
 ![](Images/Table1_1.PNG)
 
@@ -1413,7 +1419,7 @@ mean_r(x), cmp_mean_r(x), mean(x))
 
 ![](Images/Table1_2.PNG)
 
-## Operaciones matriciales
+## Operaciones Matriciales
 
 Se incluyen varias operaciones matriciales básicas en la versión base de R
 
@@ -1590,7 +1596,7 @@ all.equal(A,Q%*%R) # A = QR
 ```
 
 
-## Integración y diferenciación numérica
+## Integración y Diferenciación Numérica
 
 <p align = "justify">
 Supongamos que deseamos verificar numéricamente que </p> $$\int\limits_{-\infty}^{\infty}\frac{\exp\{-x^2/2\}}{\sqrt{2\pi}}=1$$ 
@@ -1659,7 +1665,6 @@ hessian(g,c(2,1))
 ## Optimización
 
 <p style='text-align: justify;'>
-Optimizar una función significa encontrar dónde alcanza su máximo o su mínimo.<br><br>
 Hay varias funciones en R para este fin, estas estan basadas en varios algoritmos: `optimize()`, `optim()`, `nlm()`, `constrOptim()`, `nlminb()`.<br><br>
 La función `optimize()`, que solo funciona en una dimensión, es la más fácil de manipular:
 </p>
@@ -1706,8 +1711,8 @@ $\gamma(s,x)=x^s\Gamma(s)\exp(-x)\sum\limits_{k=0}^{\infty}\dfrac{x^k}{\Gamma(s+
 ---
 
 <ul>
-<li> Crear dos funciones para $\gamma(s,x)$. La primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.</li>
-<li> Considere el siguiente conjunto de argumentos : $$(s,x)\in \{(2,5);(2,20);(10,2);(10,20)\}.$$ Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcular y comparar el tiempo de ejecución.</li>
+<li> Cree dos funciones para $\gamma(s,x)$, la primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento $s$ es negativo y un mensaje debe ser entregado al usuario.</li>
+<li> Considere el siguiente conjunto de argumentos : $$(s,x)\in \{(2,5);(2,20);(10,2);(10,20)\}.$$ Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcule y compare el tiempo de ejecución.</li>
 <li> Utilizando las funciones anteriormente implementadas y la función `Igamma()`  encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$, $x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución.</li>
 </ul>
 
@@ -1716,17 +1721,17 @@ $\gamma(s,x)=x^s\Gamma(s)\exp(-x)\sum\limits_{k=0}^{\infty}\dfrac{x^k}{\Gamma(s+
 
 ## Objetivos
 
-<p align = "justify"> En este capítulo discutiremos los siguientes temas: </p>
+<p align = "justify">Discutiremos los siguientes temas: </p>
 
 - Distribuciones de probabilidad.
-- Conceptos básicos de la inferencia estadística en el caso frequentista.
-- Intervalos de Confianza
+- Conceptos básicos de la inferencia estadística frequentista.
+- Intervalos de confianza
 
-## Distribuciones de probabilidad
+## Distribuciones de Probabilidad
 
-<p align = "justify"> El paquete `stats` posee las funciones para calcular la densidad(`d___`), la distribución acumulada(`p___`), los cuantiles(`q___`) de algunas distribuciones de probabilidad. Además, provee funciones para simular datos aleatoris de cierta distribución de probabilidad(`r___`). Algunos ejemplos:</p>
+<p align = "justify"> El paquete `stats` posee las funciones para calcular la densidad(`dNOMBRE`), la distribución acumulada(`pNOMBRE`), los cuantiles(`qNOMBRE`) de algunas distribuciones de probabilidad. Además, provee funciones para simular datos aleatoris de cierta distribución de probabilidad(`rNOMBRE`). Ejemplos:</p>
 
-- Normal: `dnorm() , pnorm(), qnorm(), rnorm()`.
+- Normal: `dnorm(), pnorm(), qnorm(), rnorm()`.
 - Poisson: `dpois(), ppois(), qpois(), rpois()`.
 - Weibull: `dweibull(), pweibull(), qweibull(), rweibull()`.
 
@@ -1750,7 +1755,7 @@ multiplot(hist,density, cumulative, cols = 3)
 
 ## Ley de los grandes números
 
-<p align = "justify"> Sea \(\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i\) donde los \(X_i\) son variables aleatorias independientes e idénticamente distribuidas con $E(X_i \ ) = \mu, \text{var}(X_i \ ) = \sigma^2$. La ley de los grandes números nos dice que </p> $$\bar{X}_n \xrightarrow{P} \mu.$$ 
+<p align = "justify"> Sea \(\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i\), donde los \(X_i\) son variables aleatorias independientes e idénticamente distribuidas con $E(X_i \ ) = \mu, \text{var}(X_i \ ) = \sigma^2$ finitas. La ley (debil) de los grandes números garantiza que </p> $$\bar{X}_n \xrightarrow{P} \mu.$$ 
 
 ## Ejemplo
 
@@ -1768,7 +1773,7 @@ ggplot(df) +
   
 ## Teorema central del límite
 
-<p align = "justify">  Sean $X_1,\ldots,X_n$ variables aleatorias independientes e idénticamente distribuidas. Bajo un tamaño de muestra lo suficientemente grande se cumplirá que $$\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{D} N(0,1).$$ </p>
+<p align = "justify">  Sean $X_1,\ldots,X_n$ variables aleatorias independientes e idénticamente distribuidas. Bajo un tamaño de muestra lo suficientemente grande se cumple que $$\frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{D} N(0,1).$$ </p>
 
 <p align = "justify"> En este [enlace](https://gallery.shinyapps.io/CLT_mean/) se puede encontrar un ejemplo de las aplicaciones del teorema. </p>
 
@@ -1783,25 +1788,25 @@ theta_estimado <- mean(muestra)
 theta_estimado
 ```
 
-<p align = "justify"> Existen diversas formas de generar estimadores. Uno de los métodos más utilizados es el de máxima verosimilitud. Este método busca encontrar el parámetro que máximiza la distribución conjunta de los datos.</p>
+<p align = "justify"> Existen diversas formas de generar estimadores. Uno de los métodos más utilizados es el de máxima verosimilitud. Este método busca encontrar el parámetro que máximiza la verosimilitud de los datos.</p>
 
 ## Intervalos de Confianza
 
-<p align = "justify"> Las estimaciones no seran exactamente igual al valor original parámetro original. Una forma de solventar este problema es generar intervalos, a partir de la estimación, que contengan el verdadero valor del parámetro. </p>
+<p align = "justify">Las estimaciones no son exactamente igual al valor de un parámetro. Una forma de resolver este problema es generar intervalos que idealmente contengan el verdadero valor del parámetro.</p>
 
-<p align = "justify"> Un intervalo de confianza contendrá un 95% de las veces el verdadero real del parámetro. En este [enlace](https://istats.shinyapps.io/ExploreCoverage/) se puede observar cómo se comportan los intervalos de confianza </p>
+<p align = "justify"> Un intervalo de confianza de 95% contendrá un 95% de las veces el verdadero real del parámetro en repeticiones del experimento. En este [enlace](https://istats.shinyapps.io/ExploreCoverage/) se puede observar cómo se comportan los intervalos de confianza </p>
 
-# Regresión Lineal{ .center .white data-background="#75AADB" }
+# Regresión Lineal en R{ .center .white data-background="#75AADB" }
 
 ## Objetivos
 
-En este capítulo discutiremos los siguientes temas:
+<p align = "justify">Se revisarán los siguientes tópicos:</p>
 
 - Regresión lineal simple y múltiple.
 - Selección de variables.
 - Validación del modelo y análisis de sensibilidad.
 
-## Base de datos
+## Base de Datos
 
 ```{r}
 fichier <- "http://www.biostatisticien.eu/springeR/Weight_birth.csv"
@@ -1811,7 +1816,7 @@ head(mydata)
 
 ----
 
-Transformamos libras a kilogramos
+<p align = "justify">Transformamos libras a kilogramos y graficamos.</p> 
 
 ```{r, fig.height = 4}
 mydata <- mydata %>% mutate(LWT = LWT*0.4535923)
@@ -1820,13 +1825,13 @@ plot1 <- ggplot(mydata,aes(x = LWT, y = BWT)) + geom_point() +
 plot1
 ```
 
-## Regresión lineal simple
+## Regresión Lineal Simple
 
 <p align = "justify"> El modelo de regresión lineal simple busca explicar el comportamiento medio de cierta variable respuesta $y$ utilizando una variable explicativa $x$. </p>
 
 <p align = "justify"> Su formulación corresponde a </p>
 
-$$y_i = \beta_0 + \beta_1x_i + \epsilon_i$$ 
+$$y_i = \beta_0 + \beta_1x_i + \epsilon_i,$$ 
 
 <p align = "justify"> donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1 \in \mathbb{R}$. </p>
 
@@ -1847,7 +1852,7 @@ ggPredict(model1,interactive = TRUE)
 
 ----
 
-### Test sobre los parámetros
+### Test sobre los Parámetros
 
 ```{r}
 res <- summary(model1)
@@ -1856,7 +1861,7 @@ res
 
 ----
 
-### Elementos del resumen de un modelo
+### Elementos del Resumen de un Modelo
 
 ```{r}
 names(res)
@@ -1873,7 +1878,7 @@ anova(model1)
 
 ----
 
-### I.C. para los coeficientes de regresión
+### I.C. para los Coeficientes de Regresión
 
 ```{r}
 confint(model1)
@@ -1891,25 +1896,25 @@ predict(model1, tibble(LWT = lwt0), interval = "confidence")
 
 ----
 
-### Banda de confianza de la recta estimada
+### Banda de Confianza de la Recta Estimada
 
 ```{r}
 ggPredict(model1,interactive = TRUE, se = TRUE)
 ```
 
-## Regresión lineal multiple
+## Regresión Lineal Múltiple
 
 <p align = "justify"> El modelo de regresión lineal simple busca explicar el comportamiento medio de cierta variable respuesta $y$ utilizando variables explicativas $x_1, \ldots, x_p$. </p>
 
 <p align = "justify"> Su formulación corresponde a </p>
 
-$$y_i = \beta_0 + \beta_1x_{1i} + \cdots + \beta_px_{pi} + \epsilon_i$$ 
+$$y_i = \beta_0 + \beta_1x_{1i} + \cdots + \beta_px_{pi} + \epsilon_i,$$ 
 
 <p align = "justify"> donde $\epsilon_i \overset{i.i.d}{\sim} N(0,\sigma^2)$, $\sigma^2 \in \mathbb{R}_+, \beta_0,\beta_1, \ldots, \beta_p \in \mathbb{R}$.</p>
 
 ----
 
-Modelaremos BWT utilizando LWT,AGE y SMOKE.
+Modelaremos BWT utilizando LWT, AGE y SMOKE.
 
 ```{r, fig.height=4}
 mydata1 <- mydata %>%  select(BWT,LWT,AGE,SMOKE)
@@ -1921,7 +1926,7 @@ multiplot(pairs,boxplot,cols = 2)
 
 ----
 
-### Ajustando el modelo
+### Ajustando el Modelo
 
 ```{r}
 model2 <- lm(BWT ~ LWT + AGE + factor(SMOKE), data = mydata1)
@@ -1930,7 +1935,7 @@ model2
 
 ----
 
-### Resumen del modelo
+### Resumen del Modelo
 
 ```{r}
 summary(model2)
@@ -1946,7 +1951,7 @@ anova(model2)
 
 ----
 
-### I.C. para los coeficientes
+### I.C. para los Coeficientes
 
 ```{r}
 confint(model2)
@@ -1964,7 +1969,7 @@ predict(model2, newdata, interval = "confidence")
 
 ----
 
-### Test de Hipótesis para modelos anidados
+### Test de Hipótesis para Modelos Anidados
 
 ```{r}
 anova(model1,model2)
@@ -1979,7 +1984,7 @@ anova(model3,model2)
 
 ----
 
-### Variables con más de dos categorías
+### Variables con Más de Dos Categorías
 
 ```{r}
 model4 <- lm(BWT ~ LWT + factor(RACE), data = mydata)
@@ -2014,13 +2019,13 @@ ggPredict(model5, se = TRUE, interactive = TRUE)
 ggPredict(model6, se = TRUE, interactive = TRUE)
 ```
 
-## Selección de variables
+## Selección de Variables
 
-<p align = "justify"> Los siguientes corresponden a algoritmos implementados en `R` para la selección de variables </p>
+<p align = "justify">Los siguientes algoritmos implementados en `R` permiten la selección de variables:</p>
 
-- Método Forward
-- Método Backward
-- Método Stepwise
+- Método Forward.
+- Método Backward.
+- Método Stepwise.
 
 ----
 
@@ -2057,18 +2062,16 @@ step(lm(BWT ~ 1, data = mydata), BWT ~ LWT + AGE + UI + factor(SMOKE) +
 
 ----
 
-### Comparación de modelos
+### Comparación de Modelos
 
 <p align = "justify"> Existen diferentes medidas para comparar diferentes modelos de regresión: </p>
 
-- $R^2$ ó $R^2$-ajustado
-- AIC ó BIC
+- $R^2$ ó $R^2$-ajustado.
+- AIC ó BIC.
 
 ----
 
 ### $R^2$ ó $R^2$-ajustado
-
-Se prefieren los modelos con $R^2$ y $R^2$ ajustados más cercanos a 1.
 
 ```{r}
 r2 <- c(summary(model5)$r.squared, summary(model6)$r.squared)
@@ -2078,7 +2081,7 @@ r2.adj
 ```
 ----
 
-### AIC ó BIC
+### AIC y BIC
 
 <p align = "justify"> Se prefieren los modelos con menor AIC o BIC </p>
 
@@ -2087,7 +2090,7 @@ AIC(model5, model6)
 BIC(model5, model6)
 ```
 
-## Bondad de ajuste del modelo
+## Bondad del Ajuste del Modelo
 
 <p align = "justify"> Supongamos que el modelo seleccionado corresponde al siguiente: </p>
 
@@ -2109,7 +2112,7 @@ coeftest(finalmodel)
 
 ----
 
-#### Normalidad de los residuos:
+#### Normalidad de los Residuos
 
 ```{r, fig.height= 4}
 data <- tibble("fit" = finalmodel$fitted.values, "res" = finalmodel$residuals)
@@ -2119,7 +2122,7 @@ p1
 
 ----
 
-#### Homocedasticidad de la varianza de los residuos
+#### Homocedasticidad de la Varianza de los Residuos
 
 ```{r, fig.height = 4}
 p1 <- ggplot(data) + geom_point(aes(x = fit, y = res))
@@ -2128,7 +2131,7 @@ p1
 
 ----
 
-#### Independencia de los residuos
+#### Independencia de los Residuos
 
 ```{r}
 dwtest(BWT ~ SMOKE + AGE + LWT + factor(RACE) + UI + HT + SMOKE:AGE, data = mydata)
@@ -2136,7 +2139,7 @@ dwtest(BWT ~ SMOKE + AGE + LWT + factor(RACE) + UI + HT + SMOKE:AGE, data = myda
 
 ----
 
-### Identificación de outliers
+### Identificación de Outliers
 
 ```{r, fig.height=4, size= 1}
 library(ggrepel)
@@ -2150,14 +2153,14 @@ ggplot(data, aes(x = fit, y = res_stud, label = labels)) + geom_point() +
 
 ----
 
-### Identificación de puntos influyentes
+### Identificación de Puntos Influyentes
 
 <p align = "justify"> Algunos test para identificarlos son:</p>
 
-- Distancia de Cook
-- DFFITS
-- DFBETAS
-- COVRATIO
+- Distancia de Cook.
+- DFFITS.
+- DFBETAS.
+- COVRATIO.
 
 ---- 
 
@@ -2165,32 +2168,32 @@ ggplot(data, aes(x = fit, y = res_stud, label = labels)) + geom_point() +
 summary(influence.measures(finalmodel))
 ```
 
-# Modelos Lineales Generalizados (GLM) { .center .white data-background="#75AADB" }
+# Modelos Lineales Generalizados (GLM) en R{ .center .white data-background="#75AADB" }
 
 ## Objetivos
 
-<p align = "justify"> En esta sección discutiremos los siguientes temas: </p>
+<p align = "justify"> Revisaremos los siguientes tópicos: </p>
 
-- Familia exponencial
-- Definición de GLM
-- Sobre-dispersión y baja-dispersión
-- Data censurada
+- Familia exponencial.
+- Definición de GLM.
+- Sobre-dispersión y sub-dispersión.
+- Datos censurados.
 
 
 ## Familia exponencial 
 
-<p align = "justify"> Sea $Y \sim f(\cdot | \theta, \phi)$. La distribución $f(\cdot | \theta, \phi)$ pertenece a la familia exponencial si puede ser escrita como:</p> $f(y | \theta,\phi) = \exp\{\phi^{-1}[y\theta - \Psi(\theta)] + c(y,\phi)\}$ <p align = "justify">  donde $\theta$ es llamado el parámetro natural y $\phi$ el parámetro de escala.</p>
+<p align = "justify"> Sea $Y \sim f(\cdot | \theta, \phi)$. La distribución $f(\cdot | \theta, \phi)$ pertenece a la familia exponencial si puede ser escrita como:</p> $f(y | \theta,\phi) = \exp\left \{\phi^{-1}[y\theta - \Psi(\theta)] + c(y,\phi)\right\},$ <p align = "justify">  donde $\theta$ es llamado el parámetro natural y $\phi$ el parámetro de escala.</p>
 
 ## Ejemplos
 
 <p align = "justify">  **Bernoulli:** $Y | \pi \sim \text{Ber}(\pi), Y \in \{0,1\}$ y $\pi \in [0,1]$. Podemos escribir </p>
 
 \begin{align*} f(y | \pi) &= \pi^y(1-\pi)^{1-y} \\
-     &= \exp\{y\log\left(\frac{\pi}{1-\pi}\right) + \log(1-\pi)\}\end{align*}
+     &= \exp\left\{y\log\left(\frac{\pi}{1-\pi}\right) + \log(1-\pi)\right \}\end{align*}
      
 ---- 
 
-<p align = "justify"> De aquí, la notación en familia exponencial será </p>
+<p align = "justify"> De esta forma, la notación en familia exponencial es:</p>
 - $\theta = \log\left(\frac{\pi}{1-\pi}\right)$
 - $\phi = 1$
 - $\Psi(\theta) = \log(1 + \exp(\theta))$
@@ -2202,11 +2205,11 @@ summary(influence.measures(finalmodel))
 <p align = "justify"> **Poisson:** $Y | \lambda \sim \text{Poisson}(\lambda), Y \in \{0,1,\ldots\}$ y $\lambda \in \mathbb{R}_+$. Podemos escribir </p>
 
 \begin{align*} f(y | \lambda) &= \frac{\exp^{\lambda}\lambda^y}{y!} \\ 
-&= \exp\{y\log\lambda - \lambda + \log y!\} \end{align*}
+&= \exp\left\{y\log\lambda - \lambda + \log y!\right\} \end{align*}
 
 ----
 
-<p align = "justify"> De aquí, la notación en familia exponencial será </p>
+<p align = "justify"> De esta forma, la notación en familia exponencial es:</p>
 - $\theta = \log\lambda$
 - $\phi = 1$
 - $\Psi(\theta) = \exp(\theta)$
@@ -2218,12 +2221,12 @@ summary(influence.measures(finalmodel))
 <p align = "justify"> **Gamma:** $Y | \alpha,\beta \sim \text{Gamma}(\alpha,\beta), Y \in \mathbb{R}, \alpha,\beta \in \mathbb{R}_+$. Podemos escribir </p>
 
 \begin{align*} f(y | \alpha,\beta) &= \frac{1}{\Gamma(\beta)}\left(\frac{\beta}{\alpha}\right)^{\beta} y^{\beta - 1}\exp\left\{-\frac{\beta y}{\alpha}\right\} \\ 
-&=  \exp\{\beta[-\frac{y}{\alpha} - \log\alpha]\\
- & \ \ + [(\beta - 1)\log y + \beta\log\beta - \log\Gamma(\beta)\} \end{align*}
+&=  \exp\left\{\beta[-\frac{y}{\alpha} - \log\alpha]\right.\\
+ & \ \ \left. + [(\beta - 1)\log y + \beta\log\beta - \log\Gamma(\beta)\right\} \end{align*}
 
 ----
 
-<p align = "justify"> De aquí, la notación en familia exponencial será </p>
+<p align = "justify"> De esta forma, la notación en familia exponencial es:</p>
 - $\theta = -\frac{1}{\alpha}$
 - $\phi = \frac{1}{\beta}$
 - $\Psi(\theta) = -\log(\theta)$
@@ -2232,24 +2235,24 @@ summary(influence.measures(finalmodel))
 
 ## Definición GLM
 
-<p align = "justify"> Los modelos lineales generalizados se definen por:</p>
+<p align = "justify">Los modelos lineales generalizados se definen por:</p>
 
-- La distribución de la variable respuesta
-- El predictor lineal
-- La función de enlace
+- La distribución de la variable respuesta.
+- El predictor lineal.
+- La función de enlace.
 
 ----
 
 <p align = "justify"> Para $i = 1,\ldots, n$ sean $\mu_i = E(Y_i)$, $\eta_i = \mathbf{x}_i'\boldsymbol\beta$ un predictor linear con $\mathbf{x}_i \in \mathbb{R}^p$. En GLM conectaremos una transformación de la media con $\eta_i$. Algunos ejemplos son: </p>
 
 - Normal: $g(\mu_i) = \mathbf{x}_i'\boldsymbol\beta$.
-- Bernoulli: $g(\mu_i) = \log\left(\frac{\mu_i}{1-\mu_i}\right) = \mathbf{x}_i'\boldsymbol\beta$
-- Poisson: $g(\mu_i) = \log(\mu_i) = \mathbf{x}_i'\boldsymbol\beta$
-- Gamma: $g(\mu_i) = \frac{1}{\mu_i} = \mathbf{x}_i'\boldsymbol\beta$
+- Bernoulli: $g(\mu_i) = \log\left(\frac{\mu_i}{1-\mu_i}\right) = \mathbf{x}_i'\boldsymbol\beta$.
+- Poisson: $g(\mu_i) = \log(\mu_i) = \mathbf{x}_i'\boldsymbol\beta$.
+- Gamma: $g(\mu_i) = \frac{1}{\mu_i} = \mathbf{x}_i'\boldsymbol\beta$.
 
 ## GLM en `R`
 
-<p align = "justify"> La función `glm()` permite ajustar modelos GLM. Posee una sintaxis similar a la de `lm()`, pero agregando un argumento para seleccionar la distribución de la variable respuesta junto con la función de enlace. Veamos algunos ejemplos: </p>
+<p align = "justify"> La función `glm()` permite ajustar modelos GLM. Posee una sintaxis similar a la de `lm()`, pero agregando un argumento para seleccionar la distribución de la variable respuesta junto con la función de enlace. </p>
 
 <p align = "justify"> **Binomial con link logístico:** Variable respuesta binaria </p>
 ```{r}
@@ -2285,9 +2288,9 @@ rd_pois <- glm(trips ~ ., data = RecreationDemand, family = poisson); coeftest(r
 
 ----
 
-### Modelos anidados en GLM
+### Modelos Anidados en GLM
 
-<p align = "justify"> Para la comparación de modelos anidados se utiliza la **Devianza**. Ella corresponde a una medida de cercanía entre el modelo ajustado y el modelo más sobre-ajustado posible. </p>
+<p align = "justify"> Para la comparación de modelos anidados se utiliza la **Devianza**. Ella corresponde a una medida de cercanía entre el modelo ajustado y el modelo saturado. </p>
 ```{r}
 swiss_logit2 <-  glm(participation ~ age + income, data = SwissLabor, family = binomial(link = "logit"))
 anova(swiss_logit,swiss_logit2)
@@ -2324,7 +2327,7 @@ RecreationDemand %>% group_by(trips) %>%  tally()
 
 ----
 
-Para ajustar este modelo utilizamos la función `zeroinfl()` del paquete `pscl`
+Para ajustar este modelo utilizamos la función `zeroinfl()` del paquete `pscl`.
 
 ```{r}
 library(pscl)
@@ -2334,9 +2337,9 @@ summary(rd_zinb)
 
 ----
 
-### Modelos para datos censurados
+### Modelos para Datos Censurados
 
-<p align = "justify"> Los modelos estadísticos que tienen en consideración variables de respuesta con censura se encuentran en la librería `survival`.</p> 
+<p align = "justify"> Los modelos estadísticos que tienen en consideración variables de respuesta con censura se encuentran en el paquete `survival`.</p> 
 ```{r}
 data("Affairs")
 head(Affairs, 3L)
@@ -2348,6 +2351,56 @@ head(Affairs, 3L)
 aff_tob_ex <- tobit(affairs ~ yearsmarried, data = Affairs)
 coeftest(aff_tob_ex)
 ```
+
+
+
+# Actividad III{ .center .white data-background="#75AADB"}
+
+----
+
+<p align = "justify">En Escocia, en el año 1984 se llevaron a cabo 35 carreras en las montañas. Los datos recopilados de cada una de ellas, se presentan por intermedio de las siguientes variables:</p> 
+
+- distancia: distancia recorrida en la carrera (en millas). 
+- altura: altura total alcanzada en la carrera (en pies).
+- tiempo: tiempo obtenido por el vencedor (en minutos).
+
+
+----
+<p align = "justify">Datos:</p> 
+
+```{r, cache = FALSE}
+carrera <- read_csv("http://midas.mat.uc.cl/courses/bc2019/Datasets/carrera.csv")
+```
+
+
+----
+
+<p align = "justify">Cargue los datos en R. Verifique que la base de datos se haya importado correctamente e identifique las variables.</p> 
+
+<p align = "justify">En base a la informaci\'on entregada y con la ayuda de R, responda las siguientes preguntas.</p>
+
+
+----
+
+### Parte I: Ajuste del Modelo
+
+- Si se quiere modelar el tiempo obtenido en la carrera en función de alguna otra variable. ¿Qué variable sugeriría utilizar? Justifique su respuesta indicando las herramientas en las que basó su elección.
+- Plantee el modelo adecuado con sus supuestos y ajústelo. Evalúe la significancia de los coeficientes, y en base a ello, escriba la recta estimada.
+- Ajuste el modelo de regresión si considerar intercepto. Entregue la recta estimada e interprete el coeficiente en el contexto del problema.
+
+----
+
+### Parte II:  Diagnóstico de Regresión
+- Grafique los residuos de manera que le permita analizar si está bien especificada la función de la media. Añada las bandas de confianza correspondientes. Identifique qué observaciones son atípicas.
+- Obtenga los coeficientes $h_{ii}$ o palanca de cada observación. ¿Qué observación tiene la mayor palanca?
+Comente este resultado en conjunto con lo obtenido en la pregunta anterior. 
+- Analice la presencia de observaciones influyentes utilizando las Distancias de Cook y los DFFITS.
+Comente.
+- Analice el supuesto de independencia de los errores del modelo en base al test correspondiente. 
+Plantee las hipótesis, entregue el valor del estad\'istico y concluya con $\alpha=5\%$.
+
+
+
 
 # Series de Tiempo en R{ .center .white data-background="#75AADB" }
 
@@ -2371,11 +2424,11 @@ library(xts)
     - Modelos VAR.
     - Modelos SS.
     
-## Creación de series de tiempo
+## Creación de Series de Tiempo
 
 - R genera series de tiempo con la función `stats::ts()`.
 - Su sintaxis básica es `ts(data, start, end, frequency)`,
-  donde
+  donde:
     - `data` es un vector, matrix y data frame.
     - `start` es el período de la primera observación.
     - `end` es el período de la última observación.
@@ -2454,7 +2507,7 @@ plot(unemp_sa) # Grafica la serie original y la ajustada
 ## Descomposición tendencia/ciclo
 
 - Podemos usar el filtro de Hamilton con la función `neverhpfilter::yth_filter()`.
-- Su sintaxis básica es `yth_filter(x, h, p, output)`, donde
+- Su sintaxis básica es `yth_filter(x, h, p, output)`, donde:
   - `x` es la serie analizada.
   - `h` es literalmente el $h$ señalado en la diapositiva anterior.
   - `p` es literalmente el $p$ señalado en la diapositiva anterior.
@@ -2518,7 +2571,7 @@ stats::coef(arima(x, order = c(1, 0, 1)))
 ### Ejemplo
 
 - La BBDD `Canada` del paquete `vars` contiene 4 variables:
-  - `prod` Una proxy de productividad del trabajo.
+  - `prod`: un proxy de productividad del trabajo.
   - `e`: el logaritmo del empleo.
   - `U`: la tasa de desemepleo.
   - `rw`: el salario real.
@@ -2666,7 +2719,7 @@ fit01$optim.out$par # imprime los coeficientes estimados
 
 ----
 
-### Prediga y Suavice usando `KFAS::KFS()`
+### Predicción y Suavizamiento usando `KFAS::KFS()`
 
 - La función `KFS()` permite, entre otras cosas, predecir (1 paso adelante) y suavizar $\alpha_t$.
 - Su sintaxis básica es `KFS(fit$model)`, donde `fit` fue ajustado usando `fitSSM()`.
@@ -2715,34 +2768,18 @@ m01 <- KFAS::SSModel(
 ) # Claramente, es menos verboso.
 ```
 
-# Actividad III{ .center .white data-background="#75AADB" }
 
-
-## Parte 1
-
-- El archivo `seatbelt.csv` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y diciembre de 1984. Dado lo anterior:
-  - Importe la BBDD como un `data.frame`.
-  - Convierta el resultado en una serie de tiempo.
-  - Estime un modelo de nivel, pendiente y estacionalidad local.
-  - Grafique los componentes tendencial y estacional ya suavizados.
-
-## Parte 2
-
-- Reconsidere el ejemplo dado para el filtro de Hamilton.
-  - Estime un modelo de nivel, pendiente y estacionalidad local y grafique la tendencia suavizada. ¿Cómo luce en relación a lo obtenido con el filtro de Hamilton?
-  - Repita el ejercicio anterior, pero ahora con una pendiente no local sino global.
-
-# Generacion de Reportes Automatizables{ .center .white data-background="#75AADB" }
+# Generación de Reportes Automatizables{ .center .white data-background="#75AADB" }
 
 ## {data-background-video="video1.mp4"}
 
 ## ¿Qué es R Markdown?
 
-- Marco unificado para ciencia de datos
+- Marco unificado para ciencia de datos.
 - Combina:
-    - Código
-    - Resultados
-    - Gráficos
+    - Código.
+    - Resultados.
+    - Gráficos.
 - Los documentos R Markdown son totalmente reproducibles y automatizables.
 
 ## Diferentes formatos de salida
@@ -2773,7 +2810,8 @@ m01 <- KFAS::SSModel(
 
 ## Código
 
-Podemos ingresar código de R en nuestros documentos utilizando los `chunks`(ctrl + alt + I). Existen opciones que permiten manipular la acción de un chunk en específico en nuestro documento. Algunas opciones son:
+<p align = "justify">
+Podemos ingresar código de R en nuestros documentos utilizando los `chunks`(ctrl + alt + I). Existen opciones que permiten manipular la acción de un chunk en específico en nuestro documento. Algunas opciones son: </p>
 
 Opción  | Efecto
 ------  | -------------------
@@ -2787,11 +2825,12 @@ Para más información ver el siguiente [link](https://www.rstudio.com/wp-conten
 
 ## YAML
 
-Aquí se escriben opciones generales del documento. Se pueden configurar, entre muchas otras cosas:
+<p align = "justify">
+Aquí se escriben opciones generales del documento. Se pueden configurar, entre muchas otras cosas: </p>
 
-- Fuente y formato
-- Tamaños de figuras o gráficos
-- Agregar un CSS
+- Fuente y formato.
+- Tamaños de figuras o gráficos.
+- Agregar un CSS.
 
 ## Código entre texto
 
@@ -2801,24 +2840,27 @@ Podemos realizar código r en cualquier oración. Para ello basta escribir
 
 Para mayor información de todo esto, ver el siguiente [link](https://bookdown.org/yihui/rmarkdown/)
 
-## Actividad IV: parte I
+## Ejemplo
 
-Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones:
+<p align = "justify">
+Considere el archivo `Ejemplo RMD.Rmd` del siguiente [url](http://midas.mat.uc.cl/courses/bc2019/Ejemplos/) y la siguiente [base de datos](http://midas.mat.uc.cl/courses/bc2019/Datasets/candy_crush.csv). Deje ambos archivos en una misma carpeta. </p>
 
-- Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final.
-- Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre
+- Modifique la lectura de los datos.
+- Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones.
+- Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final. -->
+- Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre.
 
-## Actividad IV: parte II
+----
 
-- En la línea 10, convertir "Candy Crush Saga" en negrita
-- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa)
-- Enfatice el texto en la línea 141 convirtiéndola en itálica
-- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png
+- En la línea 10, convertir "Candy Crush Saga" en negrita.
+- Convertir "King" (línea 10) en un link hacia: https://es.wikipedia.org/wiki/King_(empresa). 
+- Enfatice el texto en la línea 141 convirtiéndola en itálica. 
+- Incluir la imagen del siguiente link en la Introducción: http://www.garotasgeeks.com/wp-content/uploads/2014/05/candy-crush1-610x240.png. 
 
-## Actividad IV: parte III
+----
 
-- Quitar los mensajes que genera el cargar la librería en la línea 18
-- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes
+- Quitar los mensajes que genera el cargar la librería en la línea 18. 
+- Cargar los datos y mostrar las primeras filas de la base de datos (línea 36) sin que me muestre el código ni los mensajes.
 - Sabiendo que el código para calcular el número de jugadores y el período que abarcan los datos es el que sigue, complete la línea 44.
 
 ```{r, eval = FALSE}
@@ -2826,184 +2868,217 @@ range(data$dt)
 length(unique(data$player_id))
 ```
 
-## Actividad IV: parte IV
+----
 
 - Agregar el `theme:paper`, `toc:true` y `toc_float:true`. Comente lo ocurrido.
 - ¿Qué pasa si agrego la opción 'code_folding: show'?
 
-## Ejemplo: Boletin Empleo Trimestral INE{ .center .white data-background="#75AADB" }
+# Actividad IV{ .center .white data-background="#75AADB" }
 
-## Descripción
 
-- El INE publica mensualmente un Boletín de Empleo Trimestral. 
-- En la página 3 de dicho informe, se presentan cifras relacionadas con la evolución de los ocupados según grupo ocupacional (CIUO.08). Específicamente:
-    1. La participación de los ocupados según grupo ocupacional.
-    2. El crecimiento porcentual del número de ocupados segùn grupo ocupacional.
-- El primer grupo de cifras se presenta como un gráfico, pero el grupo de cifras se presentan dentro del texto.
-- En este ejericicio final, explicaremos cómo reproducir este extracto del Boletín usando RMarkdown.
+## Parte 1
 
-## Crecimiento porcentual de los ocupados
+- El archivo `seatbelt.csv` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y diciembre de 1984. Dado lo anterior:
+  - Importe la BBDD como un `data.frame`.
+  - Convierta el resultado en una serie de tiempo.
+  - Estime un modelo de nivel, pendiente y estacionalidad local.
+  - Grafique los componentes tendencial y estacional ya suavizados.
 
-Cargamos los datos (también cargaremos datos del 2018):
+## Parte 2
 
-```{r}
-ene_jja <- list(
-  "2018" = haven::read_dta("Datasets/submuestra ENE 2018 07 JJA.dta"),
-  "2019" = haven::read_dta("Datasets/submuestra ENE 2019 07 JJA.dta")
-)
-```
+- Reconsidere el ejemplo dado para el filtro de Hamilton.
+  - Estime un modelo de nivel, pendiente y estacionalidad local y grafique la tendencia suavizada. ¿Cómo luce en relación a lo obtenido con el filtro de Hamilton?
+  - Repita el ejercicio anterior, pero ahora con una pendiente no local sino global.
 
-Estimamos el número de ocupados, para el trimestre junio-agosto 2018
+## Parte 3
 
-```{r}
-ocup_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::pull(1)
-```
+- Los archivos `ENE 2018 07 JJA.dta` y `ENE 2019 07 JJA.dta` contienen submuestras de la Encuesta Nacional de Empleo  para los trimestres junio-agosto de 2018 y 2019, respectivamente.
+  - Importe ambas BBDD a R.
+  - Estime el número de ocupados, según trimestre.
+  - Estime la variación porcentual en 12 meses del n. de ocupados.
+  - Estime el número de ocupados por grupo ocupacional, según trimestre.
+  - Estime la variación (%) en 12 meses del n. de ocupados por grupo de ocupación.
 
 ----
 
-Estimamos el número de ocupados, para el trimestre junio-agosto 2019
-```{r}
-ocup_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::pull(1)
-```
+  - Estime la distribución de los ocupados por grupo de ocupación, según trimestre.
+  - Presente los resultados del ítem anterior en un solo cuadro.
+  - Presente los resultados del ítem anterior en un solo gráfico.
 
-Estimamos la variación porcentual en 12 meses del número de ocupados
-```{r}
-ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1)
-```
 
-----
+<!-- ## Ejemplo: Boletin Empleo Trimestral INE{ .center .white data-background="#75AADB" } -->
 
-## Variación en 12 meses de los ocupados por grupo de ocupación
+<!-- ## Descripción -->
 
-Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
+<!-- - El INE publica mensualmente un Boletín de Empleo Trimestral.  -->
+<!-- - En la página 3 de dicho informe, se presentan cifras relacionadas con la evolución de los ocupados según grupo ocupacional (CIUO.08). Específicamente: -->
+<!--     1. La participación de los ocupados según grupo ocupacional. -->
+<!--     2. El crecimiento porcentual del número de ocupados segùn grupo ocupacional. -->
+<!-- - El primer grupo de cifras se presenta como un gráfico, pero el grupo de cifras se presentan dentro del texto. -->
+<!-- - En este ejericicio final, explicaremos cómo reproducir este extracto del Boletín usando RMarkdown. -->
 
-```{r}
-tbl1_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact))
-```
+<!-- ## Crecimiento porcentual de los ocupados -->
 
-----
+<!-- Cargamos los datos (también cargaremos datos del 2018): -->
 
-## Variación en 12 meses de los ocupados por grupo de ocupación
+<!-- ```{r} -->
+<!-- ene_jja <- list( -->
+<!--   "2018" = haven::read_dta("Datasets/ENE 2018 07 JJA.dta"), -->
+<!--   "2019" = haven::read_dta("Datasets/ENE 2019 07 JJA.dta") -->
+<!-- ) -->
+<!-- ``` -->
 
-Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
+<!-- Estimamos el número de ocupados, para el trimestre junio-agosto 2018 -->
 
-```{r}
-tbl1_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact))
-```
+<!-- ```{r} -->
+<!-- ocup_2018 <- -->
+<!--   ene_jja[["2018"]] %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::pull(1) -->
+<!-- ``` -->
 
-----
+<!-- ---- -->
 
-## Variación en 12 meses de los ocupados por grupo de ocupación
+<!-- Estimamos el número de ocupados, para el trimestre junio-agosto 2019 -->
+<!-- ```{r} -->
+<!-- ocup_2019 <- -->
+<!--   ene_jja[["2019"]] %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::pull(1) -->
+<!-- ``` -->
 
-Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019
+<!-- Estimamos la variación porcentual en 12 meses del número de ocupados -->
+<!-- ```{r} -->
+<!-- ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1) -->
+<!-- ``` -->
 
-```{r}
-tbl1 <-
-  dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>%
-  dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>%
-  dplyr::arrange(desc(delta)) %>%
-  haven::as_factor()
-```
+<!-- ---- -->
 
-Convierte el resultado en un vector
+<!-- ## Variación en 12 meses de los ocupados por grupo de ocupación -->
 
-```{r}
-pcts <- round(tbl1$delta, 1)
-names(pcts) <- tbl1$b1
-```
+<!-- Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018 -->
 
-----
+<!-- ```{r} -->
+<!-- tbl1_2018 <- -->
+<!--   ene_jja[["2018"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) -->
+<!-- ``` -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- ---- -->
 
-Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019
+<!-- ## Variación en 12 meses de los ocupados por grupo de ocupación -->
 
-```{r}
-tbl2_2019 <-
-  ene_jja[["2019"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::mutate(
-    pct       = 100 * n / sum(n),
-    trimestre = "junio-agosto 2019"
-  )
-```
+<!-- Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019 -->
 
-----
+<!-- ```{r} -->
+<!-- tbl1_2019 <- -->
+<!--   ene_jja[["2019"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) -->
+<!-- ``` -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- ---- -->
 
-Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018
+<!-- ## Variación en 12 meses de los ocupados por grupo de ocupación -->
 
-```{r}
-tbl2_2018 <-
-  ene_jja[["2018"]] %>%
-  dplyr::select(activ, b1, fact) %>%
-  dplyr::filter(activ == 1) %>%
-  dplyr::group_by(b1) %>%
-  dplyr::summarise(n = sum(fact)) %>%
-  dplyr::mutate(
-    pct       = 100 * n / sum(n),
-    trimestre = "junio-agosto 2018"
-  )
-```
+<!-- Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019 -->
 
-----
+<!-- ```{r} -->
+<!-- tbl1 <- -->
+<!--   dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>% -->
+<!--   dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>% -->
+<!--   dplyr::arrange(desc(delta)) %>% -->
+<!--   haven::as_factor() -->
+<!-- ``` -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- Convierte el resultado en un vector -->
 
-Combina la información en una tabla
+<!-- ```{r} -->
+<!-- pcts <- round(tbl1$delta, 1) -->
+<!-- names(pcts) <- tbl1$b1 -->
+<!-- ``` -->
 
-```{r}
-tbl2_3FN <-
-  rbind(tbl2_2018, tbl2_2019) %>%
-  dplyr::select(b1, pct, trimestre) %>%
-  dplyr::mutate(
-    trimestre = haven::as_factor(trimestre),
-    b1        = haven::as_factor(b1)
-  )
-```
+<!-- ---- -->
 
-----
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
 
-## Participación de ocupados, según grupo ocupacional, 2018 vs 2019
+<!-- Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2019 -->
 
-Crea el Gráfico 1
+<!-- ```{r} -->
+<!-- tbl2_2019 <- -->
+<!--   ene_jja[["2019"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::mutate( -->
+<!--     pct       = 100 * n / sum(n), -->
+<!--     trimestre = "junio-agosto 2019" -->
+<!--   ) -->
+<!-- ``` -->
 
-```{r, eval=FALSE}
-tbl2_3FN %>%
-  ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) +
-  ggplot2::geom_bar(position = "dodge", stat = "identity") +
-  ggplot2::coord_flip() +
-  ggplot2::scale_fill_manual(values = c("darkblue", "darkred")) +
-  ggplot2::labs(
-    x        = "Grupo ocupacional (CIUO 08.cl)",
-    y        = "Participación (%)",
-    title    = "Gráfico 1. Participación de ocupados",
-    subtitle = "según grupo ocupacional (CIUO 08.cl)",
-    caption  = "Elaboración propia en base a datos de la ENE 2018/2019."
-  )
-```
+<!-- ---- -->
+
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
+
+<!-- Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para el trimestre junio-agosto 2018 -->
+
+<!-- ```{r} -->
+<!-- tbl2_2018 <- -->
+<!--   ene_jja[["2018"]] %>% -->
+<!--   dplyr::select(activ, b1, fact) %>% -->
+<!--   dplyr::filter(activ == 1) %>% -->
+<!--   dplyr::group_by(b1) %>% -->
+<!--   dplyr::summarise(n = sum(fact)) %>% -->
+<!--   dplyr::mutate( -->
+<!--     pct       = 100 * n / sum(n), -->
+<!--     trimestre = "junio-agosto 2018" -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- ---- -->
+
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
+
+<!-- Combina la información en una tabla -->
+
+<!-- ```{r} -->
+<!-- tbl2_3FN <- -->
+<!--   rbind(tbl2_2018, tbl2_2019) %>% -->
+<!--   dplyr::select(b1, pct, trimestre) %>% -->
+<!--   dplyr::mutate( -->
+<!--     trimestre = haven::as_factor(trimestre), -->
+<!--     b1        = haven::as_factor(b1) -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- ---- -->
+
+<!-- ## Participación de ocupados, según grupo ocupacional, 2018 vs 2019 -->
+
+<!-- Crea el Gráfico 1 -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- tbl2_3FN %>% -->
+<!--   ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) + -->
+<!--   ggplot2::geom_bar(position = "dodge", stat = "identity") + -->
+<!--   ggplot2::coord_flip() + -->
+<!--   ggplot2::scale_fill_manual(values = c("darkblue", "darkred")) + -->
+<!--   ggplot2::labs( -->
+<!--     x        = "Grupo ocupacional (CIUO 08.cl)", -->
+<!--     y        = "Participación (%)", -->
+<!--     title    = "Gráfico 1. Participación de ocupados", -->
+<!--     subtitle = "según grupo ocupacional (CIUO 08.cl)", -->
+<!--     caption  = "Elaboración propia en base a datos de la ENE 2018/2019." -->
+<!--   ) -->
+<!-- ``` -->
 
 <!-- TODO -->
 <!-- chunk 46. -->

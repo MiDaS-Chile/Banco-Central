@@ -1,0 +1,8 @@
+---
+title: "Prueba Final"
+author: "MiDaS"
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+
+---
