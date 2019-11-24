@@ -2809,7 +2809,8 @@ m01 <- KFAS::SSModel(
 
 ## Código
 
-Podemos ingresar código de R en nuestros documentos utilizando los `chunks`(ctrl + alt + I). Existen opciones que permiten manipular la acción de un chunk en específico en nuestro documento. Algunas opciones son:
+<p align = "justify">
+Podemos ingresar código de R en nuestros documentos utilizando los `chunks`(ctrl + alt + I). Existen opciones que permiten manipular la acción de un chunk en específico en nuestro documento. Algunas opciones son: </p>
 
 Opción  | Efecto
 ------  | -------------------
@@ -2823,7 +2824,8 @@ Para más información ver el siguiente [link](https://www.rstudio.com/wp-conten
 
 ## YAML
 
-Aquí se escriben opciones generales del documento. Se pueden configurar, entre muchas otras cosas:
+<p align = "justify">
+Aquí se escriben opciones generales del documento. Se pueden configurar, entre muchas otras cosas: </p>
 
 - Fuente y formato.
 - Tamaños de figuras o gráficos.
@@ -2839,8 +2841,10 @@ Para mayor información de todo esto, ver el siguiente [link](https://bookdown.o
 
 ## Ejemplo
 
-Considere el archivo Actividad 4.Rmd del siguiente [url](http://midas.mat.uc.cl/courses/bc2019/Actividades/) y la siguiente [base de datos](http://midas.mat.uc.cl/courses/bc2019/Datasets/candy_crush.csv).
+<p align = "justify">
+Considere el archivo `Ejemplo RMD.Rmd` del siguiente [url](http://midas.mat.uc.cl/courses/bc2019/Ejemplos/) y la siguiente [base de datos](http://midas.mat.uc.cl/courses/bc2019/Datasets/candy_crush.csv). Deje ambos archivos en una misma carpeta. </p>
 
+- Modifique la lectura de los datos.
 - Convertir los títulos de las secciones de estos párrafos en encabezados, utilizando la sintaxis apropiada, además de diferentes niveles de encabezado para las secciones y subsecciones.
 - Secciones (encabezados de primer nivel): Introducción, La base de datos, Computando el nivel de dificultad, Computando la incertidumbre, Una métrica final. -->
 - Subsecciones (encabezados de segundo nivel): Chequeando la base de datos, Graficando el perfil de dificultad, Detectando niveles difíciles, Mostrando incertidumbre.
