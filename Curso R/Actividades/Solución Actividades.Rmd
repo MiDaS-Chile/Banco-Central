@@ -236,3 +236,94 @@ microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=100), op
 ## Actividad III
 
 ## Actividad IV
+
+```{r}
+# Declara las librerías relevantes
+library(neverhpfilter)
+library(tidyverse)
+library(magrittr)
+library(readr)
+library(KFAS)
+
+#####
+##### Parte 1
+#####
+
+# Importa la BBDD
+seatbelt <- readr::read_csv("Datasets/seatbelt.csv")
+
+# Convierte el resultado en una serie de tiempo
+seatbelt <- ts(seatbelt, frequency = 12, start = c(1969, 1))
+
+# Ajusta un modelo estructural (a la Harvey) a estos datos
+Q_trend <- list(matrix(NA), matrix(NA))
+Q_seas  <- matrix(NA)
+fit_01 <- 
+  KFAS::SSModel(
+    seatbelt ~ -1 + SSMtrend(2, Q_trend) + SSMseasonal(12, Q_seas),
+    H = matrix(NA),
+    data = seatbelt
+  ) %>%
+  KFAS::fitSSM(inits = rep(0, 4))
+
+# Aplica el KFS al resultado
+kfs_01 <- 
+  magrittr::extract2("model") %>%
+  KFAS::KFS() %>%
+  magrittr::extract2("alphahat")
+
+# Grafica el componente estacional suavizado
+smo <- kfs_01$alphahat[, 3]
+ggplot(tibble(y = smo), aes(x = time(seatbelt))) +
+  geom_line(aes(y = y,   colour = "componente estacional (suavizado)"))
+
+# Grafica el componente tendencial suavizado
+smo <- kfs_01$alphahat[, 1]
+ggplot(tibble(y = smo), aes(x = time(seatbelt))) +
+  geom_line(aes(y = y,   colour = "componente tendencia (suavizado)"))
+
+#####
+##### Parte 2
+#####
+
+# Prepara los datos
+y <- ts(log(neverhpfilter::GDPC1), frequency = 4, start = c(1947, 1))
+
+# Calcula la tendencia suavizada (usando un modelo estructural a la Harvey)
+smo_trend_01 <- 
+  KFAS::SSModel(
+    y ~ -1 + SSMtrend(2, Q_trend) + SSMseasonal(4, Q_seas),
+    H = matrix(NA),
+    data = y
+  ) %>%
+  KFAS::fitSSM(inits = rep(0, 4)) %>%
+  magrittr::extract2("model") %>%
+  KFAS::KFS() %>%
+  magrittr::extract2("alphahat") %>%
+  magrittr::extract(, 1)
+  
+# Grafica el resultado (junto a la serie original)
+ggplot(NULL, aes(x = time(y))) +
+  geom_line(aes(y = y,            colour = "serie")) +
+  geom_line(aes(y = smo_trend_01, colour = "tendencia (suavizada)"))
+
+# Calcula la tendencia suavizada (pero ahora usado estacionalidad global)
+Q_trend <- list(matrix(NA), 0)
+Q_seas  <- matrix(NA)
+smo_trend_02 <- 
+  KFAS::SSModel(
+    y ~ -1 + SSMtrend(2, Q_trend) + SSMseasonal(4, Q_seas),
+    H = matrix(NA),
+    data = y
+  ) %>%
+  KFAS::fitSSM(inits = rep(0, 3)) %>%
+  magrittr::extract2("model") %>%
+  KFAS::KFS() %>%
+  magrittr::extract2("alphahat") %>%
+  magrittr::extract(, 1)
+
+# Grafica el resultado (junto a la serie original)
+ggplot(NULL, aes(x = time(y))) +
+  geom_line(aes(y = y,            colour = "serie")) +
+  geom_line(aes(y = smo_trend_02, colour = "tendencia (suavizada)"))
+```
