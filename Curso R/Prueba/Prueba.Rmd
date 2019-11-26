@@ -1,19 +1,35 @@
 ---
-title: "Prueba Final"
-author: "MiDaS"
 output: 
   prettydoc::html_pretty:
-    theme: cayman
-
+    theme: leonids
 ---
 
-El archivo $\texttt{fishing.csv}$ contiene 147 observaciones sobre el número total de peces ($\texttt{totabund}$), profundidad media del agua ($\texttt{meandepth}$), área ($\texttt{sweptarea}$), índice de densidad de follaje ($\texttt{density}$), entre otras .
+```{r logo, echo=FALSE, out.width='50%'}
+knitr::include_graphics('Logo_midas.PNG')
+```
+
+# Prueba Final
+
+## Instrucciones
+
+Responda en un archivo .Rmd con output `html` las siguientes preguntas. Envíe ambos archivos a `dbmorales@mat.uc.cl` con copia a `isgutierrez@mat.uc.cl` y  `rsozac@mat.uc.cl`. Recuerde que esta prueba es de carácter **individual**.
+
+## Enunciado
+
+La base de datos [fishing](http://midas.mat.uc.cl/courses/bc2019/Datasets/fishing.csv) contiene 147 observaciones sobre el número total de peces ($\texttt{totabund}$), profundidad media del agua ($\texttt{meandepth}$), área ($\texttt{sweptarea}$), índice de densidad de follaje ($\texttt{density}$), entre otras .
 
 1. Genere una tabla con la media, la mediana y los percentiles 25, 50 y 75 de cada variable. Organice la tabla de tal modo que cada fila represente una variable; y cada columna, un estadístico.
+
 2. Genere una tabla con la media, la mediana y los percentiles 25, 50 y 75 de la variable `totabund`, según la variable `year_group = year <= 1982`. Organice la tabla de tal modo que cada fila represente un estadístico; y cada columna, un valor de `year_group`.
+
 3. Realice gráficos de dispersión de la variable $\texttt{totabund}$ versus las variables $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Además , realice un histrograma de la varible $\texttt{totabund}$ y un boxplot de esta misma variable para los diferentes períodos.
+
 4. Obtener una nueva base de datos que contenga las variables $\texttt{totabund}$, $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Para esta nueva base de datos considere solo los años 1977, 1984 y 1986.
+
 5. Ajuste un modelo lineal generalizado Poisson para la variable $\texttt{totabund}$ considerando las covariables: $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza.
+
 6. Realice un test de sobredispersión y comente sus resultados. 
+
 7. Ajuste un modelo utilizando la familia $``\texttt{quasi-...}''$. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza. Compare los resulatdos con los obtenidos en el literal anterior.
-8. Ajuste un modelo lineal generalizado Binomail Negativo para la variable $\texttt{totabund}$ considerando las covariables: $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza. Compare los resulatdos con los obtenidos en los literales anteriores. 
+
+8. Ajuste un modelo lineal generalizado Binomial Negativo para la variable $\texttt{totabund}$ considerando las covariables: $\texttt{meandepth}$, $\texttt{sweptarea}$ y $\texttt{density}$. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza. Compare los resulatdos con los obtenidos en los literales anteriores. 
