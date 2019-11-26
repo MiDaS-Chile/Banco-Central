@@ -237,20 +237,25 @@ microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=100), op
 
 ## Actividad IV
 
+### Parte 1
+
+- El archivo `seatbelt.csv` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y diciembre de 1984. Dado lo anterior:
+  - Importe la BBDD como un `data.frame`.
+  - Convierta el resultado en una serie de tiempo.
+  - Estime un modelo de nivel, pendiente y estacionalidad local.
+  - Grafique los componentes tendencial y estacional ya suavizados.
+
+### Solución
+
 ```{r}
 # Declara las librerías relevantes
-library(neverhpfilter)
 library(tidyverse)
 library(magrittr)
 library(readr)
 library(KFAS)
 
-#####
-##### Parte 1
-#####
-
 # Importa la BBDD
-seatbelt <- readr::read_csv("Datasets/seatbelt.csv")
+seatbelt <- readr::read_csv("../Datasets/seatbelt.csv")
 
 # Convierte el resultado en una serie de tiempo
 seatbelt <- ts(seatbelt, frequency = 12, start = c(1969, 1))
@@ -268,23 +273,37 @@ fit_01 <-
 
 # Aplica el KFS al resultado
 kfs_01 <- 
+  fit_01 %>%
   magrittr::extract2("model") %>%
   KFAS::KFS() %>%
   magrittr::extract2("alphahat")
 
 # Grafica el componente estacional suavizado
-smo <- kfs_01$alphahat[, 3]
+smo <- kfs_01[, 3]
 ggplot(tibble(y = smo), aes(x = time(seatbelt))) +
   geom_line(aes(y = y,   colour = "componente estacional (suavizado)"))
 
 # Grafica el componente tendencial suavizado
-smo <- kfs_01$alphahat[, 1]
+smo <- kfs_01[, 1]
 ggplot(tibble(y = smo), aes(x = time(seatbelt))) +
   geom_line(aes(y = y,   colour = "componente tendencia (suavizado)"))
+```
 
-#####
-##### Parte 2
-#####
+### Parte 2
+
+- Reconsidere el ejemplo dado para el filtro de Hamilton.
+  - Estime un modelo de nivel, pendiente y estacionalidad local y grafique la tendencia suavizada. ¿Cómo luce en relación a lo obtenido con el filtro de Hamilton?
+  - Repita el ejercicio anterior, pero ahora con una pendiente no local sino global.
+
+
+### Solución
+
+```{r}
+# Declara las librerías relevantes
+library(neverhpfilter)
+library(tidyverse)
+library(magrittr)
+library(KFAS)
 
 # Prepara los datos
 y <- ts(log(neverhpfilter::GDPC1), frequency = 4, start = c(1947, 1))
@@ -326,4 +345,130 @@ smo_trend_02 <-
 ggplot(NULL, aes(x = time(y))) +
   geom_line(aes(y = y,            colour = "serie")) +
   geom_line(aes(y = smo_trend_02, colour = "tendencia (suavizada)"))
+```
+
+### Parte 3
+
+- Los archivos `ENE 2018 07 JJA.dta` y `ENE 2019 07 JJA.dta` contienen submuestras de la Encuesta Nacional de Empleo  para los trimestres junio-agosto de 2018 y 2019, respectivamente.
+  a. Importe ambas BBDD a R.
+  b. Estime el número de ocupados, según trimestre.
+  c. Estime la variación porcentual en 12 meses del n. de ocupados.
+  d. Estime el número de ocupados por grupo ocupacional, según trimestre.
+  e. Estime la variación (%) en 12 meses del n. de ocupados por grupo de ocupación.
+  f. Estime la distribución de los ocupados por grupo de ocupación, según trimestre.
+  g. Presente los resultados del ítem anterior en un solo cuadro.
+  h. Presente los resultados del ítem anterior en un solo gráfico.
+  
+### Solución
+
+a. Carga los datos (también cargaremos datos del 2018):
+```{r}
+ene_jja <- list(
+  "2018" = haven::read_dta("../Datasets/ENE 2018 07 JJA.dta"),
+  "2019" = haven::read_dta("../Datasets/ENE 2019 07 JJA.dta")
+)
+```
+
+b. Estima el número de ocupados, para los trimestres junio-agosto 2018 y 2019
+```{r}
+ocup_2018 <-
+  ene_jja[["2018"]] %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::pull(1)
+
+ocup_2019 <-
+  ene_jja[["2019"]] %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::pull(1)
+```
+
+c. Estima la variación porcentual en 12 meses del número de ocupados
+```{r}
+ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1)
+```
+
+d. Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para los trimestres junio-agosto 2018 y 2019
+```{r}
+tbl1_2018 <-
+  ene_jja[["2018"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact))
+
+tbl1_2019 <-
+  ene_jja[["2019"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact))
+```
+
+e. Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019
+```{r}
+tbl1 <-
+  dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>%
+  dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>%
+  dplyr::arrange(desc(delta)) %>%
+  haven::as_factor()
+```
+
+Convierte el resultado en un vector
+```{r}
+pcts <- round(tbl1$delta, 1)
+names(pcts) <- tbl1$b1
+```
+
+f. Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para los trimestres junio-agosto 2018 y 2019
+```{r}
+tbl2_2019 <-
+  ene_jja[["2019"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::mutate(
+    pct       = 100 * n / sum(n),
+    trimestre = "junio-agosto 2019"
+  )
+
+tbl2_2018 <-
+  ene_jja[["2018"]] %>%
+  dplyr::select(activ, b1, fact) %>%
+  dplyr::filter(activ == 1) %>%
+  dplyr::group_by(b1) %>%
+  dplyr::summarise(n = sum(fact)) %>%
+  dplyr::mutate(
+    pct       = 100 * n / sum(n),
+    trimestre = "junio-agosto 2018"
+  )
+```
+
+g. Combina la información en una tabla
+```{r}
+tbl2_3FN <-
+  rbind(tbl2_2018, tbl2_2019) %>%
+  dplyr::select(b1, pct, trimestre) %>%
+  dplyr::mutate(
+    trimestre = haven::as_factor(trimestre),
+    b1        = haven::as_factor(b1)
+  )
+```
+
+h. Combina la información en un gráfico
+```{r}
+tbl2_3FN %>%
+  ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) +
+  ggplot2::geom_bar(position = "dodge", stat = "identity") +
+  ggplot2::coord_flip() +
+  ggplot2::scale_fill_manual(values = c("darkblue", "darkred")) +
+  ggplot2::labs(
+    x        = "Grupo ocupacional (CIUO 08.cl)",
+    y        = "Participación (%)",
+    title    = "Gráfico 1. Participación de ocupados",
+    subtitle = "según grupo ocupacional (CIUO 08.cl)",
+    caption  = "Elaboración propia en base a datos de la ENE 2018/2019."
+  )
 ```
