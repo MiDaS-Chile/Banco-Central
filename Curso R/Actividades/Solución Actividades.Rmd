@@ -8,7 +8,7 @@ output:
 knitr::include_graphics('Logo_midas.PNG')
 ```
 
-# Actividad I
+# Actividad I 
 
 ## Parte I
 
