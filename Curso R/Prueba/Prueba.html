@@ -44,14 +44,16 @@
 
 <section class="main-content">
 <p>El archivo <span class="math inline">\(\texttt{fishing.csv}\)</span> contiene 147 observaciones sobre el número total de peces (<span class="math inline">\(\texttt{totabund}\)</span>), profundidad media del agua (<span class="math inline">\(\texttt{meandepth}\)</span>), área (<span class="math inline">\(\texttt{sweptarea}\)</span>), índice de densidad de follaje (<span class="math inline">\(\texttt{density}\)</span>), entre otras .</p>
-<ul>
+<ol style="list-style-type: decimal">
+<li>Genere una tabla con la media, la mediana y los percentiles 25, 50 y 75 de cada variable. Organice la tabla de tal modo que cada fila represente una variable; y cada columna, un estadístico.</li>
+<li>Genere una tabla con la media, la mediana y los percentiles 25, 50 y 75 de la variable <code>totabund</code>, según la variable <code>year_group = year &lt;= 1982</code>. Organice la tabla de tal modo que cada fila represente un estadístico; y cada columna, un valor de <code>year_group</code>.</li>
 <li>Realice gráficos de dispersión de la variable <span class="math inline">\(\texttt{totabund}\)</span> versus las variables <span class="math inline">\(\texttt{meandepth}\)</span>, <span class="math inline">\(\texttt{sweptarea}\)</span> y <span class="math inline">\(\texttt{density}\)</span>. Además , realice un histrograma de la varible <span class="math inline">\(\texttt{totabund}\)</span> y un boxplot de esta misma variable para los diferentes períodos.</li>
 <li>Obtener una nueva base de datos que contenga las variables <span class="math inline">\(\texttt{totabund}\)</span>, <span class="math inline">\(\texttt{meandepth}\)</span>, <span class="math inline">\(\texttt{sweptarea}\)</span> y <span class="math inline">\(\texttt{density}\)</span>. Para esta nueva base de datos considere solo los años 1977, 1984 y 1986.</li>
 <li>Ajuste un modelo lineal generalizado Poisson para la variable <span class="math inline">\(\texttt{totabund}\)</span> considerando las covariables: <span class="math inline">\(\texttt{meandepth}\)</span>, <span class="math inline">\(\texttt{sweptarea}\)</span> y <span class="math inline">\(\texttt{density}\)</span>. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza.</li>
 <li>Realice un test de sobredispersión y comente sus resultados.</li>
 <li>Ajuste un modelo utilizando la familia <span class="math inline">\(``\texttt{quasi-...}&#39;&#39;\)</span>. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza. Compare los resulatdos con los obtenidos en el literal anterior.</li>
 <li>Ajuste un modelo lineal generalizado Binomail Negativo para la variable <span class="math inline">\(\texttt{totabund}\)</span> considerando las covariables: <span class="math inline">\(\texttt{meandepth}\)</span>, <span class="math inline">\(\texttt{sweptarea}\)</span> y <span class="math inline">\(\texttt{density}\)</span>. Presente los resultados de los coeficientes estimados en una tabla. Además, incluya un gráfico de cada estimación con su respectivo intervalo de confianza. Compare los resulatdos con los obtenidos en los literales anteriores.</li>
-</ul>
+</ol>
 </section>
 
 
