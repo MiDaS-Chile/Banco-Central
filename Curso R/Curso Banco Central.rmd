@@ -2377,7 +2377,7 @@ carrera <- read_csv("http://midas.mat.uc.cl/courses/bc2019/Datasets/carrera.csv"
 
 <p align = "justify">Cargue los datos en R. Verifique que la base de datos se haya importado correctamente e identifique las variables.</p> 
 
-<p align = "justify">En base a la informaci\'on entregada y con la ayuda de R, responda las siguientes preguntas.</p>
+<p align = "justify">En base a la información entregada y con la ayuda de R, responda las siguientes preguntas.</p>
 
 
 ----
@@ -2397,7 +2397,7 @@ Comente este resultado en conjunto con lo obtenido en la pregunta anterior.
 - Analice la presencia de observaciones influyentes utilizando las Distancias de Cook y los DFFITS.
 Comente.
 - Analice el supuesto de independencia de los errores del modelo en base al test correspondiente. 
-Plantee las hipótesis, entregue el valor del estad\'istico y concluya con $\alpha=5\%$.
+Plantee las hipótesis, entregue el valor del estadístico y concluya con $\alpha=5\%$.
 
 
 
@@ -2593,10 +2593,6 @@ fit02 <- VAR(Canada, lag.max = 10, ic = "AIC")
 
 ## Modelos de Estado Espacio
 
-----
-
-### Introducción
-
 - En esta sección, veremos cómo analizar modelos de Estado Espacio Lineales y Gaussianos (LG-SSM) usando R.
 - Actualmente, existen al menos 2 paquetes capaces estimar, predecir, filtrar y suavizar estos modelos.
     - `dlm`, inspirado en West y Harrison (1997),
@@ -2787,6 +2783,7 @@ m01 <- KFAS::SSModel(
    ![](https://rmarkdown.rstudio.com/images/RMarkdownOutputFormats.png)
    
 ## Primer vistazo
+
 ![](Images/rmark1.png)
 
 ## Detrás de escenas
