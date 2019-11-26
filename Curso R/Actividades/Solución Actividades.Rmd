@@ -1,30 +1,36 @@
 ---
 output: 
-  prettydoc::html_pretty:
-    theme: leonids
+  html_document:
+    theme: paper
 ---
 
-```{r logo, echo=FALSE, out.width='50%'}
+```{r logo, echo=FALSE, out.width='40%'}
 knitr::include_graphics('Logo_midas.PNG')
 ```
 
-# Actividad I 
+# Solución de Actividades {.tabset}
 
-## Parte I
+## Actividad I {.tabset}
+
+### Parte I
+
+Resuelva las siguientes preguntas en `R`:
 
 - Genere un vector con los primeros 1000 números impares.
 - Del vector anterior, obtenga los impares número 1, 10, 100 y 1000.
 - Cálcule la suma de la raíz de los números generados antes.
 
-### Solución
+#### Solución
 
 ```{r}
 impares <- seq(1, by = 2, length.out = 1000)
+head(impares)
 subset <- impares[c(1,10,100,1000)]
+subset
 sum(sqrt(subset))
 ```
 
-## Parte II
+### Parte II
 
 Instalamos los siguientes paquetes: `babynames`, `nycflights13`, `maps` y los cargamos junto a `tidyverse`.
 
@@ -48,7 +54,7 @@ Considere la tabla `births` paquete `babynames`.
 
 (b) Utilizando un gráfico adecuado, estudie los nacimientos por años en EE.UU. ¿En qué década se obtuvo la menor cantidad de nacimientos?
 
-### Solución
+#### Solución
 
 (a) Observemos el `glimpse` de la base de datos:
 
@@ -91,7 +97,7 @@ births %>%
     
 ---
 
-## Parte III
+### Parte III
 
 Considere ahora la tabla `babynames` del paquete `babynames`. 
 
@@ -101,7 +107,7 @@ Considere ahora la tabla `babynames` del paquete `babynames`.
 
 (c) Con el data frame obtenido en la parte anterior, genere un gráfico que contenga la información de los nacimientos por año de cada uno de los nombres mencionados y mencionte una hipótesis/suposición al respecto de lo observado. *Hint:* Use `face_wrap(~ name, scales = "free_y")`.
 
-### Solución
+#### Solución
 
 (a) El siguiente código realiza lo pedido:
 
@@ -130,20 +136,18 @@ ggplot(data = births3) +
 ```
 
 
-## Parte IV
+### Parte IV
 
 (a) Utilizando las tablas `airports` y `flights` del paquete `nycflights13` obtenga una tabla que contenga conteos de vuelos según su destino `dest` además de la longitud y latitud del aeropuerto(de destino).
 
 (b) Apoyándose del siguiente gráfico:
 
-    ```{r,message = FALSE}
+    ```{r,message = FALSE, fig.height = 4}
 library(maps)
 us <- map_data("state")
-
 ggmap <- ggplot() +
   geom_polygon(data = us, aes(long, lat, group = group), alpha = 0.25) +
   coord_fixed() # esto es para mantener la razón 1:1
-
 ggmap
     ```
     
@@ -151,7 +155,7 @@ ggmap
 
     2. A la izquierda del gráfico anterior se observan 2 puntos. Genere el/los pasos necesarios para seleccionarlos usando la tabla resultante de la pregunta 5 para identificar los nombres de dichos aeropuertos y responda: ¿Donde están? ¿Qué gracias tienen?
     
-### Solución
+#### Solución
 
 (a) El siguiente código obtiene lo pedido:
 
@@ -167,25 +171,24 @@ head(airports2)
 
 (b) El siguiente código obtiene lo pedido:
 
-    ```{r, warning = FALSE}
+    ```{r, warning = FALSE, fig.height = 4}
 ggmap <- ggplot() +
     geom_polygon(data = us, aes(long, lat, group = group), alpha = 0.25) + 
     coord_fixed()
-ggmap + 
-    geom_point(data = airports2, 
+ggmap + geom_point(data = airports2, 
                aes(x = lon, y = lat, size = nvuelos, color = "darkblue"), 
                alpha = 0.7)
 airports2 %>% 
   filter(lon < -130)
 ```
 
-# Actividad II
+## Actividad II {.tabset}
 
-## Parte I
+### Parte I
 
 Cree dos funciones para γ(s,x), la primera utilizando la definción y la segunda utilizando su representación en series de potencia. Las funciones no se deben ejecutar si el argumento s es negativo y un mensaje debe ser entregado al usuario.
 
-### Solución
+#### Solución
 
 ```{r }
 gam1<- function(s,x){
@@ -208,17 +211,20 @@ gam2<- function(s,x){
 }
 ```
 
-## Parte II
+### Parte II
 
-Considere el siguiente conjunto de argumentos :$$(s,x)\in {(2,5);(2,20);(10,2);(10,20)}$$.
+Considere el siguiente conjunto de argumentos :$$(s,x)\in {(2,5);(2,20);(10,2);(10,20)}.$$
 Evalue las funciones creadas anteriormente y la función `Igamma()` del paquete `zipfR`, y compare los resultados. Además, calcule y compare el tiempo de ejecución.
 
-### Solución
+#### Solución
 
 ```{r}
 library(zipfR)
 library(microbenchmark)
-data.frame(Argumentos=c('(2,5)','(2,20)','(10,2)','(10,20)'),gam1=c(gam1(2,5),gam1(2,20),gam1(10,2),gam1(10,20)),gam2=c(gam2(2,5),gam2(2,20),gam2(10,2),gam2(10,20)),Igamma=c(Igamma(2,5),Igamma(2,20),Igamma(10,2),Igamma(10,20)))
+data.frame(Argumentos=c('(2,5)','(2,20)','(10,2)','(10,20)'),
+           gam1=c(gam1(2,5),gam1(2,20),gam1(10,2),gam1(10,20)),
+           gam2=c(gam2(2,5),gam2(2,20),gam2(10,2),gam2(10,20)),
+           Igamma=c(Igamma(2,5),Igamma(2,20),Igamma(10,2),Igamma(10,20)))
 ```
 
 ```{r}
@@ -228,32 +234,50 @@ microbenchmark(times = 100, unit = "s", gam1(10,2), gam2(10,2), Igamma(10,2))
 microbenchmark(times = 100, unit = "s", gam1(10,20), gam2(10,20), Igamma(10,20))
 ```
 
-## Parte III
+### Parte III
 
 Utilizando las funciones anteriormente implementadas y la función `Igamma()` encuentre el valor de $s$ que minimiza $\gamma(s,x)$ cuando $x=2$, $x=3$, $x=5$ y $x=100$. Compare los resultados y el tiempo de ejecución.
 
-### Solución
+#### Solución
 
 ```{r}
-data.frame(x=c(2,3,5,100),gam1=c(optimize(gam1,lower=0,upper=4,x=2)$minimum,optimize(gam1,lower=0,upper=4,x=3)$minimum,optimize(gam1,lower=0,upper=4,x=5)$minimum,optimize(gam1,lower=0,upper=4,x=100)$minimum),gam2=c(optimize(gam2,lower=0,upper=4,x=2)$minimum,optimize(gam2,lower=0,upper=4,x=3)$minimum,optimize(gam2,lower=0,upper=4,x=5)$minimum,optimize(gam2,lower=0,upper=4,x=100)$minimum),Igamma=c(optimize(Igamma,lower=0,upper=4,x=2)$minimum,optimize(Igamma,lower=0,upper=4,x=3)$minimum,optimize(Igamma,lower=0,upper=4,x=5)$minimum,optimize(Igamma,lower=0,upper=4,x=100)$minimum))
+data.frame(x=c(2,3,5,100),
+           gam1=c(optimize(gam1,lower=0,upper=4,x=2)$minimum,
+                  optimize(gam1,lower=0,upper=4,x=3)$minimum,
+                  optimize(gam1,lower=0,upper=4,x=5)$minimum,
+                  optimize(gam1,lower=0,upper=4,x=100)$minimum),
+           gam2=c(optimize(gam2,lower=0,upper=4,x=2)$minimum,
+                  optimize(gam2,lower=0,upper=4,x=3)$minimum,
+                  optimize(gam2,lower=0,upper=4,x=5)$minimum,
+                  optimize(gam2,lower=0,upper=4,x=100)$minimum),
+           Igamma=c(optimize(Igamma,lower=0,upper=4,x=2)$minimum,
+                    optimize(Igamma,lower=0,upper=4,x=3)$minimum,
+                    optimize(Igamma,lower=0,upper=4,x=5)$minimum,
+                    optimize(Igamma,lower=0,upper=4,x=100)$minimum))
 ```
 
 ```{r}
-microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=2), optimize(gam2,lower=0,upper=4,x=2), optimize(Igamma,lower=0,upper=4,x=2))
-microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=3), optimize(gam2,lower=0,upper=4,x=3), optimize(Igamma,lower=0,upper=4,x=3))
-microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=5), optimize(gam2,lower=0,upper=4,x=5), optimize(Igamma,lower=0,upper=4,x=5))
-microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=100), optimize(gam2,lower=0,upper=4,x=100), optimize(Igamma,lower=0,upper=4,x=100))
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=2),
+               optimize(gam2,lower=0,upper=4,x=2), optimize(Igamma,lower=0,upper=4,x=2))
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=3),
+               optimize(gam2,lower=0,upper=4,x=3), optimize(Igamma,lower=0,upper=4,x=3))
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=5),
+               optimize(gam2,lower=0,upper=4,x=5), optimize(Igamma,lower=0,upper=4,x=5))
+microbenchmark(times = 100, unit = "s", optimize(gam1,lower=0,upper=4,x=100),
+               optimize(gam2,lower=0,upper=4,x=100), optimize(Igamma,lower=0,upper=4,x=100))
 ```
 
-# Actividad III
+## Actividad III {.tabset}
 
-## Parte I
+### Parte I
+
+Considere los datos del siguiente [enlace]("http://midas.mat.uc.cl/courses/bc2019/Datasets/carrera.csv"):
 
 - Si se quiere modelar el tiempo obtenido en la carrera en función de alguna otra variable. ¿Qué variable sugeriría utilizar? Justifique su respuesta indicando las herramientas en las que basó su elección.
 - Plantee el modelo adecuado con sus supuestos y ajústelo. Evalúe la significancia de los coeficientes, y en base a ello, escriba la recta estimada.
 - Ajuste el modelo de regresión si considerar intercepto. Entregue la recta estimada e interprete el coeficiente en el contexto del problema.
 
-### Solución
+#### Solución
 
 Cargamos los datos:
 
@@ -293,7 +317,7 @@ ggPredict(modelo2,interactive = TRUE)
 
 Esto quiere decir que un aumento en una unidad de la altura alcanzada en la carrera significará un aumento de `r round(modelo2$coef[1],2)` minutos en el tiempo de la carrera.
 
-## Parte II
+### Parte II
 
 - Grafique los residuos de manera que le permita analizar si está bien especificada la función de la media. Añada las bandas de confianza correspondientes. Identifique qué observaciones son atípicas.
 - Obtenga los coeficientes $h_{ii}$ o palanca de cada observación. ¿Qué observación tiene la mayor palanca?
@@ -301,7 +325,7 @@ Comente este resultado en conjunto con lo obtenido en la pregunta anterior.
 - Analice la presencia de observaciones influyentes utilizando las Distancias de Cook y los DFFITS.
 Comente.
 
-### Solución
+#### Solución
 
 A continuación realizaremos el gráfico de residuos Studentizados versus los valores ajustados del modelo, junto con las respectivas bandas de confianza:
 
@@ -335,19 +359,20 @@ ggplot(tibble("res" = modelo2$residuals), aes(sample = res)) +
 
 Dado que existen puntos que claramente se escapan de la línea, concluímos que el supuesto de normalidad de los errores no es satisfecho.
 
-# Actividad IV
+## Actividad IV {.tabset}
 
-## Parte I
+### Parte I
 
-- El archivo `seatbelt.csv` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y diciembre de 1984. Dado lo anterior:
-  - Importe la BBDD como un `data.frame`.
-  - Convierta el resultado en una serie de tiempo.
-  - Estime un modelo de nivel, pendiente y estacionalidad local.
-  - Grafique los componentes tendencial y estacional ya suavizados.
+El archivo `seatbelt.csv` contiene la serie mensual del número de conductores mensualmente muertos o heridos en accidente de tránsito en Gran Bretaña, entre enero de 1969 y diciembre de 1984. Dado lo anterior:
 
-### Solución
+- Importe la BBDD como un `data.frame`.
+- Convierta el resultado en una serie de tiempo.
+- Estime un modelo de nivel, pendiente y estacionalidad local.
+- Grafique los componentes tendencial y estacional ya suavizados.
 
-```{r}
+#### Solución
+
+```{r, message = FALSE}
 # Declara las librerías relevantes
 library(tidyverse)
 library(magrittr)
@@ -389,16 +414,16 @@ ggplot(tibble(y = smo), aes(x = time(seatbelt))) +
   geom_line(aes(y = y,   colour = "componente tendencia (suavizado)"))
 ```
 
-## Parte II
+### Parte II
 
 - Reconsidere el ejemplo dado para el filtro de Hamilton.
   - Estime un modelo de nivel, pendiente y estacionalidad local y grafique la tendencia suavizada. ¿Cómo luce en relación a lo obtenido con el filtro de Hamilton?
   - Repita el ejercicio anterior, pero ahora con una pendiente no local sino global.
 
 
-### Solución
+#### Solución
 
-```{r}
+```{r, message = FALSE}
 # Declara las librerías relevantes
 library(neverhpfilter)
 library(tidyverse)
@@ -447,9 +472,10 @@ ggplot(NULL, aes(x = time(y))) +
   geom_line(aes(y = smo_trend_02, colour = "tendencia (suavizada)"))
 ```
 
-## Parte III
+### Parte III
 
-- Los archivos `ENE 2018 07 JJA.dta` y `ENE 2019 07 JJA.dta` contienen submuestras de la Encuesta Nacional de Empleo  para los trimestres junio-agosto de 2018 y 2019, respectivamente.
+<p align = "justify">
+Los archivos `ENE 2018 07 JJA.dta` y `ENE 2019 07 JJA.dta` contienen submuestras de la Encuesta Nacional de Empleo  para los trimestres junio-agosto de 2018 y 2019, respectivamente. </p>
   a. Importe ambas BBDD a R.
   b. Estime el número de ocupados, según trimestre.
   c. Estime la variación porcentual en 12 meses del n. de ocupados.
@@ -459,10 +485,10 @@ ggplot(NULL, aes(x = time(y))) +
   g. Presente los resultados del ítem anterior en un solo cuadro.
   h. Presente los resultados del ítem anterior en un solo gráfico.
   
-### Solución
+#### Solución
 
 a. Carga los datos (también cargaremos datos del 2018):
-```{r}
+    ```{r}
 ene_jja <- list(
   "2018" = haven::read_dta("../Datasets/ENE 2018 07 JJA.dta"),
   "2019" = haven::read_dta("../Datasets/ENE 2019 07 JJA.dta")
@@ -470,7 +496,7 @@ ene_jja <- list(
 ```
 
 b. Estima el número de ocupados, para los trimestres junio-agosto 2018 y 2019
-```{r}
+    ```{r}
 ocup_2018 <-
   ene_jja[["2018"]] %>%
   dplyr::filter(activ == 1) %>%
@@ -485,12 +511,12 @@ ocup_2019 <-
 ```
 
 c. Estima la variación porcentual en 12 meses del número de ocupados
-```{r}
+    ```{r}
 ocup_vp <- round(100 * (ocup_2019 - ocup_2018) / ocup_2019, 1)
 ```
 
 d. Estima el número de ocupados, según grupo ocupacional (CIUO 08.cl) para los trimestres junio-agosto 2018 y 2019
-```{r}
+    ```{r}
 tbl1_2018 <-
   ene_jja[["2018"]] %>%
   dplyr::select(activ, b1, fact) %>%
@@ -507,7 +533,7 @@ tbl1_2019 <-
 ```
 
 e. Estima el cambio porcentual del número de ocupados, según grupo ocupacional (CIUO 08.cl) entre los trimestres JJA 2018 y JJA 2019
-```{r}
+    ```{r}
 tbl1 <-
   dplyr::inner_join(tbl1_2018, tbl1_2019, by = "b1") %>%
   dplyr::mutate(delta = 100 * (n.y - n.x) / n.x) %>%
@@ -516,13 +542,13 @@ tbl1 <-
 ```
 
 Convierte el resultado en un vector
-```{r}
+    ```{r}
 pcts <- round(tbl1$delta, 1)
 names(pcts) <- tbl1$b1
 ```
 
 f. Estima la participación de ocupados (en %), según grupo ocupacional (CIUO 08.cl) para los trimestres junio-agosto 2018 y 2019
-```{r}
+    ```{r}
 tbl2_2019 <-
   ene_jja[["2019"]] %>%
   dplyr::select(activ, b1, fact) %>%
@@ -547,7 +573,7 @@ tbl2_2018 <-
 ```
 
 g. Combina la información en una tabla
-```{r}
+    ```{r}
 tbl2_3FN <-
   rbind(tbl2_2018, tbl2_2019) %>%
   dplyr::select(b1, pct, trimestre) %>%
@@ -558,7 +584,7 @@ tbl2_3FN <-
 ```
 
 h. Combina la información en un gráfico
-```{r}
+    ```{r}
 tbl2_3FN %>%
   ggplot2::ggplot(aes(stringr::str_wrap(b1, 25), pct, fill = trimestre)) +
   ggplot2::geom_bar(position = "dodge", stat = "identity") +
